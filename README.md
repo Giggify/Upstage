@@ -30,3 +30,10 @@
 ### Stretch Goal:
 * Map based navigation to find gigs.
 * Write our own songkick?
+
+### Git Flow :
+* Never push to Master, Alan sets his eyes on you. 
+* branches of Dev branch.
+* Once feature complete, create pull request to merge from feature branch to Dev branch.
+* Git master approves pull request and deal with git conflict before merging to Master 
+* Git master informs everyone to pull down Dev branch once the merges has been dealt with.

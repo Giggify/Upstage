@@ -1,5 +1,19 @@
 # Gigify
 
+## Team Members
+* Alan : Git Master
+* Scrum Master : Sherly
+* Fun Master : Zac
+* Cici : Project Manager
+* Matt : Group Councilor
+
+## Learning Objectives
+* Alan : External API, Redux & Testing
+* Cici : Dropdown Menu for search bar and external API
+* Zac : External API, toggle components in React
+* Matt : React, Redux and external API
+* Sherly : Google Maps, Passport on React/Redux, testing.
+
 ## MVP
 
 ### User stories :
@@ -15,3 +29,4 @@
 
 ### Stretch Goal:
 * Map based navigation to find gigs.
+* Write our own songkick?

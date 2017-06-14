@@ -1,9 +1,9 @@
 import {combineReducers} from 'redux'
 
 import users from './users'
-import eventfinda from './eventfinda'
+import location from './location'
 
 export default combineReducers({
   users,
-  eventfinda
+  location
 })

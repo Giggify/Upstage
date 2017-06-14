@@ -1,0 +1,19 @@
+body{
+  text-align: center;
+}
+
+.search-bar input,button{
+  font-size:3em;
+  border-radius: 25px;
+  color:gray;
+  border-color: none;
+  border-style:none;
+  padding: 0.1em;
+  margin: 0.1em;
+}
+
+.search-bar button{
+  color:gray;
+  background-color:white;
+  border: 0.1em solid gray;
+}

@@ -2,17 +2,17 @@ var path = require('path')
 var express = require('express')
 var bodyParser = require('body-parser')
 
-var skEventSearch = require('./routes/SKeventsearch')
-var skGetAreaID = require('./routes/SKgetareaid')
+var skEventSearch = require('./routes/skEvents')
+var skGetAreaID = require('./routes/skMetro')
 
-var usersDb = './db/users'
+const usersDb = './db/users'
 
-var app = express()
+const app = express()
 
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, '../public')))
 
-app.use('/api/v1/eventSearch', skEventSearch)
+app.use('/api/v1/events', skEventSearch)
 app.use('/api/v1/metros', skGetAreaID)
 
 module.exports = (connection) => {

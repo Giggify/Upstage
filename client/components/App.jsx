@@ -1,8 +1,6 @@
 import React from 'react'
 import {HashRouter as Router, Route} from 'react-router-dom'
 
-import * as eventfinder from '../actions/eventfinder.js'
-
 import Header from './Header'
 
 export default class App extends React.Component {
@@ -18,7 +16,6 @@ export default class App extends React.Component {
       <Router>
         <div className="app-container">
           <Header />
-          {eventfinder.getEvents()}
         </div>
       </Router>
     )

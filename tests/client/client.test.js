@@ -10,7 +10,7 @@ import App from '../../client/components/App'
 //
 // }
 
-it("testing that I can use Sinon", function (){
+test("testing that I can use Sinon", function (){
   var callback = sinon.stub().returns(215)
   var proxy = once(callback)
 

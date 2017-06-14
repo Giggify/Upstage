@@ -13,15 +13,17 @@ function getEvents (query) {
   return (dispatch) => {
     request
       .get('http://api.eventfinda.co.nz/v2/events.json')
+      // .set(unescape(encodeURIComponent(username + ":" + password))))
+      .set("Authorization", "Basic "+btoa(username + ":" + password)
       .query({
         q: query,
-        Authorization: "Basic "+btoa(username + ":" + password)
-      })
+      // })
       .end((err, res) => {
         if (err) {
           console.log("things broke.");
         } else {
-          dispatch(receiveEvents(res.body))
+          console.log(res.body);
+          // dispatch(receiveEvents(res.body))
         }
       })
   }

@@ -37,3 +37,6 @@
 * Once feature complete, create pull request to merge from feature branch to Dev branch.
 * Git master approves pull request and deal with git conflict before merging to Master 
 * Git master informs everyone to pull down Dev branch once the merges has been dealt with.
+
+### Wireframes
+![test](Upstage/DESIGN/HOMEPAGE.png)

@@ -18,7 +18,7 @@ export default class App extends React.Component {
       <Router>
         <div className="app-container">
           <Header />
-          {eventfinder.getEvents(wellington)}
+          {eventfinder.getEvents()}
         </div>
       </Router>
     )

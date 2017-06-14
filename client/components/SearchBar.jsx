@@ -1,4 +1,8 @@
 import React from 'react'
+import {connect} from 'react-redux'
+
+import {fetchLocations} from '../actions/locations'
+import SearchResults from './SearchResults'
 
 class SearchBar extends React.Component{
   constructor(props){
@@ -12,18 +16,25 @@ class SearchBar extends React.Component{
     this.setState(
       {query: e.target.value}
     )
-    console.log('banana', this.state.query)
+    this.props.dispatch(fetchLocations(this.state.query))
+  }
+
+  handleClick(e){
+    this.props.dispatch(fetchLocations(this.state.query))
   }
 
   render(){
     return (
       <div className='search-bar'>
-        <input type='text' name='search' placeholder='Search for a city..'
+        <input type='search' name='search' placeholder='Search for a city..'
           value={this.state.query}
-          onChange={this.handleChange.bind(this)}/>
+          onChange={this.handleChange.bind(this)}
+          />
+        <button onClick={this.handleClick.bind(this)}>GO</button>
+        <SearchResults />
       </div>
     )
   }
 }
 
-export default SearchBar
+export default connect()(SearchBar)

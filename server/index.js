@@ -1,4 +1,5 @@
 var createServer = require('./server')
+require('dotenv').config()
 
 var environment = process.env.NODE_ENV || 'development'
 var dbConfig = require('../knexfile')[environment]

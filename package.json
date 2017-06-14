@@ -60,6 +60,7 @@
     "react-router-dom": "^4.1.1",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
+    "spotify-web-api-node": "^2.4.0",
     "superagent": "^2.2.0"
   }
 }

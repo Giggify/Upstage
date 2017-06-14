@@ -51,3 +51,4 @@
 ![homepage](https://raw.githubusercontent.com/Giggify/Upstage/develop/DESIGN/HOMEPAGE.png)
 ![gigs](https://raw.githubusercontent.com/Giggify/Upstage/develop/DESIGN/GIGS.png)
 ![playlist](https://raw.githubusercontent.com/Giggify/Upstage/develop/DESIGN/PLAYLISTS.png)
+![login](https://raw.githubusercontent.com/Giggify/Upstage/develop/DESIGN/INTRO.png)

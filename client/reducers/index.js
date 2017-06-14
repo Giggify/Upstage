@@ -4,6 +4,5 @@ import users from './users'
 import eventfinda from './eventfinda'
 
 export default combineReducers({
-  users,
-  eventfinda
+  users
 })

@@ -39,4 +39,4 @@
 * Git master informs everyone to pull down Dev branch once the merges has been dealt with.
 
 ### Wireframes
-![test](https://raw.githubusercontent.com/Giggify/Upstage/DESIGN/HOMEPAGE.png)
+![test](https://raw.githubusercontent.com/Giggify/Upstage/develop/DESIGN/HOMEPAGE.png)

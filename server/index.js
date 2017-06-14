@@ -4,6 +4,8 @@ var environment = process.env.NODE_ENV || 'development'
 var dbConfig = require('../knexfile')[environment]
 var connection = require('knex')(dbConfig)
 
+require('dotenv').config()
+
 var server = createServer(connection)
 
 var PORT = process.env.PORT || 3000

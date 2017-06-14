@@ -3126,8 +3126,12 @@ var stripLeadingSlash = exports.stripLeadingSlash = function stripLeadingSlash(p
   return path.charAt(0) === '/' ? path.substr(1) : path;
 };
 
-var stripPrefix = exports.stripPrefix = function stripPrefix(path, prefix) {
-  return path.indexOf(prefix) === 0 ? path.substr(prefix.length) : path;
+var hasBasename = exports.hasBasename = function hasBasename(path, prefix) {
+  return new RegExp('^' + prefix + '(\\/|\\?|#|$)', 'i').test(path);
+};
+
+var stripBasename = exports.stripBasename = function stripBasename(path, prefix) {
+  return hasBasename(path, prefix) ? path.substr(prefix.length) : path;
 };
 
 var stripTrailingSlash = exports.stripTrailingSlash = function stripTrailingSlash(path) {
@@ -3151,8 +3155,6 @@ var parsePath = exports.parsePath = function parsePath(path) {
     pathname = pathname.substr(0, searchIndex);
   }
 
-  pathname = decodeURI(pathname);
-
   return {
     pathname: pathname,
     search: search === '?' ? '' : search,
@@ -3166,7 +3168,7 @@ var createPath = exports.createPath = function createPath(location) {
       hash = location.hash;
 
 
-  var path = encodeURI(pathname || '/');
+  var path = pathname || '/';
 
   if (search && search !== '?') path += search.charAt(0) === '?' ? search : '?' + search;
 
@@ -5117,7 +5119,17 @@ var createLocation = exports.createLocation = function createLocation(path, stat
     if (state !== undefined && location.state === undefined) location.state = state;
   }
 
-  location.key = key;
+  try {
+    location.pathname = decodeURI(location.pathname);
+  } catch (e) {
+    if (e instanceof URIError) {
+      throw new URIError('Pathname "' + location.pathname + '" could not be decoded. ' + 'This is likely caused by an invalid percent-encoding.');
+    } else {
+      throw e;
+    }
+  }
+
+  if (key) location.key = key;
 
   if (currentLocation) {
     // Resolve incomplete/relative pathname relative to current location.
@@ -5125,6 +5137,11 @@ var createLocation = exports.createLocation = function createLocation(path, stat
       location.pathname = currentLocation.pathname;
     } else if (location.pathname.charAt(0) !== '/') {
       location.pathname = (0, _resolvePathname2.default)(location.pathname, currentLocation.pathname);
+    }
+  } else {
+    // When there is no prior location and pathname is empty, set it to /
+    if (!location.pathname) {
+      location.pathname = '/';
     }
   }
 
@@ -13974,12 +13991,11 @@ var createBrowserHistory = function createBrowserHistory() {
 
     var path = pathname + search + hash;
 
-    if (basename) path = (0, _PathUtils.stripPrefix)(path, basename);
+    (0, _warning2.default)(!basename || (0, _PathUtils.hasBasename)(path, basename), 'You are attempting to use a basename on a page whose URL path does not begin ' + 'with the basename. Expected path "' + path + '" to begin with "' + basename + '".');
 
-    return _extends({}, (0, _PathUtils.parsePath)(path), {
-      state: state,
-      key: key
-    });
+    if (basename) path = (0, _PathUtils.stripBasename)(path, basename);
+
+    return (0, _LocationUtils.createLocation)(path, state, key);
   };
 
   var createKey = function createKey() {
@@ -14300,9 +14316,11 @@ var createHashHistory = function createHashHistory() {
   var getDOMLocation = function getDOMLocation() {
     var path = decodePath(getHashPath());
 
-    if (basename) path = (0, _PathUtils.stripPrefix)(path, basename);
+    (0, _warning2.default)(!basename || (0, _PathUtils.hasBasename)(path, basename), 'You are attempting to use a basename on a page whose URL path does not begin ' + 'with the basename. Expected path "' + path + '" to begin with "' + basename + '".');
 
-    return (0, _PathUtils.parsePath)(path);
+    if (basename) path = (0, _PathUtils.stripBasename)(path, basename);
+
+    return (0, _LocationUtils.createLocation)(path);
   };
 
   var transitionManager = (0, _createTransitionManager2.default)();

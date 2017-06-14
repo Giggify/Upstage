@@ -1,17 +1,22 @@
-var path = require('path')
-var express = require('express')
-var bodyParser = require('body-parser')
+const path = require('path')
+const express = require('express')
+const passport = require('passport')
+const LocalStrategy = require('passport-local')
+const bodyParser = require('body-parser')
 
-var api = require('./routes/index')
-var usersDb = './db/users'
+const auth = require('./lib/auth')
+const api = require('./routes/index')
+const usersDb = './db/users'
 
-
-var app = express()
+const app = express()
 
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, '../public')))
+app.use(passport.initialize())
+
 
 app.use('/api/v1', api)
+passport.use(new LocalStrategy(auth.verify))
 
 module.exports = (connection) => {
   app.set('connection', connection)

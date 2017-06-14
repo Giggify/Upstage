@@ -5,9 +5,9 @@
 
 Metro locations can be found by three different search methods:
 
-##### By Cityname:
+##### By City Name:
 
-/city/{cityname}
+/city/{cityName}
 
 ##### By Latitude/Longitude:
 
@@ -16,15 +16,15 @@ Metro locations can be found by three different search methods:
 
 ##### By IP Address:
 
-/ip/{userip}
+/ip/{userIp}
 
 ## Metro - Event Search API
 
 When queried with a specific metroArea ID (usually a 5-6 digit integer) as given by the Songkick Locations API which will be used to autopopulate the Upstage search bar.
 
-The api route for this information is http://localhost:3000/api/v1/eventsearch/{metroArea ID}.
+The api route for this information is http://localhost:3000/api/v1/events/{metroArea ID}.
 
-The data is returned as follows when requesting from http://localhost:3000/api/v1/eventsearch/31455 (with 31455 being the metroArea ID for Wellington, New Zealand)
+The data is returned as follows when requesting from http://localhost:3000/api/v1/events/31455 (with 31455 being the metroArea ID for Wellington, New Zealand)
 
     {
     "event": [{

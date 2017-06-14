@@ -1,26 +1,19 @@
 var path = require('path')
 var express = require('express')
 var bodyParser = require('body-parser')
-const cors = require('cors')
 
-var songkickeventsearch = require('./routes/SKeventsearch')
-var usersDb = './db/users'
+var skEventSearch = require('./routes/skEvents')
+var skGetAreaID = require('./routes/skMetro')
 
-const corsOptions = {
-  origin: true,
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  preflightContinue: false,
-  credentials: true
-}
+const usersDb = './db/users'
 
-
-var app = express()
-app.use(cors(corsOptions))
+const app = express()
 
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, '../public')))
 
-app.use('/api/v1/eventsearch', songkickeventsearch)
+app.use('/api/v1/events', skEventSearch)
+app.use('/api/v1/metros', skGetAreaID)
 
 module.exports = (connection) => {
   app.set('connection', connection)

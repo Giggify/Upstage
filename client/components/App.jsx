@@ -1,8 +1,6 @@
 import React from 'react'
 import {HashRouter as Router, Route} from 'react-router-dom'
 
-import * as eventfinder from '../actions/eventfinder.js'
-
 import Header from './Header'
 import Homepage from '../container/Homepage'
 

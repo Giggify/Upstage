@@ -16,7 +16,7 @@ class SearchBar extends React.Component{
     this.setState(
       {query: e.target.value}
     )
-    this.props.dispatch(fetchLocations(this.state.query))
+    this.props.dispatch(fetchLocations(e.target.value))
   }
 
   handleClick(e){
@@ -24,6 +24,7 @@ class SearchBar extends React.Component{
   }
 
   render(){
+
     return (
       <div className='search-bar'>
         <input type='search' name='search' placeholder='Search for a city..'

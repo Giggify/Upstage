@@ -12487,7 +12487,7 @@ var SearchBar = function (_React$Component) {
     key: 'handleChange',
     value: function handleChange(e) {
       this.setState({ query: e.target.value });
-      this.props.dispatch((0, _locations.fetchLocations)(this.state.query));
+      this.props.dispatch((0, _locations.fetchLocations)(e.target.value));
     }
   }, {
     key: 'handleClick',
@@ -12497,6 +12497,7 @@ var SearchBar = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+
       return _react2.default.createElement(
         'div',
         { className: 'search-bar' },

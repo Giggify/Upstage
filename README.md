@@ -32,13 +32,24 @@
 * Write our own songkick?
 
 ### Git Flow :
-* Never push to Master, Alan sets his eyes on you. 
+* Never push to Master, Alan sets his eyes on you.
 * branches of Dev branch.
 * Once feature complete, create pull request to merge from feature branch to Dev branch.
-* Git master approves pull request and deal with git conflict before merging to Master 
+* Git master approves pull request and deal with git conflict before merging to Master
 * Git master informs everyone to pull down Dev branch once the merges has been dealt with.
 
+### First Component List :
+* Header
+* Home
+* Gig List
+* Search
+* Playlist
+* Login
+* Nav Bar
+
 ### Wireframes
+![login](https://raw.githubusercontent.com/Giggify/Upstage/develop/DESIGN/LOGIN.png)
 ![homepage](https://raw.githubusercontent.com/Giggify/Upstage/develop/DESIGN/HOMEPAGE.png)
 ![gigs](https://raw.githubusercontent.com/Giggify/Upstage/develop/DESIGN/GIGS.png)
 ![playlist](https://raw.githubusercontent.com/Giggify/Upstage/develop/DESIGN/PLAYLISTS.png)
+

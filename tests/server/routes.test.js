@@ -26,7 +26,6 @@ const tracksArray = [
         .expect(200)
         .then((res) => {
           scope.done()
-          console.log(res.body);
           t.end()
         })
 })

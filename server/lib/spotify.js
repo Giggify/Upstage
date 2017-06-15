@@ -12,10 +12,10 @@ var spotifyApi = new SpotifyWebApi({
 
 spotifyApi.clientCredentialsGrant()
   .then(function(data) {
-    spotifyApi.setAccessToken(data.body['access_token']);
+    spotifyApi.setAccessToken(data.body['access_token'])
   }, function(err) {
-    console.log('Something went wrong!', err);
-  });
+    console.log('Something went wrong!', err)
+  })
 
 function getTopTracks(artistId, locationCode) {
   return spotifyApi.getArtistTopTracks(artistId, locationCode).then(function(result) {

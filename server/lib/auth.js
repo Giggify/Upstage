@@ -2,10 +2,9 @@
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 
-const crypto = require('./crypto')
 const users = require('./users')
 
-function createToken (user, secret) {
+function createToken (user, secret) { // insert access/refresh token from spotify
   return jwt.sign({
     id: user.id,
     username: user.username

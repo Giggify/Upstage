@@ -7,6 +7,20 @@ const spotify = require('../lib/spotify')
 
 require('dotenv').config()
 
+
+function filterTracks(tracks) {
+  return tracks.map((track) => {
+    return {id: track.id, name: track.name}
+  })
+}
+
+function filterArtists(artists, searchStr) {
+  return artists.filter((artist) => {
+    if (artist.name.toLowerCase() == searchStr.toLowerCase()) {
+      return artist
+    }
+  })
+}
 const url = 'https://api.spotify.com'
 
 var spotifyApi = new SpotifyWebApi({
@@ -17,61 +31,38 @@ var spotifyApi = new SpotifyWebApi({
 spotifyApi.clientCredentialsGrant()
   .then(function(data) {
     token = data.body['access_token']
-    router.get('/test', (req, res) => {
+
+    router.get('/:artistId/toptracks', (req, res) => {
       request
-        .get(`${url}/v1/albums/0sNOF9WDwhWunNAHPD3Baj`)
+        .get(`${url}/v1/artists/${req.params.artistId}/top-tracks?country=NZ`)
+        .set('Authorization', `Bearer ${token}`)
+        .set('Accept', 'application/json')
+        .end((error, response) => {
+          error ? res.send(error) : res.json(filterTracks(response.body.tracks))
+        })
+    })
+
+    router.get('/:artistId', (req, res) => {
+      request
+        .get(`${url}/v1/artists/${req.params.artistId}`)
         .set('Authorization', `Bearer ${token}`)
         .set('Accept', 'application/json')
         .end((error, response) => {
           error ? res.send(error) : res.json(response.body)
         })
     })
+
+    router.get('/search/:searchStr', (req, res) => {
+      request
+        .get(`${url}/v1/search?q=${req.params.searchStr}&type=artist`)
+        .set('Authorization', `Bearer ${token}`)
+        .set('Accept', 'application/json')
+        .end((error, response) => {
+          error ? res.send(error) : res.json(filterArtists(response.body.artists.items, req.params.searchStr))
+        })
+    })
   })
 
 
-
-
-
-router.get('/test', (req, res) => {
-  request
-    .get(`${url}/v1/albums/0sNOF9WDwhWunNAHPD3Baj`)
-    .set('Authorization', `Bearer ${token}`)
-    .set('Accept', 'application/json')
-    .end((error, response) => {
-      error ? res.send(error) : res.json(response.body)
-    })
-})
-
-
-
-router.get('/:artistId/toptracks', (req, res) => {
-  spotify.getTopTracks(req.params.artistId, 'NZ') // Hardcoded NZ for now. Can fix
-    .then (function (tracks) {
-      res.json(tracks)
-    })
-    .catch(function (err) {
-      res.status(500).send(`Error: ${err}`)
-    })
-})
-
-router.get('/:artistId', (req, res) => {
-  spotify.getArtist(req.params.artistId)
-    .then((artist) => {
-      res.json(artist)
-    })
-    .catch(function (err) {
-      res.status(500).send(`Error: ${err}`)
-    })
-})
-
-router.get('/search/:searchStr', (req, res) => {
-  spotify.searchForArtist(req.params.searchStr)
-    .then(function(data) {
-      res.json(data)
-    })
-    .catch(function (err) {
-      res.status(500).send(`Error: ${err}`)
-    })
-})
 
 module.exports = router

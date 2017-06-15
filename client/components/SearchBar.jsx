@@ -3,16 +3,14 @@ import {connect} from 'react-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {AutoComplete} from 'material-ui'
 import injectTapEventPlugin from 'react-tap-event-plugin'
+injectTapEventPlugin();
 
 import {fetchLocations} from '../actions/locations'
-import SearchResults from './SearchResults'
-
-let serachResults= []
-
 
 class SearchBar extends React.Component{
   state={
-    searchText:''
+    searchText:'',
+    dataSource:[]
   }
 
   handleUpdateInput = (searchText) => {
@@ -29,6 +27,15 @@ class SearchBar extends React.Component{
   };
 
   render(){
+
+    let searchResults=[];
+      if (this.props.searchResults) {
+        searchResults=(this.props.searchResults).map((item)=>{return(`${item.name} ${item.state} ${item.country}`)
+        })
+      }
+
+    console.log(searchResults)
+
     return (
     <MuiThemeProvider>
       <div className='search-bar'>
@@ -36,8 +43,7 @@ class SearchBar extends React.Component{
           hintText="Search for a city..."
           searchText={this.state.searchText}
           onUpdateInput={this.handleUpdateInput}
-          onNewRequest={this.handleNewRequest}
-          dataSource={serachResults}
+          dataSource={[...searchResult]}
           filter={(searchText, key) => (key.indexOf(searchText) !== -1)}
           openOnFocus={true}
         />
@@ -51,4 +57,10 @@ class SearchBar extends React.Component{
   }
 }
 
-export default connect()(SearchBar)
+const mapState2Props = (state)=>{
+  return {
+    searchResults:state.location.name
+  }
+}
+
+export default connect(mapState2Props)(SearchBar)

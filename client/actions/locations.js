@@ -15,7 +15,6 @@ export function fetchLocationsFailure(err){
 }
 
 export function fetchLocationsSuccess(res){
-  console.log(res);
   return{
     type:'FETCH_LOCATIONS_SUCCESS',
     res

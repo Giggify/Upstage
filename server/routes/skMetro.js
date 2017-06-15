@@ -12,20 +12,25 @@ router.get('/city/:cityName', (req,res) => {
     }
     else {
       let citiesArray=result.body.resultsPage.results.location
-      let city=citiesArray.map((result)=>{return(
-        result.metroArea.state ?
-        {
-          id:result.metroArea.id,
-          name:result.metroArea.displayName,
-          state:result.metroArea.state.displayName,
-          country:result.metroArea.country.displayName
-        } : {
-          id:result.metroArea.id,
-          name:result.metroArea.displayName,
-          state:" ",
-          country:result.metroArea.country.displayName
-        }
-      )})
+      let city=[]
+      if (citiesArray){
+        city=citiesArray.map((result)=>{return(
+          result.metroArea.state ?
+          {
+            id:result.metroArea.id,
+            name:result.metroArea.displayName,
+            state:result.metroArea.state.displayName,
+            country:result.metroArea.country.displayName
+          } : {
+            id:result.metroArea.id,
+            name:result.metroArea.displayName,
+            state:" ",
+            country:result.metroArea.country.displayName
+          }
+        )})
+      } else {
+        let city=[]
+      }
       res.json(city)
     }
   })

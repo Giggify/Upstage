@@ -2,7 +2,7 @@
   "name": "gamr",
   "version": "0.2.0",
   "description": "Second attempt at building gamr",
-  "repository": "https://github.com/alan-jordan/gamr-v2",
+  "repository": "https://github.com/Giggify/Upstage",
   "main": "server/index.js",
   "scripts": {
     "knex": "knex",
@@ -26,7 +26,7 @@
       "stage-0"
     ]
   },
-  "author": "Alan Jordan",
+  "author": "Giggify Upstage",
   "license": "ISC",
   "devDependencies": {
     "ava": "^0.19.1",
@@ -57,8 +57,11 @@
     "cors": "^2.8.3",
     "dotenv": "^4.0.0",
     "express": "^4.14.0",
+    "jsonwebtoken": "^7.4.1",
     "knex": "^0.13.0",
     "material-ui": "^0.18.3",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "pg": "^6.2.3",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.1",

@@ -1,9 +1,10 @@
 | Task          | Method        |
 | ------------- |:-------------:|
-|  | |
-| |    |
-|  |     |
-
+| Get Artist Info | GET|
+| Get several artists|  GET  |
+| Get an Artist’s Top Tracks |  GET   |
+| Get a User’s Profile|  GET   |
+| Get a User’s Profile |  POST   |
 
 
 # Requests

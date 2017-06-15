@@ -16,6 +16,16 @@ router.get('/:artistId/toptracks', (req, res) => {
     })
 })
 
+router.get('/:artistId', (req, res) => {
+  spotify.getArtist(req.params.artistId)
+    .then((artist) => {
+      res.json(artist)
+    })
+    .catch(function (err) {
+      res.status(500).send(`Error: ${err}`)
+    })
+})
+
 module.exports = router
 
 

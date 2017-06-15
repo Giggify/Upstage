@@ -2,7 +2,8 @@ var SpotifyWebApi = require('spotify-web-api-node');
 require('dotenv').config()
 
 module.exports = {
-  getTopTracks
+  getTopTracks,
+  getArtist
 }
 
 var spotifyApi = new SpotifyWebApi({
@@ -18,9 +19,19 @@ spotifyApi.clientCredentialsGrant()
   })
 
 function getTopTracks(artistId, locationCode) {
-  return spotifyApi.getArtistTopTracks(artistId, locationCode).then(function(result) {
+  return spotifyApi.getArtistTopTracks(artistId, locationCode)
+    .then(function(result) {
     return filterTracks(result.body.tracks)
   }, function(err) {
+    return err
+  })
+}
+
+function getArtist(artistId) {
+  return spotifyApi.getArtist(artistId)
+    .then(function(result) {
+      return result.body
+    }, function(err) {
     return err
   })
 }

@@ -12373,7 +12373,6 @@ function fetchLocationsRequest() {
 }
 
 function fetchLocationsFailure(err) {
-  console.log(err);
   return {
     type: 'FETCH_LOCATIONS_FAILURE',
     err: err
@@ -12381,7 +12380,6 @@ function fetchLocationsFailure(err) {
 }
 
 function fetchLocationsSuccess(res) {
-  console.log(res);
   return {
     type: 'FETCH_LOCATIONS_SUCCESS',
     res: res

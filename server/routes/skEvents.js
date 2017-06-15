@@ -20,7 +20,9 @@ router.get('/:locationID', (req,res) => {
               city: result.location.city || "NA",
               lat: result.location.lat || "NA",
               long: result.location.lng || "NA",
-              artists: result.performance.map(performer => performer.artist.displayName) || "NA"
+              artists: result.performance.map(performer => performer.artist.displayName) || "NA",
+              date: result.start.date,
+              time: result.start.time
               // if we only want headline artists then this becomes:
               // artists: result.performance[0].artist.displayName
             }

@@ -21,11 +21,11 @@ export function fetchLocationsSuccess(res){
   }
 }
 
-export function fetchLocations(cityname){
+export function fetchLocations(cityName){
   return (dispatch) => {
     dispatch(fetchLocationsRequest())
     request
-      .get(`/api/v1/metros/city/${cityname}`)
+      .get(`/api/v1/metros/city/${cityName}`)
       .end((err, res)=>{
         if (err) {
           dispatch((fetchLocationsFailure(err)))

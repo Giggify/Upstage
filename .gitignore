@@ -60,4 +60,4 @@ typings/
 dev.sqlite3
 bundle.js
 bundle.js.map
-
+.nyc_output

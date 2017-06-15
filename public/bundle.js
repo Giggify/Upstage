@@ -12653,6 +12653,10 @@ var _reduxThunk = __webpack_require__(113);
 
 var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
+var _superagent = __webpack_require__(268);
+
+var _superagent2 = _interopRequireDefault(_superagent);
+
 var _reducers = __webpack_require__(111);
 
 var _reducers2 = _interopRequireDefault(_reducers);
@@ -12673,6 +12677,9 @@ document.addEventListener('DOMContentLoaded', function () {
     { store: store },
     _react2.default.createElement(_App2.default, null)
   ), document.getElementById('app'));
+});
+_superagent2.default.get('/test').then(function (res) {
+  return console.log(res.text);
 });
 
 /***/ }),

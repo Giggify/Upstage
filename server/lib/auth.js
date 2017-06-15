@@ -27,29 +27,28 @@ function handleError (err, req, res, next) {
 }
 
 function issueJwt (req, res, next) {
-  passport.authenticate(
-    'local',
-    (err, user, info) => {
-      if (err) {
-        return res.status(500).json({
-          message: 'Authentication failed due to a server error.'
-        })
-      }
 
-      if (!user) {
-        return res.status(403).json({
-          message: 'Authentication failed.',
-          info: info.message
-        })
-      }
+  passport.authenticate('spotify',
+      (err, user, info) => {
+        if (err) {
+          return res.status(500).json({
+            message: 'Authentication failed due to a server error.',
+            info: err.message
+          })
+        }
 
-      const token = createToken(user, process.env.JWT_SECRET)
-      res.json({
-        message: 'Authentication successful.',
-        token
-      })
-    }
-  )(req, res, next)
+        if (!user) {
+          return res.json({
+            message: 'Authentication failed.',
+            info: info.message
+          })
+        }
+
+        const token = createToken(user, req.app.get('JWT_SECRET'))
+        // Ideally use `secure: true` in production
+        res.cookie('token', token, { httpOnly: true })
+        res.redirect('/')
+      })(req, res, next)
 }
 
 function verify (username, password, done) {

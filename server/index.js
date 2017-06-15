@@ -1,4 +1,4 @@
-var createServer = require('./server')
+var app = require('./server')
 require('dotenv').config()
 
 var environment = process.env.NODE_ENV || 'development'
@@ -7,9 +7,9 @@ var connection = require('knex')(dbConfig)
 
 require('dotenv').config()
 
-var server = createServer(connection)
+app.get('db', connection)
 
 var PORT = process.env.PORT || 3000
-server.listen(PORT, function () {
+app.listen(PORT, function () {
   console.log('Listening on port', PORT)
 })

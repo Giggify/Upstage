@@ -23,7 +23,4 @@ app.use('/api/v1/events', skEventSearch)
 app.use('/api/v1/metros', skGetAreaID)
 app.use('/api/v1/spotify', spotify)
 
-module.exports = (connection) => {
-  app.set('connection', connection)
-  return app
-}
+module.exports = app

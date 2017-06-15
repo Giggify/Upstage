@@ -8,12 +8,13 @@
     "knex": "knex",
     "dev": "nodemon --watch server server/index & webpack --watch",
     "start": "node server/index",
-    "test": "ava -v 'tests/**/*.test.js'",
+    "test": "nyc ava -v 'tests/**/*.test.js'",
     "watch": "nodemon -e js,jsx -x npm test",
     "h:deploy": "git push heroku master",
     "h:migrate": "heroku run knex migrate:latest",
     "h:rollback": "heroku run knex migrate:rollback",
-    "h:seed": "heroku run knex seed:run"
+    "h:seed": "heroku run knex seed:run",
+    "lint": "eslint server client test"
   },
   "ava": {
     "require": "babel-register",
@@ -38,11 +39,19 @@
     "babel-register": "^6.24.1",
     "chai": "^4.0.2",
     "enzyme": "^2.8.2",
+    "eslint": "^4.0.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.3.0",
+    "eslint-plugin-node": "^5.0.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-react": "^7.1.0",
+    "eslint-plugin-standard": "^3.0.1",
     "jsdom": "^11.0.0",
     "jsx-loader": "^0.13.2",
     "mocha": "^3.4.2",
     "nock": "^9.0.13",
     "nodemon": "^1.11.0",
+    "nyc": "^11.0.2",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-test-renderer": "^15.5.4",
@@ -55,6 +64,7 @@
     "webpack-dev-server": "^2.4.2"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.15.2",
     "cors": "^2.8.3",
     "dotenv": "^4.0.0",

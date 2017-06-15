@@ -1,6 +1,8 @@
 body{
   text-align: center;
   font-family: 'Roboto', sans-serif;
+  background-color: #0E0E0E;
+  color: #FF6900;
 }
 
 .search-bar input,button{

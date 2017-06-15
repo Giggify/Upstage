@@ -7,7 +7,6 @@ const spotify = require('../lib/spotify')
 
 require('dotenv').config()
 
-
 function filterTracks(tracks) {
   return tracks.map((track) => {
     return {id: track.id, name: track.name}
@@ -21,6 +20,7 @@ function filterArtists(artists, searchStr) {
     }
   })
 }
+
 const url = 'https://api.spotify.com'
 
 var spotifyApi = new SpotifyWebApi({
@@ -30,39 +30,37 @@ var spotifyApi = new SpotifyWebApi({
 
 spotifyApi.clientCredentialsGrant()
   .then(function(data) {
-    token = data.body['access_token']
+     spotifyApi.setAccessToken(data.body['access_token'])
+})
 
-    router.get('/:artistId/toptracks', (req, res) => {
-      request
-        .get(`${url}/v1/artists/${req.params.artistId}/top-tracks?country=NZ`)
-        .set('Authorization', `Bearer ${token}`)
-        .set('Accept', 'application/json')
-        .end((error, response) => {
-          error ? res.send(error) : res.json(filterTracks(response.body.tracks))
-        })
+router.get('/:artistId/toptracks', (req, res) => {
+  request
+    .get(`${url}/v1/artists/${req.params.artistId}/top-tracks?country=NZ`)
+    .set('Authorization', `Bearer ${spotifyApi.getAccessToken()}`)
+    .set('Accept', 'application/json')
+    .end((error, response) => {
+      error ? res.send(error) : res.json(filterTracks(response.body.tracks))
     })
+})
 
-    router.get('/:artistId', (req, res) => {
-      request
-        .get(`${url}/v1/artists/${req.params.artistId}`)
-        .set('Authorization', `Bearer ${token}`)
-        .set('Accept', 'application/json')
-        .end((error, response) => {
-          error ? res.send(error) : res.json(response.body)
-        })
+router.get('/:artistId', (req, res) => {
+  request
+    .get(`${url}/v1/artists/${req.params.artistId}`)
+    .set('Authorization', `Bearer ${spotifyApi.getAccessToken()}`)
+    .set('Accept', 'application/json')
+    .end((error, response) => {
+      error ? res.send(error) : res.json(response.body)
     })
+})
 
-    router.get('/search/:searchStr', (req, res) => {
-      request
-        .get(`${url}/v1/search?q=${req.params.searchStr}&type=artist`)
-        .set('Authorization', `Bearer ${token}`)
-        .set('Accept', 'application/json')
-        .end((error, response) => {
-          error ? res.send(error) : res.json(filterArtists(response.body.artists.items, req.params.searchStr))
-        })
+router.get('/search/:searchStr', (req, res) => {
+  request
+    .get(`${url}/v1/search?q=${req.params.searchStr}&type=artist`)
+    .set('Authorization', `Bearer ${spotifyApi.getAccessToken()}`)
+    .set('Accept', 'application/json')
+    .end((error, response) => {
+      error ? res.send(error) : res.json(filterArtists(response.body.artists.items, req.params.searchStr))
     })
-  })
-
-
+})
 
 module.exports = router

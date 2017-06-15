@@ -26,6 +26,16 @@ router.get('/:artistId', (req, res) => {
     })
 })
 
+router.get('/search/:searchStr', (req, res) => {
+  spotify.searchForArtist(req.params.searchStr)
+    .then(function(data) {
+      res.json(data.artists.items)
+    })
+    .catch(function (err) {
+      res.status(500).send(`Error: ${err}`)
+    })
+})
+
 module.exports = router
 
 
@@ -38,15 +48,3 @@ module.exports = router
     //   }, function(err) {
     //     console.error(err);
     //   });
-
-    // Returns multiple artits?
-    // Do we need this?
-      // Get multiple artists
-  // spotifyApi.getArtists(['2hazSY4Ef3aB9ATXW7F5w3', '6J6yx1t3nwIDyPXk5xa7O8'])
-  //   .then(function(data) {
-  //     console.log('Artists information', data.body);
-  //   }, function(err) {
-  //     console.error(err);
-  //   });
-
-  // Returns top 10 tracks by an artist

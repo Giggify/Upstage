@@ -1,8 +1,6 @@
 const config = require('../../knexfile')[process.env.NODE_ENV || 'development']
 const knex = require('knex')(config)
 
-const crypto = require('./crypto')
-
 module.exports = {
   create,
   exists,
@@ -10,8 +8,8 @@ module.exports = {
   getByName,
 }
 
-function create (username, password, testDb) {
-  const hash = crypto.getHash(password)
+function create (username, password, testDb) { // insert spotify_id, username, image, access/refresh tokens here
+  const hash = crypto.hashPassword(password)
   const connection = testDb || knex
 
   return connection('users')

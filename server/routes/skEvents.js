@@ -11,8 +11,9 @@ router.get('/:locationID', (req,res) => {
       res.status(500).send(err.message)
     }
     else {
+      console.log({result: result.body.resultsPage.results});
       let searchResults = result.body.resultsPage.results.event
-
+      console.log({searchResults});
       let events = searchResults.map((result)=> {
           return (
             {

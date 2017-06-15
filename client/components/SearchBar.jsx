@@ -1,9 +1,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import {AutoComplete} from 'material-ui'
+import {TextField} from 'material-ui'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin();
+import { Debounce } from 'react-throttle';
 
 import {fetchLocations} from '../actions/locations'
 
@@ -11,22 +12,18 @@ import SearchResults from './SearchResults'
 
 class SearchBar extends React.Component{
   state={
-    searchText:'',
+    value:'',
   }
 
-  handleUpdateInput = (searchText) => {
+  handleUpdateInput = (event) => {
     this.setState({
-      searchText: searchText,
-    });
-    this.props.dispatch(fetchLocations(searchText))
-  };
-
-  handleNewRequest = () => {
-    this.setState({
-      searchText: '',
+      value: event.target.value,
     });
   };
 
+  handleClick = () => {
+    this.props.dispatch(fetchLocations(this.state.value))
+  }
   handleSelect = (id) => {
     console.log(id)
   }
@@ -37,20 +34,19 @@ class SearchBar extends React.Component{
     if (this.props.searchResults) {
         searchResults=this.props.searchResults
       }
-
     console.log(searchResults)
 
     return (
     <MuiThemeProvider>
       <div className='search-bar'>
-        <AutoComplete
-          hintText="Search for a city..."
-          searchText={this.state.searchText}
-          onUpdateInput={this.handleUpdateInput}
-          dataSource={[]}
-          filter={(searchText, key) => (key.indexOf(searchText) !== -1)}
-          openOnFocus={true}
+        <TextField
+          id='text-field-controlled'
+          hintText="city name"
+          floatingLabelText="Search for a city..."
+          value={this.state.value}
+          onChange={this.handleUpdateInput}
         />
+        <button onClick={()=>this.handleClick()}> search </button>
         <div className='search-results'>
           {searchResults!=[] &&
             <div>

@@ -29,7 +29,7 @@ router.get('/:artistId', (req, res) => {
 router.get('/search/:searchStr', (req, res) => {
   spotify.searchForArtist(req.params.searchStr)
     .then(function(data) {
-      res.json(data.artists.items)
+      res.json(data)
     })
     .catch(function (err) {
       res.status(500).send(`Error: ${err}`)
@@ -37,14 +37,3 @@ router.get('/search/:searchStr', (req, res) => {
 })
 
 module.exports = router
-
-
-    // Runs a search on a str.
-    //Need to filter and get an EXACT match in data.body.artists[i].name
-    // And return ID
-    // spotifyApi.searchArtists('Oasis')
-    //   .then(function(data) {
-    //     console.log('Search artists by "Oasis"', data.body.artists);
-    //   }, function(err) {
-    //     console.error(err);
-    //   });

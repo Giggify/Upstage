@@ -37,10 +37,11 @@ function getArtist(artistId) {
   })
 }
 
+// Might need more work around artists with more than one word
 function searchForArtist(searchStr) {
   return spotifyApi.searchArtists(searchStr)
     .then(function(result) {
-      return result.body
+      return filterArtists (result.body.artists.items, searchStr)
     }, function(err) {
       return err
   })
@@ -52,8 +53,10 @@ function filterTracks(tracks) {
   })
 }
 
-function filterArtists(artists) {
-  return artists.map((artist) => {
-    console.log(artist);
+function filterArtists(artists, searchStr) {
+  return artists.filter((artist) => {
+    if (artist.name.toLowerCase() == searchStr.toLowerCase()) {
+      return artist
+    }
   })
 }

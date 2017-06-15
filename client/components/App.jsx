@@ -3,6 +3,7 @@ import {HashRouter as Router, Route} from 'react-router-dom'
 
 import Header from './Header'
 import Homepage from '../container/Homepage'
+import DatePicker from './DatePicker'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -18,6 +19,7 @@ export default class App extends React.Component {
         <div className="app-container">
           <Header />
           <Homepage />
+          <DatePicker />
         </div>
       </Router>
     )

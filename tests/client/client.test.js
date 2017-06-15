@@ -8,13 +8,14 @@ import App from '../../client/components/App'
 
 test('faking passing test', t=>{
   t.pass()
+})
 // App.prototype.componentDidMount = () => {
 //
 // }
 
-test("testing that I can use Sinon", function() {
-    var callback = sinon.stub().returns(215)
-    var proxy = once(callback)
-
-    assert.equals(proxy(), 215)
-})
+// test.skip("testing that I can use Sinon", function() {
+//     var callback = sinon.stub().returns(215)
+//     var proxy = once(callback)
+//
+//     assert.equals(proxy(), 215)
+// })

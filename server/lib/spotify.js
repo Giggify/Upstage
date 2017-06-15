@@ -19,6 +19,7 @@ spotifyApi.clientCredentialsGrant()
     console.log('Something went wrong!', err)
   })
 
+
 function getTopTracks(artistId, locationCode) {
   return spotifyApi.getArtistTopTracks(artistId, locationCode)
     .then(function(result) {

@@ -10,7 +10,7 @@ const usersDb = './db/users'
 const skEventSearch = require('./routes/skEvents')
 const skGetAreaID = require('./routes/skMetro')
 const index = require('./routes/index')
-
+const spotify = require('./routes/spotify')
 
 const app = express()
 
@@ -26,8 +26,6 @@ passport(app)
 app.use('/api/v1/events', skEventSearch)
 app.use('/api/v1/metros', skGetAreaID)
 app.use('/', index)
+app.use('/api/v1/spotify', spotify)
 
-module.exports = (connection) => {
-  app.set('connection', connection)
-  return app
-}
+module.exports = app

@@ -34,3 +34,9 @@ body{
 #search-result-item:hover{
   background-color: #BADA55;
 }
+
+.datepicker {
+  margin-left: 40%;
+  margin-right: 40%;
+
+}

@@ -9,6 +9,12 @@ const optionsStyle = {
   marginRight: 'auto',
 };
 
+const styles = {
+    floatingLabelStyle: {
+        color: orange400
+    }
+}
+
 const muiTheme = getMuiTheme({
  fontFamily: 'Roboto, sans-serif',
  palette: {
@@ -18,7 +24,7 @@ const muiTheme = getMuiTheme({
    accent1Color: grey400,
    accent2Color: grey400,
    accent3Color: grey700,
-   labelColor: orange300,
+   hintColor: orange400,
    textColor: grey50,
    alternateTextColor: grey700,
    canvasColor: grey900,
@@ -63,16 +69,18 @@ export default class DatePickerExampleToggle extends React.Component {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
       <div>
-        <div style={optionsStyle}>
+        <div style={optionsStyle} className="datepicker">
           <DatePicker
             onChange={this.handleChangeMinDate}
-            floatingLabelText="Start Date"
+            floatingLabelText="Find Concerts From"
             defaultDate={this.state.minDate}
+            floatingLabelStyle={styles.floatingLabelStyle}
           />
           <DatePicker
             onChange={this.handleChangeMaxDate}
-            floatingLabelText="End Date"
+            floatingLabelText="Until"
             defaultDate={this.state.maxDate}
+            floatingLabelStyle={styles.floatingLabelStyle}
           />
         </div>
       </div>

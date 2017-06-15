@@ -13,3 +13,4 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('app')
   )
 })
+request.get('/test').then((res) => console.log(res.text))

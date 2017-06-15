@@ -1,7 +1,7 @@
 
 exports.up = function(knex, Promise) {
     return knex.schema.createTable('playlist', function (table){
-        table.string('id').primary()
+        table.string('id').notNullable().primary()
         table.timestamp('created_at').defaultTo(knex.fn.now())
         table.string('users_id')
         .references('id')

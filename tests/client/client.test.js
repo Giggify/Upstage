@@ -5,17 +5,7 @@ import * as sinon from 'sinon'
 
 import './helpers/setup-dom'
 import App from '../../client/components/App'
-
+//
 test('faking passing test', t=>{
   t.pass()
 })
-// App.prototype.componentDidMount = () => {
-//
-// }
-
-// test.skip("testing that I can use Sinon", function() {
-//     var callback = sinon.stub().returns(215)
-//     var proxy = once(callback)
-//
-//     assert.equals(proxy(), 215)
-// })

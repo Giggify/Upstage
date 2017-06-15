@@ -7,7 +7,10 @@ const users = require('./users')
 function createToken (user, secret) { // insert access/refresh token from spotify
   return jwt.sign({
     id: user.id,
-    username: user.username
+    username: user.username,
+    image: user.image,
+    accessToken : user.accessToken,
+    refreshToken : user.refreshToken
   }, secret, {
     expiresIn: 60 * 60 * 24
   })

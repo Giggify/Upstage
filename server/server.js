@@ -1,7 +1,8 @@
 const path = require('path')
 const express = require('express')
-var passport = require('./passport')
+const passport = require('./passport')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 const auth = require('./lib/auth')
 const api = require('./routes/index')
 const usersDb = './db/users'
@@ -13,6 +14,9 @@ const index = require('./routes/index')
 
 const app = express()
 
+app.set('JWT_SECRET', process.env.JWT_SECRET)
+
+app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, '../public')))
 

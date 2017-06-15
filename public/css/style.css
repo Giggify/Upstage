@@ -18,3 +18,17 @@ body{
   background-color:white;
   border: 0.1em solid gray;
 }
+
+.search-results{
+  height:50%;
+  /* not working lol need to be modified */
+}
+
+#search-result-item{
+  font-size: 2em;
+  margin: 0.1em
+}
+
+#search-result-item:hover{
+  background-color: #BADA55;
+}

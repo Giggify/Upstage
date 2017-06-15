@@ -7,7 +7,6 @@ export function fetchLocationsRequest(){
 }
 
 export function fetchLocationsFailure(err){
-  alert(err);
   return{
     type:'FETCH_LOCATIONS_FAILURE',
     err

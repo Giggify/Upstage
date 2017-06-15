@@ -1,10 +1,10 @@
-| Task          | Method        |
-| ------------- |:-------------:|
-| Get Artist Info | GET|
-| Get several artists|  GET  |
-| Get an Artist’s Top Tracks |  GET   |
-| Get a User’s Profile|  GET   |
-| Get a User’s Profile |  POST   |
+| Task          | Method        | Auth required |
+| ------------- |:-------------:|---------------|
+| Get Artist Info | GET| yes, our API key |
+| Get several artists|  GET  |yes, our API key  |
+| Get an Artist’s Top Tracks |  GET   |yes, our API key  |
+| Get a User’s Profile|  GET   |yes, our API key  |
+| Create a playlist|  POST   |yes, user's token |
 
 
 # Requests

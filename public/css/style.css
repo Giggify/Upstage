@@ -1,6 +1,8 @@
 body{
   text-align: center;
   font-family: 'Roboto', sans-serif;
+  background-color: #0E0E0E;
+  color: #FF6900;
 }
 
 .search-bar input,button{
@@ -31,4 +33,10 @@ body{
 
 #search-result-item:hover{
   background-color: #BADA55;
+}
+
+.datepicker {
+  margin-left: 40%;
+  margin-right: 40%;
+
 }

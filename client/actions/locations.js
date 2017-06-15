@@ -7,7 +7,7 @@ export function fetchLocationsRequest(){
 }
 
 export function fetchLocationsFailure(err){
-  console.log(err);
+  alert(err);
   return{
     type:'FETCH_LOCATIONS_FAILURE',
     err
@@ -22,18 +22,16 @@ export function fetchLocationsSuccess(res){
   }
 }
 
-export function fetchLocations(query){
+export function fetchLocations(cityname){
   return (dispatch) => {
     dispatch(fetchLocationsRequest())
     request
-      .get(`http://www.reddit.com/r/${query}.json`)
+      .get(`/api/v1/metros/city/${cityname}`)
       .end((err, res)=>{
         if (err) {
           dispatch((fetchLocationsFailure(err)))
         } else {
-          let results=(res.body.data.children)
-          let result=results.map((each)=>each.data.author)
-          dispatch((fetchLocationsSuccess(result)))
+          dispatch((fetchLocationsSuccess(res.body)))
         }
       })
   }

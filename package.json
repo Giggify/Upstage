@@ -9,6 +9,7 @@
     "dev": "nodemon --watch server server/index & webpack --watch",
     "start": "node server/index",
     "test": "nyc ava -v 'tests/**/*.test.js'",
+    "test-page":"ava -v 'tests/client/components/*.test.js'",
     "watch": "nodemon -e js,jsx -x npm test",
     "h:deploy": "git push heroku master",
     "h:migrate": "heroku run knex migrate:latest",

@@ -3,7 +3,7 @@ import {HashRouter as Router, Route} from 'react-router-dom'
 
 import Header from './Header'
 import Homepage from '../container/Homepage'
-import DatePicker from './DatePicker'
+import EventsList from './EventsList'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -18,8 +18,8 @@ export default class App extends React.Component {
       <Router>
         <div className="app-container">
           <Header />
-          <Homepage />
-          <DatePicker />
+          <Route exact path='/' component={Homepage} />
+          <Route path='/events' component={EventsList} />
         </div>
       </Router>
     )

@@ -7,8 +7,7 @@ injectTapEventPlugin();
 import { Debounce } from 'react-throttle';
 
 import {fetchLocations} from '../actions/locations'
-
-import SearchResults from './SearchResults'
+import {fetchEvents} from '../actions/events'
 
 class SearchBar extends React.Component{
   state={
@@ -24,8 +23,11 @@ class SearchBar extends React.Component{
   handleClick = () => {
     this.props.dispatch(fetchLocations(this.state.value))
   }
-  handleSelect = (id) => {
-    console.log(id)
+  handleSelect = (result) => {
+    this.setState({
+      value:`${result.name}`,
+      locationID:result.id
+    })
   }
 
   render(){
@@ -34,7 +36,6 @@ class SearchBar extends React.Component{
     if (this.props.searchResults) {
         searchResults=this.props.searchResults
       }
-    console.log(searchResults)
 
     return (
     <MuiThemeProvider>
@@ -46,12 +47,12 @@ class SearchBar extends React.Component{
           value={this.state.value}
           onChange={this.handleUpdateInput}
         />
-        <button onClick={()=>this.handleClick()}> search </button>
+      <button id='search-button' onClick={()=>this.handleClick()}> search </button>
         <div className='search-results'>
           {searchResults!=[] &&
             <div>
               {searchResults.map((result,index)=>{return(
-                <div id="search-result-item" key={index} onClick={()=>this.handleSelect(result.id)}>
+                <div id="search-result-item" key={index} onClick={()=>this.handleSelect(result)}>
                   {result.name} {result.state} {result.country}
                 </div>
                 )})

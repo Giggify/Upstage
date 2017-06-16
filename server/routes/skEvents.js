@@ -28,16 +28,6 @@ router.get('/open',
   }
 )
 
-// Protect all routes beneath this point
-router.use(
-  verifyJwt({
-    getToken: auth.getToken,
-    secret: auth.getSecret
-  }),
-  auth.handleError
-)
-
-
 router.get('/:locationID', (req,res) => {
   request
   .get(`http://api.songkick.com/api/3.0/metro_areas/${req.params.locationID}/calendar.json?apikey=${process.env.SONGKICK_API}`)
@@ -69,5 +59,17 @@ router.get('/:locationID', (req,res) => {
     }
   })
 })
+
+// Protect all routes beneath this point
+router.use(
+  verifyJwt({
+    getToken: auth.getToken,
+    secret: auth.getSecret
+  }),
+  auth.handleError
+)
+
+
+
 
 module.exports = router

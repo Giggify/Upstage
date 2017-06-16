@@ -13,16 +13,7 @@ require('dotenv').config()
 
 const url = 'https://api.spotify.com'
 
-// Protect all routes beneath this point
-router.use(
-  verifyJwt({
-    getToken: auth.getToken,
-    secret: auth.getSecret
-  }),
-  auth.handleError
-)
 
-// These routes are protected
 
 router.get('/:artistId/toptracks', (req, res) => {
     request
@@ -63,5 +54,16 @@ router.get('/users/:id', (req, res) => {
       error ? res.status(500).send(error) : res.json(response.body)
     })
 })
+
+// Protect all routes beneath this point
+router.use(
+  verifyJwt({
+    getToken: auth.getToken,
+    secret: auth.getSecret
+  }),
+  auth.handleError
+)
+
+// These routes are protected
 
 module.exports = router

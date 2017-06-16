@@ -29,3 +29,5 @@ test.cb('API route /events/locationID returns a json', (t) => {
       t.end()
       })
     })
+
+nock.cleanAll();

@@ -4,13 +4,28 @@ const verifyJwt = require('express-jwt')
 const auth = require('../lib/auth')
 const router = express.Router()
 
-// Protect all routes beneath this point
-router.use(
+function getSecret (req, payload, done) {
+  done(null, req.app.get('JWT_SECRET'))
+}
+
+router.get('/test', (req, res) => {
+  res.send(req.user)
+})
+
+// This route will set the req.user object if it exists, but is still public
+router.get('/open',
   verifyJwt({
+    credentialsRequired: false,
     getToken: auth.getToken,
-    secret: auth.getSecret
+    secret: getSecret
   }),
-  auth.handleError
+  (req, res) => {
+    const json = { message: 'This route is public.' }
+    if (req.user) {
+      json.user = `Your user ID is: ${req.user.id}`
+    }
+    res.json(json)
+  }
 )
 
 router.get('/:locationID', (req,res) => {
@@ -44,5 +59,17 @@ router.get('/:locationID', (req,res) => {
     }
   })
 })
+
+// Protect all routes beneath this point
+router.use(
+  verifyJwt({
+    getToken: auth.getToken,
+    secret: auth.getSecret
+  }),
+  auth.handleError
+)
+
+
+
 
 module.exports = router

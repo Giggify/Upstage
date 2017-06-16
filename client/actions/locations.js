@@ -20,18 +20,16 @@ export function fetchLocationsSuccess(res){
   }
 }
 
-export function fetchLocations(query){
+export function fetchLocations(cityName){
   return (dispatch) => {
     dispatch(fetchLocationsRequest())
     request
-      .get(`http://www.reddit.com/r/${query}.json`)
+      .get(`/api/v1/metros/city/${cityName}`)
       .end((err, res)=>{
         if (err) {
           dispatch((fetchLocationsFailure(err)))
         } else {
-          let results=(res.body.data.children)
-          let result=results.map((each)=>each.data.author)
-          dispatch((fetchLocationsSuccess(result)))
+          dispatch((fetchLocationsSuccess(res.body)))
         }
       })
   }

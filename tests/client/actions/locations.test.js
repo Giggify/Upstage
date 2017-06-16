@@ -14,9 +14,9 @@ test('fetchLocationsRequest creates an action to indicate fetching', t => {
 test('fetchLocationsFailure creates an action and sends err', t => {
   const expectedAction = {
     type: 'FETCH_LOCATIONS_FAILURE',
-    err:'shiet'
+    err:'failure'
   }
-  const actual=actions.fetchLocationsFailure('shiet')
+  const actual=actions.fetchLocationsFailure('failure')
   t.deepEqual(actual,expectedAction)
 })
 

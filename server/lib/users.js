@@ -8,22 +8,18 @@ module.exports = {
   getByName,
 }
 
-function create (username, password, testDb) { // insert spotify_id, username, image, access/refresh tokens here
-  const hash = crypto.hashPassword(password)
+function create (user, testDb) { // insert spotify_id, username, image, access/refresh tokens here
   const connection = testDb || knex
 
   return connection('users')
-    .insert({
-      username: username,
-      hash: hash
-    })
+    .insert(user)
 }
 
-function exists (username, testDb) {
+function exists (id, testDb) {
   const connection = testDb || knex
   return connection('users')
     .count('id as n')
-    .where('username', username)
+    .where('id', id)
     .then(count => {
       return count[0].n > 0
     })
@@ -32,7 +28,6 @@ function exists (username, testDb) {
 function getById (id, testDb) {
   const connection = testDb || knex
   return connection('users')
-    .select('id', 'username')
     .where('id', id)
 }
 

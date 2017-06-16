@@ -17,8 +17,8 @@ test('reducer should handle FETCH_LOCATIONS_REQUEST by adding loading to store',
 })
 
 test('reducer should handle FETCH_LOCATIONS_FAILURE by adding error to store', t=>{
-  const expectedState = {fetching:false,err:'shiet'}
-  const actual=location({},actions.fetchLocationsFailure('shiet'))
+  const expectedState = {fetching:false,err:'failure'}
+  const actual=location({},actions.fetchLocationsFailure('failure'))
   t.deepEqual(actual,expectedState)
 })
 

@@ -4,7 +4,6 @@ require('dotenv').config()
 var environment = process.env.NODE_ENV || 'development'
 var dbConfig = require('../knexfile')[environment]
 var connection = require('knex')(dbConfig)
-var spotifyConnection = require('./lib/spotifyConnection')
 
 app.set('db', connection)
 

@@ -31,13 +31,13 @@ router.get('/open',
 )
 
 // Protect all routes beneath this point
-router.use(
-  verifyJwt({
-    getToken: auth.getToken,
-    secret: getSecret
-  }),
-  auth.handleError
-)
+// router.use(
+//   verifyJwt({
+//     getToken: auth.getToken,
+//     secret: getSecret
+//   }),
+//   auth.handleError
+// )
 
 // These routes are protected
 router.get('/closed', (req, res) => {

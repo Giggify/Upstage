@@ -3,6 +3,7 @@ import {HashRouter as Router, Route} from 'react-router-dom'
 
 import Header from './Header'
 import Homepage from '../container/Homepage'
+import NavBar from './NavBar'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ export default class App extends React.Component {
       <Router>
         <div className="app-container">
           <Header />
+          <Route exact={true} path='/' component={ NavBar }/>
           <Homepage />
         </div>
       </Router>

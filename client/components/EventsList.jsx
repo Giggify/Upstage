@@ -1,8 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-class EventsList extends React.Component{
-  render(){
+
+class EventsList extends React.Component {
+  render() {
     return <div> Hello </div>
   }
 }

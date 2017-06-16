@@ -31,6 +31,8 @@ class SearchBar extends React.Component{
       showResults:false,
     })
     this.props.dispatch(saveLocationId(result.id))
+    this.props.dispatch((fetchEvents(result.id)))
+
   }
 
   render(){

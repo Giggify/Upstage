@@ -28,15 +28,10 @@ var spotifyApi = new SpotifyWebApi({
   clientSecret : process.env.SPOTIFY_SECRET
 })
 
-spotifyApi.clientCredentialsGrant()
-  .then(function(data) {
-     spotifyApi.setAccessToken(data.body['access_token'])
-})
-
 router.get('/:artistId/toptracks', (req, res) => {
   request
     .get(`${url}/v1/artists/${req.params.artistId}/top-tracks?country=NZ`)
-    .set('Authorization', `Bearer ${spotifyApi.getAccessToken()}`)
+    .set('Authorization', `Bearer ${req.app.get('accessTokenFunction')()}`)
     .set('Accept', 'application/json')
     .end((error, response) => {
       error ? res.send(error) : res.json(filterTracks(response.body.tracks))

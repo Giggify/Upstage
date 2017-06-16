@@ -36,7 +36,6 @@ class SearchBar extends React.Component{
     if (this.props.searchResults) {
         searchResults=this.props.searchResults
       }
-
     return (
     <MuiThemeProvider>
       <div className='search-bar'>

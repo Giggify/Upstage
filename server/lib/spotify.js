@@ -12,11 +12,15 @@ var spotifyApi = new SpotifyWebApi({
   clientSecret : process.env.SPOTIFY_SECRET
 })
 
-function setConnection() {
-  return spotifyApi.clientCredentialsGrant()
-    .then(function(data) {
-       spotifyApi.setAccessToken(data.body['access_token'])
-  })
+function setConnection(isTest) {
+  if(!isTest) {
+    return spotifyApi.clientCredentialsGrant()
+      .then(function(data) {
+        spotifyApi.setAccessToken(data.body['access_token'])
+    })
+  } else {
+    return null
+  }
 }
 
 function getConnection(isTest) {
@@ -36,12 +40,3 @@ function filterArtists(artists, searchStr) {
     }
   })
 }
-
-
-// spotifyAccessToken() {
-//   spotifyApi.clientCredentialsGrant()
-//     .then(function(data) {
-//        spotifyApi.setAccessToken(data.body['access_token'])
-//   })
-//   spotifyApi.getAccessToken()
-// }

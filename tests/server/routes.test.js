@@ -5,8 +5,11 @@ import nock from 'nock'
 require('dotenv').config()
 
 const app = require('../../server/server')
+const spotify = require('../../server/lib/spotify')
 
 const isTest = true
+
+spotify.setConnection(isTest)
 
 test.cb('check top tracks route', t => {
  const tracksObj = {

@@ -35,7 +35,6 @@ test.cb('API route /city/cityName returns a location ID json', (t) => {
     .expect(200)
     .then((res) => {
       scope.done()
-      console.log(res.body);
       t.true(res.body[0].hasOwnProperty('id'))
       t.end()
       })

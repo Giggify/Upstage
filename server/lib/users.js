@@ -28,7 +28,6 @@ function exists (id, testDb) {
 function getById (id, testDb) {
   const connection = testDb || knex
   return connection('users')
-    .select('id', 'username')
     .where('id', id)
 }
 

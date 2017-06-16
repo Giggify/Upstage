@@ -18,6 +18,7 @@ export default class App extends React.Component {
       <Router>
         <div className="app-container">
           <Header />
+          <a href="/auth">Log in</a>
           <Homepage />
           <DatePicker />
         </div>

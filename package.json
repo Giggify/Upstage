@@ -68,6 +68,7 @@
     "cors": "^2.8.3",
     "dotenv": "^4.0.0",
     "express": "^4.14.0",
+    "express-jwt": "^5.3.0",
     "express-session": "^1.15.3",
     "jsonwebtoken": "^7.4.1",
     "knex": "^0.13.0",

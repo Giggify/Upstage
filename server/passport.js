@@ -17,13 +17,12 @@ module.exports = function(app) {
     },
 
     function(accessToken, refreshToken, profile, done) {
-            users.exists(profile.id, connection) //find or create
+           users.getById(profile.id, connection) //find or create
             .then(function(user){
                 if (user) {
                     return done(null, user)
                 } else {
                     let newUser = {id: profile.id, username: profile.displayName, email: profile._json.email, image: profile.photos[0], accessToken, refreshToken}
-                    console.log(newUser)
                     users.create(newUser, connection)
                     .then(function(res){
                         newUser.id = res[0]

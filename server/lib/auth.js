@@ -74,9 +74,15 @@ function verify (username, done) {
   })
 }
 
+function getSecret (req, payload, done) {
+  done(null, req.app.get('JWT_SECRET'))
+}
+
+
 module.exports = {
   handleError,
   issueJwt,
   verify,
-  getToken
+  getToken,
+  getSecret
 }

@@ -1,5 +1,7 @@
 var express = require('express')
 var request = require('superagent')
+const verifyJwt = require('express-jwt')
+const auth = require('../lib/auth')
 
 const router = express.Router()
 const spotify = require('../lib/spotify')
@@ -10,6 +12,17 @@ spotify.setConnection(testMode)
 require('dotenv').config()
 
 const url = 'https://api.spotify.com'
+
+// Protect all routes beneath this point
+router.use(
+  verifyJwt({
+    getToken: auth.getToken,
+    secret: auth.getSecret
+  }),
+  auth.handleError
+)
+
+// These routes are protected
 
 router.get('/:artistId/toptracks', (req, res) => {
     request

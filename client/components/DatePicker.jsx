@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import {orange400, orange300, orange800, grey50, grey100, grey300 ,grey400, grey700, grey900, blueGrey900} from 'material-ui/styles/colors'
 import DatePicker from 'material-ui/DatePicker'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -34,7 +35,7 @@ const muiTheme = getMuiTheme({
  },
 });
 
-export default class DatePickerExampleToggle extends React.Component {
+class DatePickerExampleToggle extends React.Component {
   constructor(props) {
     super(props);
 
@@ -88,3 +89,12 @@ export default class DatePickerExampleToggle extends React.Component {
     );
   }
 }
+
+const mapState2Props = (state)=>{
+  return {
+    minDate:state.minDate,
+    maxDate:state.maxDate
+  }
+}
+
+export default connect(mapState2Props)(DatePickerExampleToggle)

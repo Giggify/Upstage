@@ -23,9 +23,10 @@ app.use(express.static(path.join(__dirname, '../public')))
 passport(app)
 
 // routes here
+app.use('/', index)
 app.use('/api/v1/events', skEventSearch)
 app.use('/api/v1/metros', skGetAreaID)
-app.use('/', index)
 app.use('/api/v1/spotify', spotify)
+
 
 module.exports = app

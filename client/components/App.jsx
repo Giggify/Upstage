@@ -5,7 +5,6 @@ import Header from './Header'
 import Homepage from '../container/Homepage'
 import NavBar from './NavBar'
 import EventsList from './EventsList'
-import DatePicker from './DatePicker'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -20,14 +19,11 @@ export default class App extends React.Component {
       <Router>
         <div className="app-container">
           <Header />
-          <EventsList />
+          <a href="/auth">Log in</a>
+          <Route exact path='/search' component={Homepage} />
+          <Route exact path='/events/:id' component={EventsList} />
         </div>
       </Router>
     )
   }
 }
-
-
-{/* <a href="/auth">Log in</a>
-<Homepage />
-</div> */}

@@ -2,15 +2,38 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 class EventsList extends React.Component {
+  constructor({events,users,artists,dispatch}) {
+    super({events,users,artists,dispatch})
+    this.state = {
+      selectedArtists: [], // push to this when they select an artist
+      validEvents: [], // this will be the end target of the filter, showing only events
+      //within the date range.
+      events,
+      users,
+      artists,
+      dispatch
+    }
+  }
+  componentWillReceiveProps({events,users,artists}) {
+    this.setState({
+      events,
+      users,
+      artists
+    })
+  }
   render() {
-    return <div> Hello </div>
+    console.log(this.props)
+    return <div>
+      <p></p>
+    </div>
   }
 }
 
 const mapState2Props = (state) => {
-  console.log(state.users)
   return {
-    user:state.users
+    users:state.users,
+    events: state.events,
+    artists: state.artists,
   }
 }
 

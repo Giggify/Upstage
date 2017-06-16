@@ -20,10 +20,14 @@ export default class App extends React.Component {
       <Router>
         <div className="app-container">
           <Header />
-          <a href="/auth">Log in</a>
-          <Homepage />
+          <EventsList />
         </div>
       </Router>
     )
   }
 }
+
+
+{/* <a href="/auth">Log in</a>
+<Homepage />
+</div> */}

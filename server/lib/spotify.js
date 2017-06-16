@@ -1,10 +1,10 @@
 var SpotifyWebApi = require('spotify-web-api-node');
-require('dotenv').config()
 
 module.exports = {
-  getTopTracks,
-  getArtist,
-  searchForArtist
+  setConnection,
+  getConnection,
+  filterTracks,
+  filterArtists
 }
 
 var spotifyApi = new SpotifyWebApi({
@@ -12,40 +12,15 @@ var spotifyApi = new SpotifyWebApi({
   clientSecret : process.env.SPOTIFY_SECRET
 })
 
-spotifyApi.clientCredentialsGrant()
-  .then(function(data) {
-    spotifyApi.setAccessToken(data.body['access_token'])
-  }, function(err) {
-    console.log('Something went wrong!', err)
-  })
-
-
-function getTopTracks(artistId, locationCode) {
-  return spotifyApi.getArtistTopTracks(artistId, locationCode)
-    .then(function(result) {
-      return filterTracks(result.body.tracks)
-    }, function(err) {
-      return err
+function setConnection() {
+  return spotifyApi.clientCredentialsGrant()
+    .then(function(data) {
+       spotifyApi.setAccessToken(data.body['access_token'])
   })
 }
 
-function getArtist(artistId) {
-  return spotifyApi.getArtist(artistId)
-    .then(function(result) {
-      return result.body
-    }, function(err) {
-      return err
-  })
-}
-
-// Might need more work around artists with more than one word
-function searchForArtist(searchStr) {
-  return spotifyApi.searchArtists(searchStr)
-    .then(function(result) {
-      return filterArtists (result.body.artists.items, searchStr)
-    }, function(err) {
-      return err
-  })
+function getConnection(isTest) {
+  return isTest ? 'iAm4pr3t3ndt0k3N' : spotifyApi.getAccessToken()
 }
 
 function filterTracks(tracks) {
@@ -61,3 +36,12 @@ function filterArtists(artists, searchStr) {
     }
   })
 }
+
+
+// spotifyAccessToken() {
+//   spotifyApi.clientCredentialsGrant()
+//     .then(function(data) {
+//        spotifyApi.setAccessToken(data.body['access_token'])
+//   })
+//   spotifyApi.getAccessToken()
+// }

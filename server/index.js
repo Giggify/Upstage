@@ -4,10 +4,9 @@ require('dotenv').config()
 var environment = process.env.NODE_ENV || 'development'
 var dbConfig = require('../knexfile')[environment]
 var connection = require('knex')(dbConfig)
-var connection = require('./lib/spotifyConnection')
+var spotifyConnection = require('./lib/spotifyConnection')
 
 app.set('db', connection)
-app.set('spotifyConnection', spotifyConnection)
 
 var PORT = process.env.PORT || 3000
 app.listen(PORT, function () {

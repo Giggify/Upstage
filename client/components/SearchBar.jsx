@@ -7,15 +7,18 @@ injectTapEventPlugin();
 
 import {fetchLocations} from '../actions/locations'
 import {fetchEvents} from '../actions/events'
+import {saveLocationId} from '../actions/users'
 
 class SearchBar extends React.Component{
   state={
     value:'',
+    showResults:true
   }
 
   handleUpdateInput = (event) => {
     this.setState({
       value: event.target.value,
+      showResults:true
     });
   };
 
@@ -24,9 +27,10 @@ class SearchBar extends React.Component{
   }
   handleSelect = (result) => {
     this.setState({
-      value:`${result.name}`,
-      locationID:result.id
+      value:`${result.name} ${result.state} ${result.country}`,
+      showResults:false,
     })
+    this.props.dispatch(saveLocationId(result.id))
   }
 
   render(){
@@ -35,7 +39,6 @@ class SearchBar extends React.Component{
     if (this.props.searchResults) {
         searchResults=this.props.searchResults
       }
-
     return (
     <MuiThemeProvider>
       <div className='search-bar'>
@@ -48,9 +51,9 @@ class SearchBar extends React.Component{
         />
       <button id='search-button' onClick={()=>this.handleClick()}> search </button>
         <div className='search-results'>
-          {searchResults!=[] &&
+          {searchResults!=[] && this.state.showResults &&
             <div>
-              {searchResults.map((result,index)=>{return(
+                {searchResults.map((result,index)=>{return(
                 <div id="search-result-item" key={index} onClick={()=>this.handleSelect(result)}>
                   {result.name} {result.state} {result.country}
                 </div>

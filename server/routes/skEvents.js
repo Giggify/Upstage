@@ -11,8 +11,9 @@ router.get('/:locationID', (req,res) => {
       res.status(500).send(err.message)
     }
     else {
+      console.log({result: result.body.resultsPage.results});
       let searchResults = result.body.resultsPage.results.event
-
+      console.log({searchResults});
       let events = searchResults.map((result)=> {
           return (
             {
@@ -21,10 +22,10 @@ router.get('/:locationID', (req,res) => {
               lat: result.location.lat || "NA",
               long: result.location.lng || "NA",
               artists: result.performance.map(performer => performer.artist.displayName) || "NA",
-              date: result.start.date,
-              time: result.start.time
               // if we only want headline artists then this becomes:
               // artists: result.performance[0].artist.displayName
+              date: result.start.date || "NA",
+              time: result.start.time || "NA"
             }
           )
         })

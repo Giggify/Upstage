@@ -4,7 +4,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {TextField} from 'material-ui'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin();
-import { Debounce } from 'react-throttle';
 
 import {fetchLocations} from '../actions/locations'
 import {fetchEvents} from '../actions/events'

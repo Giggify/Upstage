@@ -34,7 +34,7 @@ const muiTheme = getMuiTheme({
  },
 });
 
-export default class DatePickerExampleToggle extends React.Component {
+class DatePickerExampleToggle extends React.Component {
   constructor(props) {
     super(props);
 
@@ -88,3 +88,12 @@ export default class DatePickerExampleToggle extends React.Component {
     );
   }
 }
+
+const mapState2Props = (state)=>{
+  return {
+    minDate:state.minDate,
+    maxDate:state.maxDate
+  }
+}
+
+export default connect(mapState2Props)(DatePickerExampleToggle)

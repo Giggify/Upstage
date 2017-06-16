@@ -1,8 +1,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-class EventsList extends React.= (props)=>{
-  return <div> Hello </div>
+class EventsList extends React.Component {
+  render() {
+    return <div> Hello </div>
+  }
 }
 
 const mapState2Props = (state) => {

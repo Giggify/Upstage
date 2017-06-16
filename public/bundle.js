@@ -15800,7 +15800,14 @@ var DatePickerExampleToggle = function (_React$Component) {
   return DatePickerExampleToggle;
 }(_react2.default.Component);
 
-exports.default = DatePickerExampleToggle;
+var mapState2Props = function mapState2Props(state) {
+  return {
+    minDate: state.minDate,
+    maxDate: state.maxDate
+  };
+};
+
+exports.default = connect(mapState2Props)(DatePickerExampleToggle);
 
 /***/ }),
 /* 155 */

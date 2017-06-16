@@ -11,39 +11,14 @@ const session = expressSession({
   secret: process.env.SESSION_SECRET
 })
 
-function getSecret (req, payload, done) {
-  console.log("get Secret")
-  done(null, req.app.get('JWT_SECRET'))
-}
-
 router.get('/', (req, res) => {
 })
 
-router.get('/test', (req, res) => {
-    res.send(req.cookies.token)
-})
-
-router.get('/open',
-  verifyJwt({
-    credentialsRequired: false,
-    getToken: auth.getToken,
-    secret: getSecret
-  }),
-  (req, res) => {
-    const json = { message: 'This route is public.' }
-    if (req.user) {
-      console.log(req.user)
-      json.user = `Your user ID is: ${req.user.id}`
-    }
-    res.json(json)
-  }
-)
-// router.get('/auth/twitter', session, passport.authenticate('twitter'))
-// router.get('/auth/twitter/callback', session, auth.issueJwt)
 router.get('/auth', session,
   passport.authenticate(
     'spotify',
-    {scope: ['user-read-email', 'user-read-private'], showDialog: true}
+    {scope: ['user-read-email', 'user-read-private', 'playlist-modify-public', 'playlist-modify-private',
+     'user-top-read', 'playlist-read-private'], showDialog: true}
   ));
 
 router.get('/auth/callback', session, auth.issueJwt)

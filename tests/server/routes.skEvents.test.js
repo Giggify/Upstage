@@ -5,17 +5,27 @@ require('dotenv').config()
 
 var app = require('../../server/server')
 
-test.skip('API route /events/locationID returns a json', (t) => {
-    var scope = nock('http://localhost:3000')
-          .get('/api/v1/events/31455')
-          .reply(200, {name: "Hi, my name is"})
+
+test.cb('API route /events/locationID returns a json', (t) => {
+  const data = {
+    resultsPage: {
+      results: {
+        event: []
+      }
+    }
+  }
+    var scope = nock('http://api.songkick.com')
+          .get(`/api/3.0/metro_areas/31455/calendar.json?apikey=${process.env.SONGKICK_API}`)
+          .reply(200, data)
+
     request(app)
-    .get(scope)
+    .get('/api/v1/events/31455')
     .expect('Content-Type', /json/)
     .expect(200)
-    .end((err,res) => {
-      if(err) throw err
-      else(console.log(res.body))
+    .then((res) => {
+      scope.done()
+      t.true(res.body.hasOwnProperty('events'))
+      t.true(res.body.hasOwnProperty('artists'))
       t.end()
       })
     })

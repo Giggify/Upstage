@@ -14,7 +14,8 @@ router.get('/city/:cityName', (req,res) => {
       let citiesArray=result.body.resultsPage.results.location
       let city=[]
       if (citiesArray){
-        city=citiesArray.map((result)=>{return(
+        city=citiesArray.map((result)=>{
+          return(
           result.metroArea.state ?
           {
             id:result.metroArea.id,
@@ -44,7 +45,6 @@ router.get('/latlong/:latLong', (req,res) => {
       res.status(500).send(err.message)
     }
     else {
-      console.log(result.body);
       res.json(result.body.resultsPage.results)
     }
   })
@@ -58,7 +58,6 @@ router.get('/ip/:userIp', (req,res) => {
       res.status(500).send(err.message)
     }
     else {
-      console.log(result.body);
       res.json(result.body.resultsPage.results)
     }
   })

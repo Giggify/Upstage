@@ -1,6 +1,8 @@
 var express = require('express')
 var request = require('superagent')
 var SpotifyWebApi = require('spotify-web-api-node');
+const verifyJwt = require('express-jwt')
+const auth = require('../lib/auth')
 
 const router = express.Router()
 const spotify = require('../lib/spotify')
@@ -33,6 +35,17 @@ spotifyApi.clientCredentialsGrant()
      spotifyApi.setAccessToken(data.body['access_token'])
 })
 
+// Protect all routes beneath this point
+router.use(
+  verifyJwt({
+    getToken: auth.getToken,
+    secret: auth.getSecret
+  }),
+  auth.handleError
+)
+
+// These routes are protected
+
 router.get('/:artistId/toptracks', (req, res) => {
   request
     .get(`${url}/v1/artists/${req.params.artistId}/top-tracks?country=NZ`)
@@ -44,6 +57,8 @@ router.get('/:artistId/toptracks', (req, res) => {
 })
 
 router.get('/:artistId', (req, res) => {
+    console.log(req.user.id)
+    console.log(req.user.accessToken)
   request
     .get(`${url}/v1/artists/${req.params.artistId}`)
     .set('Authorization', `Bearer ${spotifyApi.getAccessToken()}`)
@@ -62,5 +77,7 @@ router.get('/search/:searchStr', (req, res) => {
       error ? res.send(error) : res.json(filterArtists(response.body.artists.items, req.params.searchStr))
     })
 })
+
+
 
 module.exports = router

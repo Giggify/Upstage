@@ -1,34 +1,32 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import {AutoComplete} from 'material-ui'
+import {TextField} from 'material-ui'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin();
 
 import {fetchLocations} from '../actions/locations'
-
-import SearchResults from './SearchResults'
+import {fetchEvents} from '../actions/events'
 
 class SearchBar extends React.Component{
   state={
-    searchText:'',
+    value:'',
   }
 
-  handleUpdateInput = (searchText) => {
+  handleUpdateInput = (event) => {
     this.setState({
-      searchText: searchText,
-    });
-    this.props.dispatch(fetchLocations(searchText))
-  };
-
-  handleNewRequest = () => {
-    this.setState({
-      searchText: '',
+      value: event.target.value,
     });
   };
 
-  handleSelect = (id) => {
-    console.log(id)
+  handleClick = () => {
+    this.props.dispatch(fetchLocations(this.state.value))
+  }
+  handleSelect = (result) => {
+    this.setState({
+      value:`${result.name}`,
+      locationID:result.id
+    })
   }
 
   render(){
@@ -38,24 +36,22 @@ class SearchBar extends React.Component{
         searchResults=this.props.searchResults
       }
 
-    console.log(searchResults)
-
     return (
     <MuiThemeProvider>
       <div className='search-bar'>
-        <AutoComplete
-          hintText="Search for a city..."
-          searchText={this.state.searchText}
-          onUpdateInput={this.handleUpdateInput}
-          dataSource={[]}
-          filter={(searchText, key) => (key.indexOf(searchText) !== -1)}
-          openOnFocus={true}
+        <TextField
+          id='text-field-controlled'
+          hintText="city name"
+          floatingLabelText="Search for a city..."
+          value={this.state.value}
+          onChange={this.handleUpdateInput}
         />
+      <button id='search-button' onClick={()=>this.handleClick()}> search </button>
         <div className='search-results'>
           {searchResults!=[] &&
             <div>
               {searchResults.map((result,index)=>{return(
-                <div id="search-result-item" key={index} onClick={()=>this.handleSelect(result.id)}>
+                <div id="search-result-item" key={index} onClick={()=>this.handleSelect(result)}>
                   {result.name} {result.state} {result.country}
                 </div>
                 )})

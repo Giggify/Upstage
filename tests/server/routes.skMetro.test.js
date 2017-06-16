@@ -39,3 +39,4 @@ test.cb('API route /city/cityName returns a location ID json', (t) => {
       t.end()
       })
     })
+nock.cleanAll();

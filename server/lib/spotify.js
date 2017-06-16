@@ -7,24 +7,31 @@ module.exports = {
   filterArtists
 }
 
+let isTest = false
+
 var spotifyApi = new SpotifyWebApi({
   clientId : process.env.SPOTIFY_ID,
   clientSecret : process.env.SPOTIFY_SECRET
 })
 
-function setConnection(isTest) {
-  if(!isTest) {
+
+function setConnection(testMode) {
+  if(!testMode) {
     return spotifyApi.clientCredentialsGrant()
       .then(function(data) {
         spotifyApi.setAccessToken(data.body['access_token'])
     })
   } else {
-    return null
+    isTest = true
   }
 }
 
-function getConnection(isTest) {
-  return isTest ? 'iAm4pr3t3ndt0k3N' : spotifyApi.getAccessToken()
+function getConnection() {
+  if(!isTest) {
+    return spotifyApi.getAccessToken()
+  } else {
+    return 'pretendtoken'
+  }
 }
 
 function filterTracks(tracks) {

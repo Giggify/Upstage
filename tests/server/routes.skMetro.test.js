@@ -14,9 +14,13 @@ test.cb('API route /city/cityName returns a location ID json', (t) => {
           {
             metroArea: {
               id: "id",
-              name: "nahm",
-              state: "state",
-              country: "country"
+              displayName: "nahm",
+              state: {
+                displayName: "state"
+              },
+              country: {
+                displayName: "country"
+              }
             }
           }
         ]
@@ -31,7 +35,8 @@ test.cb('API route /city/cityName returns a location ID json', (t) => {
     .expect(200)
     .then((res) => {
       scope.done()
-      t.true(res.body.hasOwnProperty('city'))
+      console.log(res.body);
+      t.true(res.body[0].hasOwnProperty('id'))
       t.end()
       })
     })

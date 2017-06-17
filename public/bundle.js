@@ -27723,10 +27723,6 @@ var _reactRedux = __webpack_require__(42);
 
 var _GridList = __webpack_require__(122);
 
-var _MuiThemeProvider = __webpack_require__(58);
-
-var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
-
 var _IconButton = __webpack_require__(39);
 
 var _IconButton2 = _interopRequireDefault(_IconButton);
@@ -27734,6 +27730,10 @@ var _IconButton2 = _interopRequireDefault(_IconButton);
 var _checkBox = __webpack_require__(134);
 
 var _checkBox2 = _interopRequireDefault(_checkBox);
+
+var _api = __webpack_require__(650);
+
+var _events = __webpack_require__(157);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27749,21 +27749,30 @@ var ArtistTile = function (_React$Component) {
   function ArtistTile(props) {
     _classCallCheck(this, ArtistTile);
 
+    var artists = props.artists;
+
     var _this = _possibleConstructorReturn(this, (ArtistTile.__proto__ || Object.getPrototypeOf(ArtistTile)).call(this, props));
 
     _this.state = {
-      artistdata: []
+      artists: artists,
+      artistID: ''
     };
     return _this;
   }
 
   _createClass(ArtistTile, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var artistID = (0, _api.getArtistId)(this.props.event.artists[0]);
+      this.setState({ artistID: artistID });
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
 
       var event = this.props.event || [];
-      var color = props.checkArtist(event.artists[0]);
+      var color = this.props.checkArtist(event.artists[0]);
       return _react2.default.createElement(
         _GridList.GridTile,
         {
@@ -27783,7 +27792,7 @@ var ArtistTile = function (_React$Component) {
             _IconButton2.default,
             null,
             _react2.default.createElement(_checkBox2.default, { color: color, onClick: function onClick(e) {
-                return _this2.props.handleClick(e, event.artists[0]);
+                return _this2.props.handleClick(e, event.artists[0], _this2.state.artistID);
               } })
           )
         },
@@ -27795,13 +27804,11 @@ var ArtistTile = function (_React$Component) {
   return ArtistTile;
 }(_react2.default.Component);
 
-// const mapState2Props = (state) => {
-//   return {
-//
-//   }
-// }
-//connect(mapState2Props)
-
+var mapState2Props = function mapState2Props(state) {
+  return {
+    artists: state.events.artists
+  };
+};
 
 exports.default = ArtistTile;
 
@@ -27979,17 +27986,9 @@ var _MuiThemeProvider = __webpack_require__(58);
 
 var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
 
-var _IconButton = __webpack_require__(39);
-
-var _IconButton2 = _interopRequireDefault(_IconButton);
-
 var _Subheader = __webpack_require__(128);
 
 var _Subheader2 = _interopRequireDefault(_Subheader);
-
-var _checkBox = __webpack_require__(134);
-
-var _checkBox2 = _interopRequireDefault(_checkBox);
 
 var _events = __webpack_require__(157);
 
@@ -28044,7 +28043,7 @@ var EventsList = function (_React$Component) {
 
     _this.state = {
       selectedArtists: [], // push to this when they select an artist
-      validEvents: [], // this will be the end target of the filter, showing only events
+      artistIDs: [], // this will be the end target of the filter, showing only events
       //within the date range.
       events: events,
       users: users,
@@ -28080,12 +28079,16 @@ var EventsList = function (_React$Component) {
     }
   }, {
     key: 'handleClick',
-    value: function handleClick(e, artist) {
+    value: function handleClick(e, artist, id) {
       e.preventDefault();
+      console.log(this.state.selectedArtists, this.state.artistIDs);
       var selArtists = this.state.selectedArtists;
+      var artIDs = this.state.artistIDs;
       var artistPresent = selArtists.indexOf(artist);
-      artistPresent == -1 ? this.setState({ selectedArtists: [].concat(_toConsumableArray(selArtists), [artist]) }) : this.setState({ selectedArtists: [].concat(_toConsumableArray(selArtists)).filter(function (name) {
+      artistPresent == -1 ? this.setState({ selectedArtists: [].concat(_toConsumableArray(selArtists), [artist]), artistIDs: [].concat(_toConsumableArray(artIDs), [id]) }) : this.setState({ selectedArtists: [].concat(_toConsumableArray(selArtists)).filter(function (name) {
           return name != artist;
+        }), artistIDs: [].concat(_toConsumableArray(artIDs)).filter(function (oldIDs) {
+          return oldIDs != id;
         }) });
     }
   }, {
@@ -28105,7 +28108,6 @@ var EventsList = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      console.log(this.state.selectedArtists);
       var artists = this.props.artists || [];
       var events = this.props.events || [];
       return _react2.default.createElement(
@@ -76468,6 +76470,55 @@ module.exports = function() {
 	throw new Error("define cannot be used indirect");
 };
 
+
+/***/ }),
+/* 650 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.createPlayist = createPlayist;
+exports.getArtistId = getArtistId;
+exports.getArtistTopTracks = getArtistTopTracks;
+exports.createTracklistArray = createTracklistArray;
+
+var _superagent = __webpack_require__(156);
+
+var _superagent2 = _interopRequireDefault(_superagent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function createPlayist(artists) {}
+
+function getArtistId(artistName) {
+  return new Promise(function (resolve, reject) {
+    _superagent2.default.get('/api/v1/spotify/search/' + artistName).end(function (err, res) {
+      return res.body[0].id;
+      resolve();
+    });
+  });
+}
+
+function getArtistTopTracks(artistId) {
+  _superagent2.default.get('/api/v1/spotify/artists/' + artistId + '/toptracks').end(function (err, res) {
+    return res.body;
+  });
+}
+
+function createTracklistArray(artistNamesArray) {
+
+  // return getArtistId().then((id) {
+  //   return id
+  // })
+  //
+
+  // return tracksArray
+
+}
 
 /***/ })
 /******/ ]);

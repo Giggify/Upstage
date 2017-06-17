@@ -5,12 +5,16 @@ export function createPlayist(artists) {
 }
 
 export function getArtistId(artistName) {
-  request
+  return new Promise(function(resolve, reject) {
+    request
     .get(`/api/v1/spotify/search/${artistName}`)
     .end((err, res) => {
       return res.body[0].id
+      resolve()
     })
+  })
 }
+
 
 export function getArtistTopTracks(artistId) {
   request

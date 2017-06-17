@@ -2,9 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {GridList} from 'material-ui/GridList';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import IconButton from 'material-ui/IconButton';
 import Subheader from 'material-ui/Subheader';
-import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 
 import {fetchEvents} from '../actions/events'
 
@@ -31,7 +29,7 @@ class EventsList extends React.Component {
     super(props)
     this.state = {
       selectedArtists: [], // push to this when they select an artist
-      validEvents: [], // this will be the end target of the filter, showing only events
+      artistIDs: [], // this will be the end target of the filter, showing only events
       //within the date range.
       events,
       users,
@@ -53,11 +51,14 @@ class EventsList extends React.Component {
       maxDate
     })
   }
-  handleClick(e,artist) {
+  handleClick(e,artist,id) {
     e.preventDefault()
+    console.log(this.state.selectedArtists,this.state.artistIDs);
     let selArtists= this.state.selectedArtists
+    let artIDs = this.state.artistIDs
     let artistPresent = selArtists.indexOf(artist)
-    artistPresent==-1 ? this.setState({selectedArtists: [...selArtists,artist]}) : this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist)})
+    artistPresent==-1 ? this.setState({selectedArtists: [...selArtists,artist], artistIDs: [...artIDs,id]}) :
+    this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist),artistIDs: [...artIDs].filter((oldIDs)=> oldIDs != id)})
   }
 
   checkArtistSelected(artist){
@@ -72,7 +73,6 @@ class EventsList extends React.Component {
   }
 
     render() {
-      console.log(this.state.selectedArtists)
       let artists = this.props.artists || []
       let events = this.props.events || []
     return (

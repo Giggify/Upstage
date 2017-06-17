@@ -42,7 +42,8 @@ body{
   height: 50px;
   margin: auto;
   padding: 5px;
-    font-family: 'Oleo Script';
+  font-family: 'Lato';
+  font-size: 20px;
 }
 .spotifylogo {
   height: 35px;

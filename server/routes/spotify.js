@@ -15,7 +15,7 @@ const url = 'https://api.spotify.com'
 
 
 
-router.get('/:artistId/toptracks', (req, res) => {
+router.get('/artists/:artistId/toptracks', (req, res) => {
     request
     .get(`${url}/v1/artists/${req.params.artistId}/top-tracks?country=NZ`)
     .set('Authorization', `Bearer ${spotify.getConnection()}`)
@@ -25,7 +25,7 @@ router.get('/:artistId/toptracks', (req, res) => {
     })
 })
 
-router.get('/:artistId', (req, res) => {
+router.get('/artists/:artistId', (req, res) => {
   request
     .get(`${url}/v1/artists/${req.params.artistId}`)
     .set('Authorization', `Bearer ${spotify.getConnection()}`)

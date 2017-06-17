@@ -6,3 +6,7 @@ import * as api from '../../client/api'
 test('faking passing test', t=>{
   t.pass()
 })
+
+test('testing getArtistIds', t => {
+  api.getArtistIds(['Oasis', 'Blur'])
+})

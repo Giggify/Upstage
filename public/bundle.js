@@ -27565,7 +27565,7 @@ var App = function (_React$Component) {
             'Log in'
           ),
           _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/search', component: _Homepage2.default }),
-          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/events/:id', component: _EventsList2.default })
+          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/events/:id/:name', component: _EventsList2.default })
         )
       );
     }
@@ -27985,11 +27985,12 @@ var EventsList = function (_React$Component) {
       var events = this.props.events || [];
       return _react2.default.createElement(
         'div',
-        { style: styles.root },
+        { className: 'Events-list-page' },
         _react2.default.createElement(
           'h1',
           null,
-          'Current Location: not sure'
+          'Current Location: ',
+          this.props.match.params.name
         ),
         _react2.default.createElement(
           'h1',
@@ -28006,44 +28007,48 @@ var EventsList = function (_React$Component) {
           'Create Playlist'
         ),
         _react2.default.createElement(
-          _MuiThemeProvider2.default,
-          null,
+          'div',
+          { style: styles.root },
           _react2.default.createElement(
-            _GridList.GridList,
-            {
-              cellHeight: 180,
-              style: styles.gridList,
-              cols: 3,
-              padding: 25
-            },
-            _react2.default.createElement(_Subheader2.default, null),
-            events.map(function (event, i) {
-              return _react2.default.createElement(
-                _GridList.GridTile,
-                {
-                  key: i,
-                  title: event.gig,
-                  subtitle: _react2.default.createElement(
-                    'span',
-                    null,
-                    'Headline Act: ',
-                    _react2.default.createElement(
-                      'b',
+            _MuiThemeProvider2.default,
+            null,
+            _react2.default.createElement(
+              _GridList.GridList,
+              {
+                cellHeight: 180,
+                style: styles.gridList,
+                cols: 3,
+                padding: 25
+              },
+              _react2.default.createElement(_Subheader2.default, null),
+              events.map(function (event, i) {
+                return _react2.default.createElement(
+                  _GridList.GridTile,
+                  {
+                    key: i,
+                    title: event.gig,
+                    subtitle: _react2.default.createElement(
+                      'span',
                       null,
-                      event.artists[0]
+                      'Headline Act: ',
+                      _react2.default.createElement(
+                        'b',
+                        null,
+                        event.artists[0]
+                      )
+                    ),
+                    actionIcon: _react2.default.createElement(
+                      _IconButton2.default,
+                      null,
+                      _react2.default.createElement(_checkBox2.default, { color: _this2.checkArtistSelected(event.artists[0]), onClick: function onClick(e) {
+                          return _this2.handleClick(e, event.artists[0]);
+                        } })
                     )
-                  ),
-                  actionIcon: _react2.default.createElement(
-                    _IconButton2.default,
-                    null,
-                    _react2.default.createElement(_checkBox2.default, { color: _this2.checkArtistSelected(event.artists[0]), onClick: function onClick(e) {
-                        return _this2.handleClick(e, event.artists[0]);
-                      } })
-                  )
-                },
-                _react2.default.createElement('img', { src: 'https://vignette2.wikia.nocookie.net/mafiagame/images/2/23/Unknown_Person.png' })
-              );
-            })
+                  },
+                  _react2.default.createElement('img', { src: 'https://vignette2.wikia.nocookie.net/mafiagame/images/2/23/Unknown_Person.png' })
+                );
+              })
+            )
           )
         )
       );
@@ -28418,7 +28423,13 @@ var Homepage = function Homepage(props) {
 
   var handleClick = function handleClick() {
     var id = props.searchResults[0].id;
-    location.href = '#events/' + id;
+    var _props$searchResults$ = props.searchResults[0],
+        name = _props$searchResults$.name,
+        state = _props$searchResults$.state,
+        country = _props$searchResults$.country;
+
+    var city = name + '-' + state + '-' + country;
+    location.href = '#events/' + id + '/' + city;
   };
 
   return _react2.default.createElement(

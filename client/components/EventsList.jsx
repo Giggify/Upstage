@@ -72,31 +72,33 @@ class EventsList extends React.Component {
       let artists = this.props.artists || []
       let events = this.props.events || []
     return (
-      <div style={styles.root}>
-        <h1>Current Location: not sure</h1>
+      <div className='Events-list-page'>
+        <h1>Current Location: {this.props.match.params.name}</h1>
         <h1 className="eventlistheader">Events Between {this.props.minDate} and {this.props.maxDate}</h1>
         <SelectedArtistsBox artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
         <button className="createplaylistbtn">Create Playlist</button>
-       <MuiThemeProvider>
-        <GridList
-          cellHeight={180}
-          style={styles.gridList}
-          cols={3}
-          padding={25}
-        >
-          <Subheader></Subheader>
-          {events.map((event, i) => (
-            <GridTile
-              key={i}
-              title={event.gig}
-              subtitle={<span>Headline Act: <b>{event.artists[0]}</b></span>}
-              actionIcon={<IconButton><CheckBox color={this.checkArtistSelected(event.artists[0])} onClick={(e)=>this.handleClick(e,event.artists[0])}/></IconButton>}
-            >
-              <img src={'https://vignette2.wikia.nocookie.net/mafiagame/images/2/23/Unknown_Person.png'} />
-            </GridTile>
-          ))}
-        </GridList>
-      </MuiThemeProvider>
+        <div style={styles.root}>
+         <MuiThemeProvider>
+          <GridList
+            cellHeight={180}
+            style={styles.gridList}
+            cols={3}
+            padding={25}
+          >
+            <Subheader></Subheader>
+            {events.map((event, i) => (
+              <GridTile
+                key={i}
+                title={event.gig}
+                subtitle={<span>Headline Act: <b>{event.artists[0]}</b></span>}
+                actionIcon={<IconButton><CheckBox color={this.checkArtistSelected(event.artists[0])} onClick={(e)=>this.handleClick(e,event.artists[0])}/></IconButton>}
+              >
+                <img src={'https://vignette2.wikia.nocookie.net/mafiagame/images/2/23/Unknown_Person.png'} />
+              </GridTile>
+            ))}
+          </GridList>
+        </MuiThemeProvider>
+        </div>
       </div>
     );
     }

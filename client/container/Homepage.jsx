@@ -8,7 +8,9 @@ const Homepage = (props)=>{
 
   const handleClick=()=>{
     let id=props.searchResults[0].id
-    location.href=`#events/${id}`
+    let {name,state,country}=props.searchResults[0]
+    let city=`${name}-${state}-${country}`
+    location.href=`#events/${id}/${city}`
   }
 
   return(

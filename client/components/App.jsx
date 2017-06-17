@@ -21,7 +21,7 @@ export default class App extends React.Component {
           <Header />
           <a href="/auth">Log in</a>
           <Route exact path='/search' component={Homepage} />
-          <Route exact path='/events/:id' component={EventsList} />
+          <Route exact path='/events/:id/:name' component={EventsList} />
         </div>
       </Router>
     )

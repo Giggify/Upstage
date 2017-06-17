@@ -29,6 +29,7 @@ function getById (id, testDb) {
   const connection = testDb || knex
   return connection('users')
     .where('id', id)
+    .first()
 }
 
 function getByName (username, testDb) {

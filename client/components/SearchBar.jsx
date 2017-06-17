@@ -7,7 +7,7 @@ injectTapEventPlugin();
 
 import {fetchLocations} from '../actions/locations'
 import {fetchEvents} from '../actions/events'
-import {saveLocationId} from '../actions/users'
+import {saveLocationId, saveLocationName} from '../actions/users'
 
 class SearchBar extends React.Component{
   state={
@@ -31,8 +31,7 @@ class SearchBar extends React.Component{
       showResults:false,
     })
     this.props.dispatch(saveLocationId(result.id))
-    this.props.dispatch((fetchEvents(result.id)))
-
+    this.props.dispatch(saveLocationName(result))
   }
 
   render(){

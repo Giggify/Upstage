@@ -10,6 +10,8 @@ import {fetchEvents} from '../actions/events'
 import {createPlaylist} from '../api'
 import SelectedArtistsBox from './SelectedArtistsBox'
 
+import Playlist from '../container/Playlist'
+
 const styles = {
   root: {
     display: 'flex',
@@ -75,6 +77,7 @@ class EventsList extends React.Component {
       <div className='Events-list-page'>
         <h1>Current Location: {this.props.match.params.name}</h1>
         <h1 className="eventlistheader">Events Between {this.props.minDate} and {this.props.maxDate}</h1>
+      <Playlist />
         <SelectedArtistsBox artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
         <button className="createplaylistbtn">Create Playlist</button>
         <div style={styles.root}>
@@ -100,6 +103,7 @@ class EventsList extends React.Component {
         </MuiThemeProvider>
         </div>
       </div>
+
     );
     }
   }

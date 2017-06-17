@@ -13,8 +13,6 @@ require('dotenv').config()
 
 const url = 'https://api.spotify.com'
 
-
-
 router.get('/artists/:artistId/toptracks', (req, res) => {
     request
     .get(`${url}/v1/artists/${req.params.artistId}/top-tracks?country=NZ`)
@@ -37,7 +35,7 @@ router.get('/artists/:artistId', (req, res) => {
 
 router.get('/search/:searchStr', (req, res) => {
   request
-    .get(`${url}/v1/search?q=${req.params.searchStr}&type=artist`)
+    .get(`${url}/v1/search?q=${req.params.searchStr}&type=artist&limit=1`)
     .set('Authorization', `Bearer ${spotify.getConnection()}`)
     .set('Accept', 'application/json')
     .end((error, response) => {

@@ -42,13 +42,29 @@ body{
   height: 50px;
   margin: auto;
   padding: 5px;
-    font-family: 'Oleo Script';
+  display: flex;
 }
 .spotifylogo {
-  height: 35px;
-  width: 35px;
+  padding-top: 2px;
+  display: block;
+  height: 44px;
+  width: 44px;
 }
-
+.spotifylogin {
+  display: block;
+  padding-top: 9px;
+  padding-left: 20px;
+  /*padding-bottom: 9px;*/
+  float: right;
+  color: #000;
+  font-size: 20pt;
+  font-weight: 400;
+  text-decoration: none;
+}
+.login a:hover {
+  color: #fff;
+  text-decoration: none;
+}
 .datepicker {
   margin-left: 40%;
   margin-right: 40%;

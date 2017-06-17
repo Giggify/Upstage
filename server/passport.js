@@ -12,8 +12,6 @@ module.exports = function(app) {
       clientID: process.env.SPOTIFY_ID,
       clientSecret: process.env.SPOTIFY_SECRET,
       callbackURL: 'http://localhost:3000/auth/callback',
-      //profileFields: ['id', 'displayName', 'email', 'photos']  // edit this
-
     },
 
     function(accessToken, refreshToken, profile, done) {
@@ -25,12 +23,10 @@ module.exports = function(app) {
                     let newUser = {id: profile.id, username: profile.displayName, email: profile._json.email, image: profile.photos[0], accessToken, refreshToken}
                     users.create(newUser, connection)
                     .then(function(res){
-
                         return done(null, newUser);
 
                     })
                     .catch(function (err) {
-                        console.log(err);
                         return done(null, false, {
                           message: 'Create User Error'
                         });

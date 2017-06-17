@@ -1,14 +1,15 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {GridList, GridTile} from 'material-ui/GridList';
+import {GridList} from 'material-ui/GridList';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import IconButton from 'material-ui/IconButton';
 import Subheader from 'material-ui/Subheader';
 import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 
 import {fetchEvents} from '../actions/events'
-import {createPlaylist} from '../api'
+
 import SelectedArtistsBox from './SelectedArtistsBox'
+import ArtistTile from './ArtistTile'
 
 import Playlist from '../container/Playlist'
 
@@ -37,7 +38,7 @@ class EventsList extends React.Component {
       artists,
       minDate,
       maxDate,
-      dispatch,
+      dispatch
     }
   }
   componentWillMount(){
@@ -57,12 +58,13 @@ class EventsList extends React.Component {
     let selArtists= this.state.selectedArtists
     let artistPresent = selArtists.indexOf(artist)
     artistPresent==-1 ? this.setState({selectedArtists: [...selArtists,artist]}) : this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist)})
-
   }
+
   checkArtistSelected(artist){
     if (this.state.selectedArtists.indexOf(artist) == -1) return "white"
     else return "orange"
   }
+
   handleDeleteFromBox(artistIndex){
     let artistsInBox=[...this.state.selectedArtists]
     artistsInBox.splice(artistIndex,1)
@@ -90,14 +92,7 @@ class EventsList extends React.Component {
           >
             <Subheader></Subheader>
             {events.map((event, i) => (
-              <GridTile
-                key={i}
-                title={event.gig}
-                subtitle={<span>Headline Act: <b>{event.artists[0]}</b></span>}
-                actionIcon={<IconButton><CheckBox color={this.checkArtistSelected(event.artists[0])} onClick={(e)=>this.handleClick(e,event.artists[0])}/></IconButton>}
-              >
-                <img src={'https://vignette2.wikia.nocookie.net/mafiagame/images/2/23/Unknown_Person.png'} />
-              </GridTile>
+              <ArtistTile event={event} key={i} i={i} checkArtist={this.checkArtistSelected.bind(this)} handleClick={this.handleClick.bind(this)}/> // the i={i} is cause react doesn't like you grabbing key from props :(
             ))}
           </GridList>
         </MuiThemeProvider>

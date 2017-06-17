@@ -5,7 +5,6 @@ import Header from './Header'
 import Homepage from '../container/Homepage'
 import NavBar from './NavBar'
 import EventsList from './EventsList'
-import DatePicker from './DatePicker'
 
 import * as api from '../api'
 
@@ -24,8 +23,10 @@ export default class App extends React.Component {
       <Router>
         <div className="app-container">
           <Header />
-          <a href="/auth">Log in</a>
-          <Homepage />
+          <div className="login">
+            <img className='spotifylogo' src='https://image.flaticon.com/icons/png/512/7/7709.png'/><a href="/auth">Log in</a></div>
+          <Route exact path='/search' component={Homepage} />
+          <Route exact path='/events/:id' component={EventsList} />
         </div>
       </Router>
     )

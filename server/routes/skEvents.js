@@ -28,6 +28,25 @@ router.get('/open',
   }
 )
 
+// Protect all routes beneath this point
+// router.use(
+//   verifyJwt({
+//     getToken: auth.getToken,
+//     secret: getSecret
+//   }),
+//   auth.handleError
+// )
+
+// These routes are protected
+router.get('/closed', (req, res) => {
+  res.json({ message: `Yup, you seem to be user ${req.user.id}.` })
+})
+
+router.get('/createPlaylist/:name', (req, res) => {
+  console.log(req.user.accessToken)
+  res.send('hi')
+})
+
 router.get('/:locationID', (req,res) => {
   request
   .get(`http://api.songkick.com/api/3.0/metro_areas/${req.params.locationID}/calendar.json?apikey=${process.env.SONGKICK_API}`)
@@ -36,7 +55,7 @@ router.get('/:locationID', (req,res) => {
       res.status(500).send(err.message)
     }
     else {
-      let searchResults = result.body.resultsPage.results.event
+      let searchResults = result.body.resultsPage.results.event || []
       let events = searchResults.map((result)=> {
           return (
             {
@@ -59,17 +78,5 @@ router.get('/:locationID', (req,res) => {
     }
   })
 })
-
-// Protect all routes beneath this point
-router.use(
-  verifyJwt({
-    getToken: auth.getToken,
-    secret: auth.getSecret
-  }),
-  auth.handleError
-)
-
-
-
 
 module.exports = router

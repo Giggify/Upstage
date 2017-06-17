@@ -5,7 +5,7 @@ import {GridTile} from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
 import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 
-import {getArtistId} from '../api'
+import {getArtistId, getArtwork} from '../api'
 import {fetchEvents} from '../actions/events'
 
 class ArtistTile extends React.Component {
@@ -14,12 +14,21 @@ class ArtistTile extends React.Component {
     super(props)
     this.state = {
       artists,
-      artistID: ''
+      artistID: '',
+      artistPic: ''
     }
   }
   componentDidMount() {
-    var artistID = getArtistId(this.props.event.artists[0])
-    this.setState({artistID})
+    getArtistId(this.props.event.artists[0])
+      .then((artistID) => {
+        this.setState({artistID})
+      })
+      .then(() => {
+        getArtwork(this.state.artistID)
+          .then((artistPic) => {
+            this.setState({artistPic})
+          })
+      })
   }
 
   render(){
@@ -32,7 +41,10 @@ return (
     subtitle={<span>Headline Act: <b>{event.artists[0]}</b></span>}
     actionIcon={<IconButton><CheckBox color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.artistID)}/></IconButton>}
     >
-      <img src={'https://vignette2.wikia.nocookie.net/mafiagame/images/2/23/Unknown_Person.png'} />
+    {this.state.artistPic
+      ? <img src={this.state.artistPic} />
+      : <img src={'https://vignette2.wikia.nocookie.net/mafiagame/images/2/23/Unknown_Person.png'} />
+    }
     </GridTile>
 )
   }

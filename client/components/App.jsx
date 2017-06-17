@@ -8,7 +8,7 @@ import EventsList from './EventsList'
 
 import * as api from '../api'
 
-console.log(api.createTracklistArray(['Oasis','Blur']))
+api.createTracklistArray(['Oasis','Blur'])
 
 export default class App extends React.Component {
   constructor(props) {

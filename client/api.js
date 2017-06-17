@@ -21,13 +21,12 @@ export function getArtistTopTracks(artistId) {
 }
 
 export function createTracklistArray(artistNamesArray) {
-  let tracksArray = []
-    artistNamesArray.map((artistName) => {
-      return getArtistId(artistName)
-      })
-      .then((artistID) => {
-        console.log(artistID)
-      })
-      return tracksArray
+
+  // return getArtistId().then((id) {
+  //   return id
+  // })
+  //
+
+      // return tracksArray
 
   }

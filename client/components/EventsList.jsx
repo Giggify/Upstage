@@ -53,7 +53,7 @@ class EventsList extends React.Component {
     e.preventDefault()
     let selArtists= this.state.selectedArtists
     let artistPresent = selArtists.indexOf(artist)
-    artistPresent ? this.setState({selectedArtists: [...selArtists,artist]}) : this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist)})
+    artistPresent==-1 ? this.setState({selectedArtists: [...selArtists,artist]}) : this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist)})
 
   }
   checkArtistSelected(artist){

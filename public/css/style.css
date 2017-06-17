@@ -1,7 +1,7 @@
 body{
   text-align: center;
   font-family: 'Roboto', sans-serif;
-  background-color: #0E0E0E;
+  background: url('https://s-media-cache-ak0.pinimg.com/originals/48/c4/72/48c472edf8672cf11b59d3a10481340b.jpg');
   color: #FF6900;
 }
 
@@ -34,6 +34,20 @@ body{
 #search-result-item:hover{
   background-color: #BADA55;
 }
+.login {
+  border-radius: 8px;
+  background-color: #6AE368;
+  border: 4px solid black;
+  width: 150px;
+  height: 50px;
+  margin: auto;
+  padding: 5px;
+    font-family: 'Oleo Script';
+}
+.spotifylogo {
+  height: 35px;
+  width: 35px;
+}
 
 .datepicker {
   margin-left: 40%;
@@ -44,4 +58,12 @@ body{
   font-size: 1em;
   background-color: #FF6900;
   color: #111222;
+}
+.upstage {
+  font-family: 'Bungee Outline', cursive;
+  font-size: 90px;
+}
+
+.eventlistheader {
+  font-family: 'Oleo Script';
 }

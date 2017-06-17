@@ -2,7 +2,7 @@ import React from 'react'
 import {Chip, Avatar} from 'material-ui'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-class SelectedArtists extends React.Component{
+class SelectedArtistsBox extends React.Component{
   constructor(props){
     super(props)
     this.state = {
@@ -61,4 +61,4 @@ class SelectedArtists extends React.Component{
   }
 }
 
-export default SelectedArtists
+export default SelectedArtistsBox

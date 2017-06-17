@@ -8,7 +8,7 @@ import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 
 import {fetchEvents} from '../actions/events'
 import {createPlaylist} from '../api'
-import SelectedArtists from './SelectedArtists'
+import SelectedArtistsBox from './SelectedArtistsBox'
 
 const styles = {
   root: {
@@ -35,7 +35,7 @@ class EventsList extends React.Component {
       artists,
       minDate,
       maxDate,
-      dispatch
+      dispatch,
     }
   }
   componentWillMount(){
@@ -73,7 +73,10 @@ class EventsList extends React.Component {
       let events = this.props.events || []
     return (
       <div style={styles.root}>
+        <h1>Current Location: not sure</h1>
         <h1 className="eventlistheader">Events Between {this.props.minDate} and {this.props.maxDate}</h1>
+        <SelectedArtistsBox artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
+        <button className="createplaylistbtn">Create Playlist</button>
        <MuiThemeProvider>
         <GridList
           cellHeight={180}
@@ -94,8 +97,6 @@ class EventsList extends React.Component {
           ))}
         </GridList>
       </MuiThemeProvider>
-      <SelectedArtists artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
-      <button className="createplaylistbtn">Create Playlist</button>
       </div>
     );
     }

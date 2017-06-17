@@ -20,9 +20,11 @@ export default class App extends React.Component {
         <div className="app-container">
           <Header />
           <div className="login">
-            <img className='spotifylogo' src='https://image.flaticon.com/icons/png/512/7/7709.png'/><a href="/auth">Log in</a></div>
+            <img className='spotifylogo' src='https://image.flaticon.com/icons/png/512/7/7709.png'/>
+            <a className='spotifylogin' href="/auth">Login</a>
+          </div>
           <Route exact path='/search' component={Homepage} />
-          <Route exact path='/events/:id' component={EventsList} />
+          <Route exact path='/events/:id/:name' component={EventsList} />
         </div>
       </Router>
     )

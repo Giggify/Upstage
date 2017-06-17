@@ -27279,12 +27279,12 @@ var App = function (_React$Component) {
             _react2.default.createElement('img', { className: 'spotifylogo', src: 'https://image.flaticon.com/icons/png/512/7/7709.png' }),
             _react2.default.createElement(
               'a',
-              { href: '/auth' },
-              'Log in'
+              { className: 'spotifylogin', href: '/auth' },
+              'Login'
             )
           ),
           _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/search', component: _Homepage2.default }),
-          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/events/:id', component: _EventsList2.default })
+          _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/events/:id/:name', component: _EventsList2.default })
         )
       );
     }
@@ -27489,6 +27489,10 @@ var _events = __webpack_require__(261);
 
 var _api = __webpack_require__(645);
 
+var _SelectedArtistsBox = __webpack_require__(646);
+
+var _SelectedArtistsBox2 = _interopRequireDefault(_SelectedArtistsBox);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -27578,15 +27582,29 @@ var EventsList = function (_React$Component) {
       if (this.state.selectedArtists.indexOf(artist) == -1) return "white";else return "orange";
     }
   }, {
+    key: 'handleDeleteFromBox',
+    value: function handleDeleteFromBox(artistIndex) {
+      var artistsInBox = [].concat(_toConsumableArray(this.state.selectedArtists));
+      artistsInBox.splice(artistIndex, 1);
+      this.setState({ selectedArtists: artistsInBox });
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
 
+      console.log(this.state.selectedArtists);
       var artists = this.props.artists || [];
       var events = this.props.events || [];
       return _react2.default.createElement(
         'div',
-        { style: styles.root },
+        { className: 'Events-list-page' },
+        _react2.default.createElement(
+          'h1',
+          null,
+          'Current Location: ',
+          this.props.match.params.name
+        ),
         _react2.default.createElement(
           'h1',
           { className: 'eventlistheader' },
@@ -27595,51 +27613,56 @@ var EventsList = function (_React$Component) {
           ' and ',
           this.props.maxDate
         ),
-        _react2.default.createElement(
-          _MuiThemeProvider2.default,
-          null,
-          _react2.default.createElement(
-            _GridList.GridList,
-            {
-              cellHeight: 180,
-              style: styles.gridList,
-              cols: 3,
-              padding: 25
-            },
-            _react2.default.createElement(_Subheader2.default, null),
-            events.map(function (event, i) {
-              return _react2.default.createElement(
-                _GridList.GridTile,
-                {
-                  key: i,
-                  title: event.gig,
-                  subtitle: _react2.default.createElement(
-                    'span',
-                    null,
-                    'Headline Act: ',
-                    _react2.default.createElement(
-                      'b',
-                      null,
-                      event.artists[0]
-                    )
-                  ),
-                  actionIcon: _react2.default.createElement(
-                    _IconButton2.default,
-                    null,
-                    _react2.default.createElement(_checkBox2.default, { color: _this2.checkArtistSelected(event.artists[0]), onClick: function onClick(e) {
-                        return _this2.handleClick(e, event.artists[0]);
-                      } })
-                  )
-                },
-                _react2.default.createElement('img', { src: 'https://vignette2.wikia.nocookie.net/mafiagame/images/2/23/Unknown_Person.png' })
-              );
-            })
-          )
-        ),
+        _react2.default.createElement(_SelectedArtistsBox2.default, { artists: this.state.selectedArtists, deleteArtist: this.handleDeleteFromBox.bind(this) }),
         _react2.default.createElement(
           'button',
           { className: 'createplaylistbtn' },
           'Create Playlist'
+        ),
+        _react2.default.createElement(
+          'div',
+          { style: styles.root },
+          _react2.default.createElement(
+            _MuiThemeProvider2.default,
+            null,
+            _react2.default.createElement(
+              _GridList.GridList,
+              {
+                cellHeight: 180,
+                style: styles.gridList,
+                cols: 3,
+                padding: 25
+              },
+              _react2.default.createElement(_Subheader2.default, null),
+              events.map(function (event, i) {
+                return _react2.default.createElement(
+                  _GridList.GridTile,
+                  {
+                    key: i,
+                    title: event.gig,
+                    subtitle: _react2.default.createElement(
+                      'span',
+                      null,
+                      'Headline Act: ',
+                      _react2.default.createElement(
+                        'b',
+                        null,
+                        event.artists[0]
+                      )
+                    ),
+                    actionIcon: _react2.default.createElement(
+                      _IconButton2.default,
+                      null,
+                      _react2.default.createElement(_checkBox2.default, { color: _this2.checkArtistSelected(event.artists[0]), onClick: function onClick(e) {
+                          return _this2.handleClick(e, event.artists[0]);
+                        } })
+                    )
+                  },
+                  _react2.default.createElement('img', { src: 'https://vignette2.wikia.nocookie.net/mafiagame/images/2/23/Unknown_Person.png' })
+                );
+              })
+            )
+          )
         )
       );
     }
@@ -27902,7 +27925,13 @@ var Homepage = function Homepage(props) {
 
   var handleClick = function handleClick() {
     var id = props.searchResults[0].id;
-    location.href = '#events/' + id;
+    var _props$searchResults$ = props.searchResults[0],
+        name = _props$searchResults$.name,
+        state = _props$searchResults$.state,
+        country = _props$searchResults$.country;
+
+    var city = name + '-' + state + '-' + country;
+    location.href = '#events/' + id + '/' + city;
   };
 
   return _react2.default.createElement(
@@ -71119,6 +71148,117 @@ module.exports = function() {
 
 "use strict";
 
+
+/***/ }),
+/* 646 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _materialUi = __webpack_require__(467);
+
+var _MuiThemeProvider = __webpack_require__(131);
+
+var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SelectedArtistsBox = function (_React$Component) {
+  _inherits(SelectedArtistsBox, _React$Component);
+
+  function SelectedArtistsBox(props) {
+    _classCallCheck(this, SelectedArtistsBox);
+
+    var _this = _possibleConstructorReturn(this, (SelectedArtistsBox.__proto__ || Object.getPrototypeOf(SelectedArtistsBox)).call(this, props));
+
+    _this.handleRequestDelete = function (key) {
+      _this.chipData = _this.state.chipData;
+      var chipToDelete = _this.chipData.map(function (chip) {
+        return chip.key;
+      }).indexOf(key);
+      _this.chipData.splice(chipToDelete, 1);
+      _this.setState({ chipData: _this.chipData });
+      _this.props.deleteArtist(key);
+    };
+
+    _this.state = {
+      chipData: []
+    };
+    _this.styles = {
+      chip: {
+        margin: 4
+      },
+      wrapper: {
+        display: 'flex',
+        flexWrap: 'wrap'
+      }
+    };
+    return _this;
+  }
+
+  _createClass(SelectedArtistsBox, [{
+    key: 'renderChip',
+    value: function renderChip(data) {
+      var _this2 = this;
+
+      return _react2.default.createElement(
+        _materialUi.Chip,
+        {
+          key: data.key,
+          onRequestDelete: function onRequestDelete() {
+            return _this2.handleRequestDelete(data.key);
+          },
+          style: this.styles.chip },
+        _react2.default.createElement(_materialUi.Avatar, { src: 'http://www.freepngimg.com/thumb/kanye_west/1-2-kanye-west-png-hd-thumb.png' }),
+        data.label
+      );
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextprops) {
+      var artists = nextprops.artists.map(function (artist, index) {
+        return { key: index, label: artist };
+      });
+      this.setState({
+        chipData: artists
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        _MuiThemeProvider2.default,
+        null,
+        _react2.default.createElement(
+          'div',
+          { style: this.styles.wrapper },
+          this.state.chipData.map(this.renderChip, this)
+        )
+      );
+    }
+  }]);
+
+  return SelectedArtistsBox;
+}(_react2.default.Component);
+
+exports.default = SelectedArtistsBox;
 
 /***/ })
 /******/ ]);

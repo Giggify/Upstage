@@ -7,6 +7,7 @@ import Subheader from 'material-ui/Subheader';
 import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 
 import {fetchEvents} from '../actions/events'
+import {createPlaylist} from '../api'
 
 const styles = {
   root: {
@@ -15,8 +16,8 @@ const styles = {
     justifyContent: 'space-around',
   },
   gridList: {
-    width: 900,
-    height: 600,
+    width: 700,
+    height: 450,
   },
 };
 
@@ -62,18 +63,17 @@ class EventsList extends React.Component {
     render() {
       let artists = this.props.artists || []
       let events = this.props.events || []
-      console.log(artists)
-      console.log(events)
     return (
       <div style={styles.root}>
+        <h1 className="eventlistheader">Events Between {this.props.minDate} and {this.props.maxDate}</h1>
        <MuiThemeProvider>
         <GridList
           cellHeight={180}
           style={styles.gridList}
           cols={3}
-          padding={8}
+          padding={25}
         >
-          <Subheader>Events Between {this.props.minDate} and {this.props.maxDate}</Subheader>
+          <Subheader></Subheader>
           {events.map((event, i) => (
             <GridTile
               key={i}
@@ -86,6 +86,7 @@ class EventsList extends React.Component {
           ))}
         </GridList>
       </MuiThemeProvider>
+      <button className="createplaylistbtn">Create Playlist</button>
       </div>
     );
     }
@@ -100,5 +101,7 @@ const mapState2Props = (state) => {
     maxDate: state.maxDate || "2017-12-30"
   }
 }
+
+//onClick={createPlaylist(this.state.selectedArtists)}
 
 export default connect(mapState2Props)(EventsList)

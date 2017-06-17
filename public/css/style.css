@@ -38,5 +38,10 @@ body{
 .datepicker {
   margin-left: 40%;
   margin-right: 40%;
+}
 
+.createplaylistbtn {
+  font-size: 1em;
+  background-color: #FF6900;
+  color: #111222;
 }

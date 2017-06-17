@@ -8,6 +8,7 @@ import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 
 import {fetchEvents} from '../actions/events'
 import {createPlaylist} from '../api'
+import SelectedArtists from './SelectedArtists'
 
 const styles = {
   root: {
@@ -53,14 +54,21 @@ class EventsList extends React.Component {
     e.preventDefault()
     let selArtists= this.state.selectedArtists
     let artistPresent = selArtists.indexOf(artist)
-    artistPresent ? this.setState({selectedArtists: [...selArtists,artist]}) : this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist)})
+    artistPresent==-1 ? this.setState({selectedArtists: [...selArtists,artist]}) : this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist)})
 
   }
   checkArtistSelected(artist){
     if (this.state.selectedArtists.indexOf(artist) == -1) return "white"
     else return "orange"
   }
+  handleDeleteFromBox(artistIndex){
+    let artistsInBox=[...this.state.selectedArtists]
+    artistsInBox.splice(artistIndex,1)
+    this.setState({selectedArtists: artistsInBox})
+  }
+
     render() {
+      console.log(this.state.selectedArtists)
       let artists = this.props.artists || []
       let events = this.props.events || []
     return (
@@ -86,6 +94,7 @@ class EventsList extends React.Component {
           ))}
         </GridList>
       </MuiThemeProvider>
+      <SelectedArtists artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
       <button className="createplaylistbtn">Create Playlist</button>
       </div>
     );

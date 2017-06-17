@@ -5,6 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import IconButton from 'material-ui/IconButton';
 import Subheader from 'material-ui/Subheader';
 import CheckBox from 'material-ui/svg-icons/toggle/check-box';
+import DatePicker from './DatePicker'
 
 import {fetchEvents} from '../actions/events'
 import {createPlaylist} from '../api'
@@ -75,6 +76,7 @@ class EventsList extends React.Component {
       <div className='Events-list-page'>
         <h1>Current Location: {this.props.match.params.name}</h1>
         <h1 className="eventlistheader">Events Between {this.props.minDate} and {this.props.maxDate}</h1>
+        <DatePicker />
         <SelectedArtistsBox artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
         <button className="createplaylistbtn">Create Playlist</button>
         <div style={styles.root}>
@@ -109,8 +111,8 @@ const mapState2Props = (state) => {
     users:state.users,
     events: state.events.events,
     artists: state.events.artists,
-    minDate: state.minDate || "2017-01-01",
-    maxDate: state.maxDate || "2017-12-30"
+    minDate: state.users.minDate || "2017-01-01",
+    maxDate: state.users.maxDate || "2017-12-30"
   }
 }
 

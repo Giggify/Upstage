@@ -14,6 +14,16 @@ function users (state = {}, action) {
         state:action.result.state,
         country:action.result.country
       }
+    case 'SAVE_MIN_DATE':
+      return{
+        ...state,
+        minDate:action.date
+      }
+    case 'SAVE_MAX_DATE':
+      return{
+        ...state,
+        maxDate:action.date
+      }
     default:
       return state
   }

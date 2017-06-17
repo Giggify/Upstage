@@ -8,6 +8,7 @@ import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 
 import {fetchEvents} from '../actions/events'
 import {createPlaylist} from '../api'
+import SelectedArtistsBox from './SelectedArtistsBox'
 
 const styles = {
   root: {
@@ -34,7 +35,7 @@ class EventsList extends React.Component {
       artists,
       minDate,
       maxDate,
-      dispatch
+      dispatch,
     }
   }
   componentWillMount(){
@@ -60,33 +61,44 @@ class EventsList extends React.Component {
     if (this.state.selectedArtists.indexOf(artist) == -1) return "white"
     else return "orange"
   }
+  handleDeleteFromBox(artistIndex){
+    let artistsInBox=[...this.state.selectedArtists]
+    artistsInBox.splice(artistIndex,1)
+    this.setState({selectedArtists: artistsInBox})
+  }
+
     render() {
+      console.log(this.state.selectedArtists)
       let artists = this.props.artists || []
       let events = this.props.events || []
     return (
-      <div style={styles.root}>
+      <div className='Events-list-page'>
+        <h1>Current Location: {this.props.match.params.name}</h1>
         <h1 className="eventlistheader">Events Between {this.props.minDate} and {this.props.maxDate}</h1>
-       <MuiThemeProvider>
-        <GridList
-          cellHeight={180}
-          style={styles.gridList}
-          cols={3}
-          padding={25}
-        >
-          <Subheader></Subheader>
-          {events.map((event, i) => (
-            <GridTile
-              key={i}
-              title={event.gig}
-              subtitle={<span>Headline Act: <b>{event.artists[0]}</b></span>}
-              actionIcon={<IconButton><CheckBox color={this.checkArtistSelected(event.artists[0])} onClick={(e)=>this.handleClick(e,event.artists[0])}/></IconButton>}
-            >
-              <img src={'https://vignette2.wikia.nocookie.net/mafiagame/images/2/23/Unknown_Person.png'} />
-            </GridTile>
-          ))}
-        </GridList>
-      </MuiThemeProvider>
-      <button className="createplaylistbtn">Create Playlist</button>
+        <SelectedArtistsBox artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
+        <button className="createplaylistbtn">Create Playlist</button>
+        <div style={styles.root}>
+         <MuiThemeProvider>
+          <GridList
+            cellHeight={180}
+            style={styles.gridList}
+            cols={3}
+            padding={25}
+          >
+            <Subheader></Subheader>
+            {events.map((event, i) => (
+              <GridTile
+                key={i}
+                title={event.gig}
+                subtitle={<span>Headline Act: <b>{event.artists[0]}</b></span>}
+                actionIcon={<IconButton><CheckBox color={this.checkArtistSelected(event.artists[0])} onClick={(e)=>this.handleClick(e,event.artists[0])}/></IconButton>}
+              >
+                <img src={'https://vignette2.wikia.nocookie.net/mafiagame/images/2/23/Unknown_Person.png'} />
+              </GridTile>
+            ))}
+          </GridList>
+        </MuiThemeProvider>
+        </div>
       </div>
     );
     }

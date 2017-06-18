@@ -64,4 +64,43 @@ router.use(
 
 // These routes are protected
 
+router.post('/users/:id/playlist'), (req,res) => {
+  request
+    .post(`${url}/v1/users/{req.params.id}/playlist`)
+    .send({
+      "name": "New Upstage Playlist",
+      "public": true,
+      "collaborative": false,
+      "description": "Top tracks from artists performing near you"
+    })
+    .set('Authorization', req.user.accessToken)
+    .set('Accept', 'application/json')
+    .end((err,result) => {
+      if(err) {
+        alert('Oops! Playlist creation failed.')
+      }
+      else {
+        res.send(result.body)
+      }
+    })
+}
+
+router.post('/users/:id/playlist/:playlist_id/tracks'), (req,res) => {
+  request
+    .post(`${url}/v1/users/{req.params.id}/playlist/{req.params.playlist_id}/tracks`)
+    .send({
+      "uris": req.body.tracks
+    })
+    .set('Authorization', req.user.accessToken)
+    .set('Accept', 'application/json')
+    .end((err,result) => {
+      if(err) {
+        alert('Oops! Track addition failed.')
+      }
+      else {
+        res.sendStatus(201)
+      }
+    })
+}
+
 module.exports = router

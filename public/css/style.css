@@ -4,7 +4,9 @@ body{
   background: url('https://s-media-cache-ak0.pinimg.com/originals/48/c4/72/48c472edf8672cf11b59d3a10481340b.jpg');
   color: #FF6900;
 }
-
+.search-bar{
+  background-color: white;
+}
 .search-bar input,button{
   font-size:3em;
   border-radius: 25px;
@@ -44,12 +46,29 @@ body{
   padding: 5px;
   font-family: 'Lato';
   font-size: 20px;
+  display: flex;
 }
 .spotifylogo {
-  height: 35px;
-  width: 35px;
+  padding-top: 2px;
+  display: block;
+  height: 44px;
+  width: 44px;
 }
-
+.spotifylogin {
+  display: block;
+  padding-top: 9px;
+  padding-left: 20px;
+  /*padding-bottom: 9px;*/
+  float: right;
+  color: #000;
+  font-size: 20pt;
+  font-weight: 400;
+  text-decoration: none;
+}
+.login a:hover {
+  color: #fff;
+  text-decoration: none;
+}
 .datepicker {
   margin-left: 40%;
   margin-right: 40%;

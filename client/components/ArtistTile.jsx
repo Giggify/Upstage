@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 import {GridTile} from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
-import CheckBox from 'material-ui/svg-icons/toggle/check-box';
+import AddToPlaylist from 'material-ui/svg-icons/AV/playlist-add';
 
 import {getArtist, getTopTracks} from '../api'
 import {fetchEvents} from '../actions/events'
@@ -54,14 +54,12 @@ class ArtistTile extends React.Component {
         key={this.props.i}
         title={event.gig}
         subtitle={<span>Headline Act: <b>{event.artists[0]}</b></span>}
-        actionIcon={
-          <IconButton>
-            <CheckBox color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)}/>
-          </IconButton>}
+        actionIcon={<IconButton><AddToPlaylist color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)}/></IconButton>}
       >
         <img src={this.state.artist.images[0].url || "/images/unknownartist.png"} />
       </GridTile>
     )
+
   }
 }
 

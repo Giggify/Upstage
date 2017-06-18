@@ -3,12 +3,12 @@ import {connect} from 'react-redux'
 import {GridList} from 'material-ui/GridList';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Subheader from 'material-ui/Subheader';
+import CheckBox from 'material-ui/svg-icons/toggle/check-box';
+import DatePicker from './DatePicker'
 
 import {fetchEvents} from '../actions/events'
-
 import SelectedArtistsBox from './SelectedArtistsBox'
 import ArtistTile from './ArtistTile'
-
 import Playlist from '../container/Playlist'
 
 const styles = {
@@ -62,17 +62,14 @@ class EventsList extends React.Component {
     if(selArtists.indexOf(artist) == -1) {
       this.mapArrayToState(tracksArray)
       this.setState({selectedArtists: [...selArtists,artist]})
-      console.log("ma state", this.state);
 
     }else {
       this.removeTrackIfExists(tracksArray, [...this.state.selectedTracks])
       this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist)})
-      console.log("delete me tracks", this.state);
     }
   }
 
     mapArrayToState(tracksArray) {
-      console.log({tracksArray});
       let selTracks = [...this.state.selectedTracks]
       tracksArray.forEach((track) => selTracks.push(track))
       this.setState({selectedTracks: selTracks})
@@ -101,10 +98,12 @@ class EventsList extends React.Component {
     return (
       <div className='Events-list-page'>
         <h1>Current Location: {this.props.match.params.name}</h1>
+
+
         <h1 className="eventlistheader">Events Between {this.props.minDate} and {this.props.maxDate}</h1>
       <Playlist />
+        <DatePicker />
         <SelectedArtistsBox artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
-        <button className="createplaylistbtn">Create Playlist</button>
         <div style={styles.root}>
          <MuiThemeProvider>
           <GridList
@@ -131,12 +130,11 @@ const mapState2Props = (state) => {
     users:state.users,
     events: state.events.events,
     artists: state.events.artists,
-    minDate: state.minDate || "2017-01-01",
-    maxDate: state.maxDate || "2017-12-30",
-    selectedArtists: state.selectedArtists
+    selectedArtists: state.selectedArtists,
+    minDate: state.users.minDate || "2017-01-01",
+    maxDate: state.users.maxDate || "2017-12-30"
+
   }
 }
-
-//onClick={createPlaylist(this.state.selectedArtists)}
 
 export default connect(mapState2Props)(EventsList)

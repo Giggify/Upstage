@@ -50,7 +50,6 @@ class EventsList extends React.Component {
     this.props.dispatch(fetchEvents(this.props.match.params.id))
   }
   componentWillReceiveProps({events,users,artists,minDate,maxDate,selectedTracks}) {
-    console.log(selectedTracks);
     this.setState({
       events,
       users,
@@ -65,14 +64,14 @@ class EventsList extends React.Component {
     createPlaylist()
       .then((id, user) => {
       this.setState({playlistID: id, user: user})
-      let apiTracklist = []
       let tracklist = this.state.selectedTracks
-      tracklist.forEach((track) => apiTracklist.push(`spotify:track:${track}`))
-      })
+      let apiTracklist = tracklist.map((track) =>
+      `spotify:track:${track}`)
       addTrackToPlaylist(apiTracklist)
       .then(()=> {
-        this.setState({show: !this.state.show, loadingPlaylist: false});
+      this.setState({show: !this.state.show, loadingPlaylist: false});
       })
+    })
   }
 
   handleClick(e, artist, tracksArray) {
@@ -113,13 +112,13 @@ class EventsList extends React.Component {
   }
 
     render() {
-      console.log(this.state.selectedTracks)
       let artists = this.props.artists || []
       let events = this.props.events || []
+      console.log(this.state.selectedTracks);
     return (
       <div className='Events-list-page'>
         <h1>Current Location: {this.props.match.params.name}</h1>
-        <Playlist handlePlaylist={this.handlePlaylistCreation.bind(this)} state={this.state}/>
+        <Playlist handlePlaylist={this.handlePlaylistCreation.bind(this)} show={this.state.show} user={this.state.user} loading={this.state.loadingPlaylist} playlist={this.state.playlistID}/>
         <DatePicker />
         <SelectedArtistsBox artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
         <div style={styles.root}>

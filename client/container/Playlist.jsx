@@ -8,27 +8,27 @@ class Playlist extends React.Component {
  constructor(props) {
    super(props)
      this.state = {
-       show: props.state.show,
-       loading: props.state.loading
+       show: props.show,
+       loading: props.loading
    }
  }
 
  render() {
-   if(this.state.show && !this.state.loading) {
+   if(this.props.show && !this.props.loading) {
      return (
        <div className="Playlist">
-         <iframe src={`https://open.spotify.com/embed/user/${this.props.state.user}/playlist/${this.props.state.playlist}`} width="300" height="380" frameBorder="0" allowTransparency="true"></iframe>
+         <iframe src={`https://open.spotify.com/embed/user/${this.props.user}/playlist/${this.props.playlist}`} width="300" height="380" frameBorder="0" allowTransparency="true"></iframe>
        </div>
      )
    }
-  else if(this.state.show && this.state.loading){
+  else if(this.props.show && this.props.loading){
     return (
       <div className="Playlist">
 <p>Creating Playlist: This is where we put that orange spinny wheel!</p>
       </div>
     )
   }
-  else {
+  else if (!this.props.show) {
     return (
       <div className="Playlist">
         <button onClick={ () => this.props.handlePlaylist() }>Create Playlist</button>

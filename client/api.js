@@ -64,7 +64,14 @@ export function createPlaylist() {
   return new Promise((resolve, reject) => {
     request
       .post('/api/v1/spotify/users/playlist')
+      .send({
+        "name": "New Upstage Playlist",
+        "public": true,
+        "collaborative": false,
+        "description": "Top tracks from artists performing near you"
+      })
       .end((err, res) => {
+        console.log("got to line 69"+err.message);
         err ? reject(err) : resolve(res.body)
       })
   })

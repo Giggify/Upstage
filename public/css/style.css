@@ -4,7 +4,9 @@ body{
   background: url('https://s-media-cache-ak0.pinimg.com/originals/48/c4/72/48c472edf8672cf11b59d3a10481340b.jpg');
   color: #FF6900;
 }
-
+.search-bar{
+  background-color: white;
+}
 .search-bar input,button{
   font-size:3em;
   border-radius: 25px;

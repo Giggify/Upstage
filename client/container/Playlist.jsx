@@ -19,9 +19,8 @@ class Playlist extends React.Component {
  render() {
    return (
      <div className="Playlist">
-       <button onClick={ () => this.handleClick() }>Create Playlist</button>
-       <button onClick={ () => this.handleClick() }>Toggle Playlist</button>
-       <ToggleDisplay show={this.state.show}>
+     <button onClick={ () => this.handleClick() }>Create Playlist</button>
+      <ToggleDisplay show={this.state.show}>
   <iframe src={`https://open.spotify.com/embed/user/${this.state.username}/playlist/${this.state.stuff}`} width="300" height="380" frameBorder="0" allowTransparency="true"></iframe>
        </ToggleDisplay>
      </div>

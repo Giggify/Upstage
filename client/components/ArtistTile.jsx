@@ -15,15 +15,21 @@ class ArtistTile extends React.Component {
     this.state = {
       artist:undefined,
       tracksArray: [],
-      artistID: '',
-      trackIDs: [],
-    tracks: []
+      artists,
+      artist: {
+        images: [
+          {
+            url: '/images/unknownartist.png'
+          }
+        ]
+      },
+      tracks: []
     }
   }
   componentDidMount() {
     getArtist(this.props.event.artists[0])
       .then((artist) => {
-        this.setState({artist})
+        if (artist) this.setState({artist})
       })
       .then(() => {
         let tracksArray = []
@@ -47,15 +53,11 @@ class ArtistTile extends React.Component {
     return (
       <GridTile
         key={this.props.i}
-        title={event.artists[0]}
-        subtitle={<span><b>{event.date}</b></span>}
-        actionIcon={
-          <IconButton>
-            <AddToPlaylist color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.trackIDs)} />
-          </IconButton>}
+        title={event.gig}
+        subtitle={<span>Headline Act: <b>{event.artists[0]}</b></span>}
+        actionIcon={<IconButton><AddToPlaylist color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)}/></IconButton>}
       >
-        {this.state.artist===undefined ? <img src='/images/unknownartist.png' /> : <img src={this.state.artist.images[0].url} />
-        }
+        <img src={this.state.artist.images[0].url || "/images/unknownartist.png"} />
       </GridTile>
     )
   }

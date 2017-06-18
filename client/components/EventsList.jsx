@@ -44,7 +44,8 @@ class EventsList extends React.Component {
   componentWillMount(){
     this.props.dispatch(fetchEvents(this.props.match.params.id))
   }
-  componentWillReceiveProps({events,users,artists,minDate,maxDate}) {
+  componentWillReceiveProps({events,users,artists,minDate,maxDate,selectedTracks}) {
+    console.log(selectedTracks);
     this.setState({
       events,
       users,
@@ -53,31 +54,29 @@ class EventsList extends React.Component {
       maxDate
     })
   }
+
   handleClick(e, artist, tracksArray) {
     e.preventDefault()
     let selTracks = this.state.selectedTracks
     let selArtists= this.state.selectedArtists
-    let delThisArtistTracks = this.removeTrackIfExists(tracksArray, selTracks)
     if(selArtists.indexOf(artist) == -1) {
       this.mapArrayToState(tracksArray)
       this.setState({selectedArtists: [...selArtists,artist]})
-      }
-    else {
-      this.removeTrackIfExists(tracksArray, this.state.selectedTracks)
+    }else {
+      this.removeTrackIfExists(tracksArray, [...this.state.selectedTracks])
       this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist)})
     }
   }
 
     mapArrayToState(tracksArray) {
-      let selTracks = this.state.selectedTracks
-      this.setState({
-        selectedTracks:["mango",...selTracks,...tracksArray]
-      })
+      let selTracks = [...this.state.selectedTracks]
+      tracksArray.forEach((track) => selTracks.push(track))
+      this.setState({selectedTracks: selTracks})
     }
 
     removeTrackIfExists(tracksArray, stateTracksArray) {
       return stateTracksArray.filter((track) => {
-        return tracksArray.indexOf(track) == -1 ? track : null
+        return tracksArray.indexOf(track) == -1
       })
     }
 
@@ -128,8 +127,10 @@ const mapState2Props = (state) => {
     users:state.users,
     events: state.events.events,
     artists: state.events.artists,
+    selectedArtists: state.selectedArtists,
     minDate: state.users.minDate || "2017-01-01",
     maxDate: state.users.maxDate || "2017-12-30"
+
   }
 }
 

@@ -45,7 +45,6 @@ class EventsList extends React.Component {
     this.props.dispatch(fetchEvents(this.props.match.params.id))
   }
   componentWillReceiveProps({events,users,artists,minDate,maxDate,selectedTracks}) {
-    console.log(selectedTracks);
     this.setState({
       events,
       users,
@@ -62,10 +61,11 @@ class EventsList extends React.Component {
     if(selArtists.indexOf(artist) == -1) {
       this.mapArrayToState(tracksArray)
       this.setState({selectedArtists: [...selArtists,artist]})
-
-    }else {
-      this.removeTrackIfExists(tracksArray, [...this.state.selectedTracks])
-      this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist)})
+    } else {
+      this.setState({
+        selectedTracks: this.removeTrackIfExists(tracksArray, [...this.state.selectedTracks]),
+        selectedArtists: [...selArtists].filter((name)=> name != artist)
+      })
     }
   }
 

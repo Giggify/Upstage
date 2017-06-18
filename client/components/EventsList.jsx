@@ -81,7 +81,6 @@ class EventsList extends React.Component {
         <h1 className="eventlistheader">Events Between {this.props.minDate} and {this.props.maxDate}</h1>
       <Playlist />
         <SelectedArtistsBox artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
-        <button className="createplaylistbtn">Create Playlist</button>
         <div style={styles.root}>
          <MuiThemeProvider>
           <GridList
@@ -112,7 +111,5 @@ const mapState2Props = (state) => {
     maxDate: state.maxDate || "2017-12-30"
   }
 }
-
-//onClick={createPlaylist(this.state.selectedArtists)}
 
 export default connect(mapState2Props)(EventsList)

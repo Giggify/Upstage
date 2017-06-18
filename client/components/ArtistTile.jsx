@@ -14,7 +14,8 @@ class ArtistTile extends React.Component {
     super(props)
     this.state = {
       artists,
-      artistID: ''
+      artistID: '',
+      trackIDs: []
     }
   }
   componentDidMount() {
@@ -30,7 +31,7 @@ return (
     key={this.props.i}
     title={event.gig}
     subtitle={<span>Headline Act: <b>{event.artists[0]}</b></span>}
-    actionIcon={<IconButton><CheckBox color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.artistID)}/></IconButton>}
+    actionIcon={<IconButton><CheckBox color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.trackIDs)}/></IconButton>}
     >
       <img src={'https://vignette2.wikia.nocookie.net/mafiagame/images/2/23/Unknown_Person.png'} />
     </GridTile>

@@ -5,6 +5,7 @@
 | Get an Artist’s Top Tracks |  GET   |yes, our API key  |
 | Get a User’s Profile|  GET   |yes, our API key  |
 | Create a playlist|  POST   |yes, user's token |
+| Add track to playlist|  POST   |yes, user's token |
 
 
 # Requests
@@ -294,3 +295,27 @@ curl -X POST "https://api.spotify.com/v1/users/thelinmichael/playlists" -H "Auth
  "uri": "spotify:user:thelinmichael:playlist:7d2D2S200NyUE5KYs80PwO"
 }
 ```
+
+# Add track to Playlist
+POST https://api.spotify.com/v1/users/{user_id}/playlists/{playlist_id}/tracks
+* user_id - The user's Spotify user ID.
+* playlist_id - The Spotify playlist has its own unique ID that will be returned from the Create Playlist post route's response.
+
+
+More info here https://developer.spotify.com/web-api/add-tracks-to-playlist/
+
+Header Fields
+* Authorization	Required. A valid access token from the Spotify Accounts service: see the Web API Authorization Guide for details. The access token must have been issued on behalf of the user.
+* Creating a public playlist for a user requires authorization of the playlist-modify-public scope; creating a private playlist requires the playlist-modify-private scope. See Using Scopes.
+* Content-Type	Required. The content type of the request body: application/json
+
+The URI of the tracks to be inserted will need to be sent when hitting this Add Track route in the following format:
+
+{"uris": ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh",
+"spotify:track:1301WleyT98MSxVHPZCA6M"]}
+
+Upon successful addition of the track to the playlist, the response will be a snapshot_id of the modified playlist along with a 201 status code.
+
+If there is an error, the header status code is an error code and res body will contain the error object.
+
+If the user is not authorized to edit the track a 403 status code (Forbidden) will be sent.

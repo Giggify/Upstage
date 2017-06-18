@@ -73,14 +73,14 @@ router.post('/users/:id/playlist'), (req,res) => {
       "collaborative": false,
       "description": "Top tracks from artists performing near you"
     })
-    .set('Authorization', `Bearer ${spotify.getConnection()}`)
+    .set('Authorization', req.user.accessToken)
     .set('Accept', 'application/json')
     .end((err,result) => {
       if(err) {
         alert('Oops! Playlist creation failed.')
       }
       else {
-        res.send(result.body.id)
+        res.send(result.body)
       }
     })
 }
@@ -89,9 +89,9 @@ router.post('/users/:id/playlist/:playlist_id/tracks'), (req,res) => {
   request
     .post(`${url}/v1/users/{req.params.id}/playlist/{req.params.playlist_id}/tracks`)
     .send({
-      "uris":
+      "uris": req.body.tracks
     })
-    .set('Authorization', `Bearer ${spotify.getConnection()}`)
+    .set('Authorization', req.user.accessToken)
     .set('Accept', 'application/json')
     .end((err,result) => {
       if(err) {

@@ -10,7 +10,7 @@ body{
   justify-content: center;
   align-items: center;
   width:80%;
-  margin-left: 60vh;
+  margin-left: 30vh;
 }
 #or{
   vertical-align: middle;
@@ -82,7 +82,8 @@ body{
   text-decoration: none;
 }
 .datepicker {
-  margin-left: 40%;
+  display: flex;
+  margin-left: 35%;
   margin-right: 40%;
 }
 

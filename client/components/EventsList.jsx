@@ -43,9 +43,25 @@ class EventsList extends React.Component {
   }
   componentWillMount(){
     this.props.dispatch(fetchEvents(this.props.match.params.id))
+    if (this.state.minDate || this.state.maxDate) {
+      console.log('yeah yeah')
+      let unfilteredEvents=this.state.events
+      let minUnix=Date.parse(this.state.minDate)
+      let maxUnix=Date.parse(this.state.maxDate)
+      const fitsDates=(event)=>{
+        let eventDateUnix=new Date(event.date).getTime()
+        return (
+          minUnix <= eventDateUnix <= maxUnix
+        )
+      }
+      let filteredEvents=unfilteredEvents.filter(fitsDates)
+      this.setState({
+        events:filteredEvents
+      })
+    }
   }
+
   componentWillReceiveProps({events,users,artists,minDate,maxDate,selectedTracks}) {
-    console.log(selectedTracks);
     this.setState({
       events,
       users,
@@ -53,6 +69,28 @@ class EventsList extends React.Component {
       minDate,
       maxDate
     })
+    if (minDate || maxDate) {
+      let unfilteredEvents=this.state.events
+      let minUnix=Date.parse(minDate)
+      let maxUnix=Date.parse(maxDate)
+      const fitsDates=(event)=>{
+        let eventDateUnix=new Date(event.date).getTime()
+        if (minUnix && !maxUnix) {
+          return minUnix <= eventDateUnix
+        }
+        if (maxUnix && !minUnix) {
+          return eventDateUnix<= maxUnix
+        }
+        if (minUnix && maxUnix){
+          return minUnix <= eventDateUnix && eventDateUnix<= maxUnix
+        }
+      }
+      let filteredEvents=unfilteredEvents.filter(fitsDates)
+      console.log('apple',filteredEvents)
+      this.setState({
+        events:filteredEvents
+      })
+    }
   }
 
   handleClick(e, artist, tracksArray) {
@@ -92,7 +130,7 @@ class EventsList extends React.Component {
   }
 
     render() {
-      console.log(this.state.selectedTracks)
+      console.log(this.state.maxDate)
       let artists = this.props.artists || []
       let events = this.props.events || []
     return (
@@ -128,8 +166,8 @@ const mapState2Props = (state) => {
     events: state.events.events,
     artists: state.events.artists,
     selectedArtists: state.selectedArtists,
-    minDate: state.users.minDate || "2017-01-01",
-    maxDate: state.users.maxDate || "2017-12-30"
+    minDate: state.users.minDate,
+    maxDate: state.users.maxDate
 
   }
 }

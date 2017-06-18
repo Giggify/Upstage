@@ -31,22 +31,22 @@ class ArtistTile extends React.Component {
       .then((artist) => {
         if (artist) this.setState({artist})
       })
-      .then(() => {
-        let tracksArray = []
-        if(this.state.artist!=undefined){
-          getTopTracks(this.state.artist.id)
-              .then((tracks) => {
-                if(tracks.status!=400){
-                  tracks.map((track) => {
-                    tracksArray.push(track.id)
-                  })
-                }
-              })
-              .then(() => {
-                this.setState({tracksArray})
-              })
-        }
-      })
+      // .then(() => {
+      //   let tracksArray = []
+      //   if(this.state.artist!=undefined){
+      //     getTopTracks(this.state.artist.id)
+      //         .then((tracks) => {
+      //           if(tracks.status!=400){
+      //             tracks.map((track) => {
+      //               tracksArray.push(track.id)
+      //             })
+      //           }
+      //         })
+      //         .then(() => {
+      //           this.setState({tracksArray})
+      //         })
+      //   }
+      // })
   }
 
   render(){

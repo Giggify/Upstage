@@ -27933,8 +27933,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.createPlayist = createPlayist;
-exports.getArtistId = getArtistId;
+exports.getArtist = getArtist;
 exports.getArtistTopTracks = getArtistTopTracks;
+exports.getTracks = getTracks;
+exports.getTopTracks = getTopTracks;
 exports.createTracklistArray = createTracklistArray;
 
 var _superagent = __webpack_require__(96);
@@ -27945,30 +27947,50 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function createPlayist(artists) {}
 
-function getArtistId(artistName) {
+function getArtist(artistName) {
   return new Promise(function (resolve, reject) {
     _superagent2.default.get('/api/v1/spotify/search/' + artistName).end(function (err, res) {
-      return res.body[0].id;
-      resolve();
+      err ? reject(err) : resolve(res.body[0]);
     });
   });
 }
 
 function getArtistTopTracks(artistId) {
-  _superagent2.default.get('/api/v1/spotify/artists/' + artistId + '/toptracks').end(function (err, res) {
-    return res.body;
+  return new Promise(function (resolve, reject) {
+    _superagent2.default.get('/api/v1/spotify/artists/' + artistId + '/toptracks').end(function (err, res) {
+      err ? reject(err) : resolve(res.body);
+    });
+  });
+}
+
+function getTracks(artistId) {
+  return new Promise(function (resolve, reject) {
+    _superagent2.default.get('/api/v1/spotify/artists/' + artistId + '/toptracks').end(function (err, res) {
+      err ? reject(err) : resolve(res.body);
+    });
+  });
+}
+
+function getTopTracks(artistId) {
+  return new Promise(function (resolve, reject) {
+    _superagent2.default.get('/api/v1/spotify/artists/' + artistId + '/toptracks').end(function (err, res) {
+      err ? reject(err) : resolve(res.body);
+    });
   });
 }
 
 function createTracklistArray(artistNamesArray) {
-
-  // return getArtistId().then((id) {
-  //   return id
-  // })
-  //
-
-  // return tracksArray
-
+  var tracks = [];
+  return new Promise(function (resolve, reject) {
+    artistNamesArray.map(function (artistName) {
+      getArtistId(artistName).then(function (artistId) {
+        getArtistTopTracks(artistId).then(function (trackIDs) {
+          tracks.push(trackIDs);
+        });
+      });
+    });
+    resolve(tracks);
+  });
 }
 
 /***/ }),
@@ -28023,9 +28045,14 @@ var ArtistTile = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (ArtistTile.__proto__ || Object.getPrototypeOf(ArtistTile)).call(this, props));
 
     _this.state = {
+      tracksArray: [],
       artists: artists,
-      artistID: '',
-      trackIDs: []
+      artist: {
+        images: [{
+          url: '/images/unknownartist.png'
+        }]
+      },
+      tracks: []
     };
     return _this;
   }
@@ -28033,16 +28060,29 @@ var ArtistTile = function (_React$Component) {
   _createClass(ArtistTile, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var artistID = (0, _api.getArtistId)(this.props.event.artists[0]);
-      this.setState({ artistID: artistID });
+      var _this2 = this;
+
+      (0, _api.getArtist)(this.props.event.artists[0]).then(function (artist) {
+        if (artist) _this2.setState({ artist: artist });
+      }).then(function () {
+        var tracksArray = [];
+        (0, _api.getTopTracks)(_this2.state.artist.id).then(function (tracks) {
+          tracks.map(function (track) {
+            tracksArray.push(track.id);
+          });
+        }).then(function () {
+          _this2.setState({ tracksArray: tracksArray });
+        });
+      });
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var event = this.props.event || [];
       var color = this.props.checkArtist(event.artists[0]);
+
       return _react2.default.createElement(
         _GridList.GridTile,
         {
@@ -28062,11 +28102,11 @@ var ArtistTile = function (_React$Component) {
             _IconButton2.default,
             null,
             _react2.default.createElement(_playlistAdd2.default, { color: color, onClick: function onClick(e) {
-                return _this2.props.handleClick(e, event.artists[0], _this2.state.trackIDs);
+                return _this3.props.handleClick(e, event.artists[0], _this3.state.tracksArray);
               } })
           )
         },
-        _react2.default.createElement('img', { src: 'https://vignette2.wikia.nocookie.net/mafiagame/images/2/23/Unknown_Person.png' })
+        _react2.default.createElement('img', { src: this.state.artist.images[0].url || "/images/unknownartist.png" })
       );
     }
   }]);
@@ -28171,9 +28211,11 @@ var EventsList = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (EventsList.__proto__ || Object.getPrototypeOf(EventsList)).call(this, props));
 
     _this.state = {
+      tracksArray: [],
       selectedArtists: [], // push to this when they select an artist
       artistIDs: [], // this will be the end target of the filter, showing only events
       //within the date range.
+      selectedTracks: [],
       events: events,
       users: users,
       artists: artists,
@@ -28196,8 +28238,10 @@ var EventsList = function (_React$Component) {
           users = _ref.users,
           artists = _ref.artists,
           minDate = _ref.minDate,
-          maxDate = _ref.maxDate;
+          maxDate = _ref.maxDate,
+          selectedTracks = _ref.selectedTracks;
 
+      console.log(selectedTracks);
       this.setState({
         events: events,
         users: users,
@@ -28208,17 +28252,35 @@ var EventsList = function (_React$Component) {
     }
   }, {
     key: 'handleClick',
-    value: function handleClick(e, artist, id) {
+    value: function handleClick(e, artist, tracksArray) {
       e.preventDefault();
-      console.log(this.state.selectedArtists, this.state.artistIDs);
+      var selTracks = this.state.selectedTracks;
       var selArtists = this.state.selectedArtists;
-      var artIDs = this.state.artistIDs;
-      var artistPresent = selArtists.indexOf(artist);
-      artistPresent == -1 ? this.setState({ selectedArtists: [].concat(_toConsumableArray(selArtists), [artist]), artistIDs: [].concat(_toConsumableArray(artIDs), [id]) }) : this.setState({ selectedArtists: [].concat(_toConsumableArray(selArtists)).filter(function (name) {
-          return name != artist;
-        }), artistIDs: [].concat(_toConsumableArray(artIDs)).filter(function (oldIDs) {
-          return oldIDs != id;
-        }) });
+      if (selArtists.indexOf(artist) == -1) {
+        this.mapArrayToState(tracksArray);
+        this.setState({ selectedArtists: [].concat(_toConsumableArray(selArtists), [artist]) });
+      } else {
+        this.removeTrackIfExists(tracksArray, [].concat(_toConsumableArray(this.state.selectedTracks)));
+        this.setState({ selectedArtists: [].concat(_toConsumableArray(selArtists)).filter(function (name) {
+            return name != artist;
+          }) });
+      }
+    }
+  }, {
+    key: 'mapArrayToState',
+    value: function mapArrayToState(tracksArray) {
+      var selTracks = [].concat(_toConsumableArray(this.state.selectedTracks));
+      tracksArray.forEach(function (track) {
+        return selTracks.push(track);
+      });
+      this.setState({ selectedTracks: selTracks });
+    }
+  }, {
+    key: 'removeTrackIfExists',
+    value: function removeTrackIfExists(tracksArray, stateTracksArray) {
+      return stateTracksArray.filter(function (track) {
+        return tracksArray.indexOf(track) == -1;
+      });
     }
   }, {
     key: 'checkArtistSelected',
@@ -28293,8 +28355,10 @@ var mapState2Props = function mapState2Props(state) {
     users: state.users,
     events: state.events.events,
     artists: state.events.artists,
+    selectedArtists: state.selectedArtists,
     minDate: state.users.minDate || "2017-01-01",
     maxDate: state.users.maxDate || "2017-12-30"
+
   };
 };
 
@@ -28702,6 +28766,7 @@ var SelectedArtistsBox = function (_React$Component) {
     value: function renderChip(data) {
       var _this2 = this;
 
+      console.log(data);
       return _react2.default.createElement(
         _materialUi.Chip,
         {

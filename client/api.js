@@ -4,33 +4,58 @@ export function createPlayist(artists) {
 
 }
 
-export function getArtistId(artistName) {
-  return new Promise(function(resolve, reject) {
+export function getArtist(artistName) {
+  return new Promise((resolve, reject) => {
     request
-    .get(`/api/v1/spotify/search/${artistName}`)
-    .end((err, res) => {
-      return res.body[0].id
-      resolve()
-    })
+      .get(`/api/v1/spotify/search/${artistName}`)
+      .end((err, res) => {
+        err ? reject(err) : resolve(res.body[0])
+      })
   })
 }
 
-
 export function getArtistTopTracks(artistId) {
-  request
-    .get(`/api/v1/spotify/artists/${artistId}/toptracks`)
-    .end((err, res) => {
-      return res.body
-    })
+  return new Promise((resolve, reject) => {
+    request
+      .get(`/api/v1/spotify/artists/${artistId}/toptracks`)
+      .end((err, res) => {
+        err ? reject(err) : resolve(res.body)
+      })
+  })
+}
+
+export function getTracks(artistId) {
+  return new Promise((resolve, reject) => {
+    request
+      .get(`/api/v1/spotify/artists/${artistId}/toptracks`)
+      .end((err, res) => {
+        err ? reject(err) : resolve(res.body)
+      })
+  })
+}
+
+export function getTopTracks(artistId) {
+  return new Promise((resolve, reject) => {
+    request
+      .get(`/api/v1/spotify/artists/${artistId}/toptracks`)
+      .end((err, res) => {
+        err ? reject(err) : resolve(res.body)
+      })
+  })
 }
 
 export function createTracklistArray(artistNamesArray) {
-
-  // return getArtistId().then((id) {
-  //   return id
-  // })
-  //
-
-      // return tracksArray
-
-  }
+  let tracks = []
+  return new Promise((resolve, reject) => {
+    artistNamesArray.map((artistName) => {
+      getArtistId(artistName)
+      .then((artistId) => {
+        getArtistTopTracks(artistId)
+        .then((trackIDs) => {
+          tracks.push(trackIDs)
+        })
+      })
+    })
+    resolve(tracks)
+  })
+}

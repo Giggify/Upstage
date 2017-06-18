@@ -5,7 +5,7 @@ import {GridTile} from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
 import AddToPlaylist from 'material-ui/svg-icons/AV/playlist-add';
 
-import {getArtistId} from '../api'
+import {getArtist, getTopTracks} from '../api'
 import {fetchEvents} from '../actions/events'
 
 class ArtistTile extends React.Component {
@@ -13,29 +13,53 @@ class ArtistTile extends React.Component {
     let {artists} = props
     super(props)
     this.state = {
+      tracksArray: [],
       artists,
-      artistID: '',
-      trackIDs: []
+      artist: {
+        images: [
+          {
+            url: '/images/unknownartist.png'
+          }
+        ]
+      },
+      tracks: []
     }
   }
   componentDidMount() {
-    var artistID = getArtistId(this.props.event.artists[0])
-    this.setState({artistID})
+    getArtist(this.props.event.artists[0])
+      .then((artist) => {
+        if (artist) this.setState({artist})
+      })
+      .then(() => {
+        let tracksArray = []
+          getTopTracks(this.state.artist.id)
+            .then((tracks) => {
+              tracks.map((track) => {
+                tracksArray.push(track.id)
+              })
+            })
+            .then(() => {
+              this.setState({tracksArray})
+            })
+      })
+
   }
 
-  render(){
+  render() {
     let event = this.props.event || []
     let color = this.props.checkArtist(event.artists[0])
-return (
-  <GridTile
-    key={this.props.i}
-    title={event.gig}
-    subtitle={<span>Headline Act: <b>{event.artists[0]}</b></span>}
-    actionIcon={<IconButton><AddToPlaylist color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.trackIDs)}/></IconButton>}
-    >
-      <img src={'https://vignette2.wikia.nocookie.net/mafiagame/images/2/23/Unknown_Person.png'} />
-    </GridTile>
-)
+
+    return (
+      <GridTile
+        key={this.props.i}
+        title={event.gig}
+        subtitle={<span>Headline Act: <b>{event.artists[0]}</b></span>}
+        actionIcon={<IconButton><AddToPlaylist color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)}/></IconButton>}
+      >
+        <img src={this.state.artist.images[0].url || "/images/unknownartist.png"} />
+      </GridTile>
+    )
+
   }
 }
 

@@ -28,9 +28,11 @@ class EventsList extends React.Component {
     let {events,users,artists,minDate,maxDate,dispatch} = props
     super(props)
     this.state = {
+      tracksArray: [],
       selectedArtists: [], // push to this when they select an artist
       artistIDs: [], // this will be the end target of the filter, showing only events
       //within the date range.
+      selectedTracks: [],
       events,
       users,
       artists,
@@ -42,7 +44,8 @@ class EventsList extends React.Component {
   componentWillMount(){
     this.props.dispatch(fetchEvents(this.props.match.params.id))
   }
-  componentWillReceiveProps({events,users,artists,minDate,maxDate}) {
+  componentWillReceiveProps({events,users,artists,minDate,maxDate,selectedTracks}) {
+    console.log(selectedTracks);
     this.setState({
       events,
       users,
@@ -51,15 +54,32 @@ class EventsList extends React.Component {
       maxDate
     })
   }
-  handleClick(e,artist,id) {
+
+  handleClick(e, artist, tracksArray) {
     e.preventDefault()
-    console.log(this.state.selectedArtists,this.state.artistIDs);
+    let selTracks = this.state.selectedTracks
     let selArtists= this.state.selectedArtists
-    let artIDs = this.state.artistIDs
-    let artistPresent = selArtists.indexOf(artist)
-    artistPresent==-1 ? this.setState({selectedArtists: [...selArtists,artist], artistIDs: [...artIDs,id]}) :
-    this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist),artistIDs: [...artIDs].filter((oldIDs)=> oldIDs != id)})
+    if(selArtists.indexOf(artist) == -1) {
+      this.mapArrayToState(tracksArray)
+      this.setState({selectedArtists: [...selArtists,artist]})
+
+    }else {
+      this.removeTrackIfExists(tracksArray, [...this.state.selectedTracks])
+      this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist)})
+    }
   }
+
+    mapArrayToState(tracksArray) {
+      let selTracks = [...this.state.selectedTracks]
+      tracksArray.forEach((track) => selTracks.push(track))
+      this.setState({selectedTracks: selTracks})
+    }
+
+    removeTrackIfExists(tracksArray, stateTracksArray) {
+      return stateTracksArray.filter((track) => {
+        return tracksArray.indexOf(track) == -1
+      })
+    }
 
   checkArtistSelected(artist){
     if (this.state.selectedArtists.indexOf(artist) == -1) return "white"
@@ -110,8 +130,10 @@ const mapState2Props = (state) => {
     users:state.users,
     events: state.events.events,
     artists: state.events.artists,
+    selectedArtists: state.selectedArtists,
     minDate: state.users.minDate || "2017-01-01",
     maxDate: state.users.maxDate || "2017-12-30"
+
   }
 }
 

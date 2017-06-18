@@ -4,12 +4,12 @@ export function createPlayist(artists) {
 
 }
 
-export function getArtistId(artistName) {
+export function getArtist(artistName) {
   return new Promise((resolve, reject) => {
     request
       .get(`/api/v1/spotify/search/${artistName}`)
       .end((err, res) => {
-        err ? reject(err) : resolve(res.body[0].id)
+        err ? reject(err) : resolve(res.body[0])
       })
   })
 }
@@ -24,17 +24,17 @@ export function getArtistTopTracks(artistId) {
   })
 }
 
-export function getArtwork(artistId) {
+export function getTracks(artistId) {
   return new Promise((resolve, reject) => {
     request
-      .get(`/api/v1/spotify/artists/${artistId}`)
+      .get(`/api/v1/spotify/artists/${artistId}/toptracks`)
       .end((err, res) => {
-        err ? reject(err) : resolve(res.body.images[1].url)
+        err ? reject(err) : resolve(res.body)
       })
   })
 }
 
-export function getTracks(artistId) {
+export function getTopTracks(artistId) {
   return new Promise((resolve, reject) => {
     request
       .get(`/api/v1/spotify/artists/${artistId}/toptracks`)

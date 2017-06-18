@@ -27713,10 +27713,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.createPlayist = createPlayist;
-exports.getArtistId = getArtistId;
+exports.getArtist = getArtist;
 exports.getArtistTopTracks = getArtistTopTracks;
-exports.getArtwork = getArtwork;
 exports.getTracks = getTracks;
+exports.getTopTracks = getTopTracks;
 exports.createTracklistArray = createTracklistArray;
 
 var _superagent = __webpack_require__(95);
@@ -27727,10 +27727,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function createPlayist(artists) {}
 
-function getArtistId(artistName) {
+function getArtist(artistName) {
   return new Promise(function (resolve, reject) {
     _superagent2.default.get('/api/v1/spotify/search/' + artistName).end(function (err, res) {
-      err ? reject(err) : resolve(res.body[0].id);
+      err ? reject(err) : resolve(res.body[0]);
     });
   });
 }
@@ -27743,15 +27743,15 @@ function getArtistTopTracks(artistId) {
   });
 }
 
-function getArtwork(artistId) {
+function getTracks(artistId) {
   return new Promise(function (resolve, reject) {
-    _superagent2.default.get('/api/v1/spotify/artists/' + artistId).end(function (err, res) {
-      err ? reject(err) : resolve(res.body.images[1].url);
+    _superagent2.default.get('/api/v1/spotify/artists/' + artistId + '/toptracks').end(function (err, res) {
+      err ? reject(err) : resolve(res.body);
     });
   });
 }
 
-function getTracks(artistId) {
+function getTopTracks(artistId) {
   return new Promise(function (resolve, reject) {
     _superagent2.default.get('/api/v1/spotify/artists/' + artistId + '/toptracks').end(function (err, res) {
       err ? reject(err) : resolve(res.body);
@@ -27826,8 +27826,12 @@ var ArtistTile = function (_React$Component) {
 
     _this.state = {
       artists: artists,
-      artistID: '',
-      artistPic: ''
+      artist: {
+        images: [{
+          url: '/images/unknownartist.png'
+        }]
+      },
+      tracks: []
     };
     return _this;
   }
@@ -27837,12 +27841,8 @@ var ArtistTile = function (_React$Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      (0, _api.getArtistId)(this.props.event.artists[0]).then(function (artistID) {
-        _this2.setState({ artistID: artistID });
-      }).then(function () {
-        (0, _api.getArtwork)(_this2.state.artistID).then(function (artistPic) {
-          _this2.setState({ artistPic: artistPic });
-        });
+      (0, _api.getArtist)(this.props.event.artists[0]).then(function (artist) {
+        _this2.setState({ artist: artist });
       });
     }
   }, {
@@ -27852,6 +27852,7 @@ var ArtistTile = function (_React$Component) {
 
       var event = this.props.event || [];
       var color = this.props.checkArtist(event.artists[0]);
+
       return _react2.default.createElement(
         _GridList.GridTile,
         {
@@ -27875,7 +27876,7 @@ var ArtistTile = function (_React$Component) {
               } })
           )
         },
-        this.state.artistPic ? _react2.default.createElement('img', { src: this.state.artistPic }) : _react2.default.createElement('img', { src: 'https://vignette2.wikia.nocookie.net/mafiagame/images/2/23/Unknown_Person.png' })
+        _react2.default.createElement('img', { src: this.state.artist.images[0].url })
       );
     }
   }]);
@@ -28534,6 +28535,7 @@ var SelectedArtistsBox = function (_React$Component) {
     value: function renderChip(data) {
       var _this2 = this;
 
+      console.log(data);
       return _react2.default.createElement(
         _materialUi.Chip,
         {

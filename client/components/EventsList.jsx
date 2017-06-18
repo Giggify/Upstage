@@ -44,7 +44,8 @@ class EventsList extends React.Component {
   componentWillMount(){
     this.props.dispatch(fetchEvents(this.props.match.params.id))
   }
-  componentWillReceiveProps({events,users,artists,minDate,maxDate}) {
+  componentWillReceiveProps({events,users,artists,minDate,maxDate,selectedTracks}) {
+    console.log(selectedTracks);
     this.setState({
       events,
       users,
@@ -53,31 +54,33 @@ class EventsList extends React.Component {
       maxDate
     })
   }
+
   handleClick(e, artist, tracksArray) {
     e.preventDefault()
     let selTracks = this.state.selectedTracks
     let selArtists= this.state.selectedArtists
-    let delThisArtistTracks = this.removeTrackIfExists(tracksArray, selTracks)
     if(selArtists.indexOf(artist) == -1) {
       this.mapArrayToState(tracksArray)
       this.setState({selectedArtists: [...selArtists,artist]})
-      console.log(this.state);
-      }
-    else {
-      this.removeTrackIfExists(tracksArray, this.state.selectedTracks)
+      console.log("ma state", this.state);
+
+    }else {
+      this.removeTrackIfExists(tracksArray, [...this.state.selectedTracks])
       this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist)})
-      console.log(this.state);
+      console.log("delete me tracks", this.state);
     }
   }
 
     mapArrayToState(tracksArray) {
-      let selTracks = this.state.selectedTracks
-      tracksArray.map((track) => this.setState({selectedTracks: [...selTracks, track]}))
+      console.log({tracksArray});
+      let selTracks = [...this.state.selectedTracks]
+      tracksArray.forEach((track) => selTracks.push(track))
+      this.setState({selectedTracks: selTracks})
     }
 
     removeTrackIfExists(tracksArray, stateTracksArray) {
       return stateTracksArray.filter((track) => {
-        return tracksArray.indexOf(track) == -1 ? track : null
+        return tracksArray.indexOf(track) == -1
       })
     }
 
@@ -129,7 +132,8 @@ const mapState2Props = (state) => {
     events: state.events.events,
     artists: state.events.artists,
     minDate: state.minDate || "2017-01-01",
-    maxDate: state.maxDate || "2017-12-30"
+    maxDate: state.maxDate || "2017-12-30",
+    selectedArtists: state.selectedArtists
   }
 }
 

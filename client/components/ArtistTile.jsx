@@ -28,7 +28,7 @@ class ArtistTile extends React.Component {
   componentDidMount() {
     getArtist(this.props.event.artists[0])
       .then((artist) => {
-        this.setState({artist})
+        if (artist) this.setState({artist})
       })
       .then(() => {
         let tracksArray = []
@@ -59,7 +59,7 @@ class ArtistTile extends React.Component {
             <CheckBox color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)}/>
           </IconButton>}
       >
-        <img src={this.state.artist.images[0].url} />
+        <img src={this.state.artist.images[0].url || "/images/unknownartist.png"} />
       </GridTile>
     )
   }

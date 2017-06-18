@@ -71,7 +71,6 @@ export function createPlaylist() {
         "description": "Top tracks from artists performing near you"
       })
       .end((err, res) => {
-        console.log("got to line 69"+err.message);
         err ? reject(err) : resolve(res.body)
       })
   })

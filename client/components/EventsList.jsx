@@ -62,12 +62,12 @@ class EventsList extends React.Component {
   handlePlaylistCreation() {
     this.setState({loadingPlaylist: true})
     createPlaylist()
-      .then((id, user) => {
-      this.setState({playlistID: id, user: user})
+      .then((result) => {
+      this.setState({playlistID: result.id})
       let tracklist = this.state.selectedTracks
       let apiTracklist = tracklist.map((track) =>
       `spotify:track:${track}`)
-      addTrackToPlaylist(apiTracklist)
+      addTrackToPlaylist(apiTracklist,this.state.playlistID)
       .then(()=> {
       this.setState({show: !this.state.show, loadingPlaylist: false});
       })

@@ -67,7 +67,7 @@ router.use(
 // These routes are protected
 router.post('/users/playlist', (req,res) => {
   request
-  .post(`${url}/v1/users/${req.user.id}/playlist`)
+  .post(`${url}/v1/users/${req.user.id}/playlists`)
   .send(req.body)
   .set('Authorization',  `Bearer ${req.user.accessToken}`)
   .set('Accept', 'application/json')
@@ -76,7 +76,9 @@ router.post('/users/playlist', (req,res) => {
       console.log(err)
     }
     else {
-      res.send(result.body.id, req.user.id)
+      console.log(result.body.id)
+      res.status(201).send(result.body)
+
     }
   })
 })

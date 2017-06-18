@@ -23,9 +23,10 @@ const styles = {
   },
 };
 
+let filteredEvents
+
 class EventsList extends React.Component {
   constructor(props) {
-    let {events,users,artists,minDate,maxDate,dispatch} = props
     super(props)
     this.state = {
       tracksArray: [],
@@ -33,25 +34,45 @@ class EventsList extends React.Component {
       artistIDs: [], // this will be the end target of the filter, showing only events
       //within the date range.
       selectedTracks: [],
-      events,
-      users,
-      artists,
-      minDate,
-      maxDate,
-      dispatch
+      minDate:this.props.minDate,
+      maxDate:this.props.maxDate,
+      what:'wtf'
     }
   }
   componentWillMount(){
     this.props.dispatch(fetchEvents(this.props.match.params.id))
   }
-  componentWillReceiveProps({events,users,artists,minDate,maxDate,selectedTracks}) {
-    this.setState({
-      events,
-      users,
-      artists,
-      minDate,
-      maxDate
-    })
+
+  componentWillReceiveProps({minDate,maxDate,events}) {
+      if (minDate || maxDate) {
+        let unfilteredEvents=events
+        let minUnix=Date.parse(minDate)
+        let maxUnix=Date.parse(maxDate)
+        const fitsDates=(event)=>{
+          let eventDateUnix=new Date(event.date).getTime()
+          if (minUnix && !maxUnix) {
+            return minUnix <= eventDateUnix
+          }
+          if (maxUnix && !minUnix) {
+            return eventDateUnix<= maxUnix
+          }
+          if (minUnix && maxUnix){
+            return minUnix <= eventDateUnix && eventDateUnix<= maxUnix
+          }
+        }
+        filteredEvents=unfilteredEvents.filter(fitsDates)
+      }
+      if(filteredEvents===undefined){
+        this.setState({
+          events:events,
+          what:'doh'
+        })
+      } else {
+        this.setState({
+          events:filteredEvents,
+          what:'123'
+        })
+      }
   }
 
   handleClick(e, artist, tracksArray) {
@@ -93,15 +114,11 @@ class EventsList extends React.Component {
   }
 
     render() {
-      let artists = this.props.artists || []
-      let events = this.props.events || []
+      let events = this.state.events || []
     return (
       <div className='Events-list-page'>
         <h1>Current Location: {this.props.match.params.name}</h1>
-
-
-        <h1 className="eventlistheader">Events Between {this.props.minDate} and {this.props.maxDate}</h1>
-      <Playlist />
+        <Playlist />
         <DatePicker />
         <SelectedArtistsBox artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
         <div style={styles.root}>
@@ -131,8 +148,8 @@ const mapState2Props = (state) => {
     events: state.events.events,
     artists: state.events.artists,
     selectedArtists: state.selectedArtists,
-    minDate: state.users.minDate || "2017-01-01",
-    maxDate: state.users.maxDate || "2017-12-30"
+    minDate: state.users.minDate,
+    maxDate: state.users.maxDate
 
   }
 }

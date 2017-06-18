@@ -46,13 +46,18 @@ class SearchBar extends React.Component{
     <MuiThemeProvider>
       <div className='search-bar'>
         <PopularPlaces />
-        <TextField
+        <div id='or'>
+          OR
+        </div>
+        <div id='search-text-field'>
+          <TextField
           id='text-field-controlled'
           hintText="city name"
           floatingLabelText="Search for a city..."
           value={this.state.value}
           onChange={this.handleUpdateInput}
-        />
+          />
+        </div>
       <button id='search-button' onClick={()=>this.handleClick()}> search </button>
         <div className='search-results'>
           {searchResults!=[] && this.state.showResults &&

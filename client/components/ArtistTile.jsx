@@ -36,9 +36,11 @@ class ArtistTile extends React.Component {
         if(this.state.artist!=undefined){
           getTopTracks(this.state.artist.id)
               .then((tracks) => {
-                tracks.map((track) => {
-                  tracksArray.push(track.id)
-                })
+                if(tracks.status!=400){
+                  tracks.map((track) => {
+                    tracksArray.push(track.id)
+                  })
+                }
               })
               .then(() => {
                 this.setState({tracksArray})
@@ -53,8 +55,8 @@ class ArtistTile extends React.Component {
     return (
       <GridTile
         key={this.props.i}
-        title={event.gig}
-        subtitle={<span>Headline Act: <b>{event.artists[0]}</b></span>}
+        title={event.artists[0]}
+        subtitle={<span><b>{event.date}</b></span>}
         actionIcon={<IconButton><AddToPlaylist color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)}/></IconButton>}
       >
         <img src={this.state.artist.images[0].url || "/images/unknownartist.png"} />

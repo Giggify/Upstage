@@ -3,12 +3,12 @@ import {connect} from 'react-redux'
 import {GridList} from 'material-ui/GridList';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Subheader from 'material-ui/Subheader';
+import CheckBox from 'material-ui/svg-icons/toggle/check-box';
+import DatePicker from './DatePicker'
 
 import {fetchEvents} from '../actions/events'
-
 import SelectedArtistsBox from './SelectedArtistsBox'
 import ArtistTile from './ArtistTile'
-
 import Playlist from '../container/Playlist'
 
 const styles = {
@@ -78,8 +78,11 @@ class EventsList extends React.Component {
     return (
       <div className='Events-list-page'>
         <h1>Current Location: {this.props.match.params.name}</h1>
+
+
         <h1 className="eventlistheader">Events Between {this.props.minDate} and {this.props.maxDate}</h1>
       <Playlist />
+        <DatePicker />
         <SelectedArtistsBox artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
         <div style={styles.root}>
          <MuiThemeProvider>
@@ -107,8 +110,8 @@ const mapState2Props = (state) => {
     users:state.users,
     events: state.events.events,
     artists: state.events.artists,
-    minDate: state.minDate || "2017-01-01",
-    maxDate: state.maxDate || "2017-12-30"
+    minDate: state.users.minDate || "2017-01-01",
+    maxDate: state.users.maxDate || "2017-12-30"
   }
 }
 

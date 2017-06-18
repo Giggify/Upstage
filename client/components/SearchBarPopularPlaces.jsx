@@ -24,7 +24,7 @@ import {saveLocationId, saveLocationName} from '../actions/users'
    {value:{id:7644,name:{country:"US", name: "New York", state:"NY"}},
    displayName:'NYC, USA'},
    {value:{id:24426,name:{country:"UK", name: "London", state:" "}},
-   displayName:'Lonson, UK'}
+   displayName:'London, UK'}
  ]
 
 class PopularPlaces extends React.Component{

@@ -4,7 +4,7 @@ import nock from 'nock'
 
 const spotify = require('../../server/lib/spotify')
 
-<<<<<<< HEAD
+
 test.skip('faking passing test', t=>{
   t.pass()
 })
@@ -17,8 +17,7 @@ test('getArtistId returns an ArtistID', function(t) {
             t.is(actual, expected)
         })
 })
-=======
-import nock from 'nock'
+
 
 // test.cb('API route /events/locationID returns a json', (t) => {
 //   const data = {
@@ -43,4 +42,3 @@ import nock from 'nock'
 //       t.end()
 //       })
 //     })
->>>>>>> cd01b9a020606e6ad37aeb02745bd0cfe052e19a

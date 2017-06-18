@@ -13,6 +13,7 @@ class ArtistTile extends React.Component {
     let {artists} = props
     super(props)
     this.state = {
+      artist:undefined,
       tracksArray: [],
       artists,
       artist: {
@@ -30,36 +31,37 @@ class ArtistTile extends React.Component {
       .then((artist) => {
         if (artist) this.setState({artist})
       })
-      .then(() => {
-        let tracksArray = []
-          getTopTracks(this.state.artist.id)
-            .then((tracks) => {
-              tracks.map((track) => {
-                tracksArray.push(track.id)
-              })
-            })
-            .then(() => {
-              this.setState({tracksArray})
-            })
-      })
-
+      // .then(() => {
+      //   let tracksArray = []
+      //   if(this.state.artist!=undefined){
+      //     getTopTracks(this.state.artist.id)
+      //         .then((tracks) => {
+      //           if(tracks.status!=400){
+      //             tracks.map((track) => {
+      //               tracksArray.push(track.id)
+      //             })
+      //           }
+      //         })
+      //         .then(() => {
+      //           this.setState({tracksArray})
+      //         })
+      //   }
+      // })
   }
 
-  render() {
+  render(){
     let event = this.props.event || []
     let color = this.props.checkArtist(event.artists[0])
-
     return (
       <GridTile
         key={this.props.i}
-        title={event.gig}
-        subtitle={<span>Headline Act: <b>{event.artists[0]}</b></span>}
+        title={event.artists[0]}
+        subtitle={<span><b>{event.date}</b></span>}
         actionIcon={<IconButton><AddToPlaylist color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)}/></IconButton>}
       >
         <img src={this.state.artist.images[0].url || "/images/unknownartist.png"} />
       </GridTile>
     )
-
   }
 }
 

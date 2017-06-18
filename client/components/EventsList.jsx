@@ -33,10 +33,7 @@ class EventsList extends React.Component {
       selectedArtists: [], // push to this when they select an artist
       artistIDs: [], // this will be the end target of the filter, showing only events
       //within the date range.
-      selectedTracks: [],
-      minDate:this.props.minDate,
-      maxDate:this.props.maxDate,
-      what:'wtf'
+      selectedTracks: []  
     }
   }
   componentWillMount(){
@@ -65,12 +62,10 @@ class EventsList extends React.Component {
       if(filteredEvents===undefined){
         this.setState({
           events:events,
-          what:'doh'
         })
       } else {
         this.setState({
           events:filteredEvents,
-          what:'123'
         })
       }
   }

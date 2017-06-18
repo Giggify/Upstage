@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 import {GridTile} from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
-import CheckBox from 'material-ui/svg-icons/toggle/check-box';
+import AddToPlaylist from 'material-ui/svg-icons/AV/playlist-add';
 
 import {getArtistId} from '../api'
 import {fetchEvents} from '../actions/events'
@@ -31,7 +31,7 @@ return (
     key={this.props.i}
     title={event.gig}
     subtitle={<span>Headline Act: <b>{event.artists[0]}</b></span>}
-    actionIcon={<IconButton><CheckBox color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.trackIDs)}/></IconButton>}
+    actionIcon={<IconButton><AddToPlaylist color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.trackIDs)}/></IconButton>}
     >
       <img src={'https://vignette2.wikia.nocookie.net/mafiagame/images/2/23/Unknown_Person.png'} />
     </GridTile>

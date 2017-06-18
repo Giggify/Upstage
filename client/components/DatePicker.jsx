@@ -59,8 +59,12 @@ class DatePickerExampleToggle extends React.Component {
   componentWillMount(){
     if(this.props.minDate){
       this.setState({
-        minDate: this.props.min,
-        maxDate: this.props.max
+        minDate: this.props.minDate
+      })
+    }
+    if(this.props.maxDate){
+      this.setState({
+        maxDate: this.props.maxDate
       })
     }
   }
@@ -80,7 +84,7 @@ class DatePickerExampleToggle extends React.Component {
   };
 
   render() {
-    console.log(this.state.minDate)
+    console.log(this.state.ma)
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
       <div>
@@ -106,8 +110,8 @@ class DatePickerExampleToggle extends React.Component {
 
 const mapState2Props = (state)=>{
   return {
-    minDate:state.minDate,
-    maxDate:state.maxDate
+    minDate:state.users.minDate,
+    maxDate:state.users.maxDate
   }
 }
 

@@ -69,13 +69,11 @@ class EventsList extends React.Component {
   }
 
     render() {
-      console.log(this.state.selectedArtists)
       let artists = this.props.artists || []
       let events = this.props.events || []
     return (
       <div className='Events-list-page'>
         <h1>Current Location: {this.props.match.params.name}</h1>
-        <h1 className="eventlistheader">Events Between {this.props.minDate} and {this.props.maxDate}</h1>
         <DatePicker />
         <SelectedArtistsBox artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
         <button className="createplaylistbtn">Create Playlist</button>
@@ -107,6 +105,7 @@ class EventsList extends React.Component {
   }
 
 const mapState2Props = (state) => {
+  console.log(state.users)
   return {
     users:state.users,
     events: state.events.events,

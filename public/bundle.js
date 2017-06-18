@@ -15883,15 +15883,19 @@ var DatePickerExampleToggle = function (_React$Component) {
     value: function componentWillMount() {
       if (this.props.minDate) {
         this.setState({
-          minDate: this.props.min,
-          maxDate: this.props.max
+          minDate: this.props.minDate
+        });
+      }
+      if (this.props.maxDate) {
+        this.setState({
+          maxDate: this.props.maxDate
         });
       }
     }
   }, {
     key: 'render',
     value: function render() {
-      console.log(this.state.minDate);
+      console.log(this.state.ma);
       return _react2.default.createElement(
         _MuiThemeProvider2.default,
         { muiTheme: muiTheme },
@@ -15924,8 +15928,8 @@ var DatePickerExampleToggle = function (_React$Component) {
 
 var mapState2Props = function mapState2Props(state) {
   return {
-    minDate: state.minDate,
-    maxDate: state.maxDate
+    minDate: state.users.minDate,
+    maxDate: state.users.maxDate
   };
 };
 
@@ -28031,7 +28035,6 @@ var EventsList = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      console.log(this.state.selectedArtists);
       var artists = this.props.artists || [];
       var events = this.props.events || [];
       return _react2.default.createElement(
@@ -28042,14 +28045,6 @@ var EventsList = function (_React$Component) {
           null,
           'Current Location: ',
           this.props.match.params.name
-        ),
-        _react2.default.createElement(
-          'h1',
-          { className: 'eventlistheader' },
-          'Events Between ',
-          this.props.minDate,
-          ' and ',
-          this.props.maxDate
         ),
         _react2.default.createElement(_DatePicker2.default, null),
         _react2.default.createElement(_SelectedArtistsBox2.default, { artists: this.state.selectedArtists, deleteArtist: this.handleDeleteFromBox.bind(this) }),
@@ -28111,6 +28106,7 @@ var EventsList = function (_React$Component) {
 }(_react2.default.Component);
 
 var mapState2Props = function mapState2Props(state) {
+  console.log(state.users);
   return {
     users: state.users,
     events: state.events.events,
@@ -28480,7 +28476,6 @@ var Homepage = function Homepage(props) {
         state = _props$metro.state,
         country = _props$metro.country;
 
-    console.log(state);
     var metro = void 0;
     state === ' ' ? metro = city + '-' + country : metro = city + '-' + state + '-' + country;
     location.href = '#events/' + id + '/' + metro;

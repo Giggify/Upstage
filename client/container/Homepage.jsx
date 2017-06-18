@@ -9,7 +9,6 @@ const Homepage = (props)=>{
   const handleClick=()=>{
     let id=props.metro.locationID
     let {city,state,country}=props.metro
-    console.log(state)
     let metro
     state === ' ' ? metro=`${city}-${country}` : metro=`${city}-${state}-${country}`
     location.href=`#events/${id}/${metro}`

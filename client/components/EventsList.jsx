@@ -7,10 +7,8 @@ import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 import DatePicker from './DatePicker'
 
 import {fetchEvents} from '../actions/events'
-
 import SelectedArtistsBox from './SelectedArtistsBox'
 import ArtistTile from './ArtistTile'
-
 import Playlist from '../container/Playlist'
 
 const styles = {
@@ -63,18 +61,18 @@ class EventsList extends React.Component {
     if(selArtists.indexOf(artist) == -1) {
       this.mapArrayToState(tracksArray)
       this.setState({selectedArtists: [...selArtists,artist]})
-      console.log(this.state);
       }
     else {
       this.removeTrackIfExists(tracksArray, this.state.selectedTracks)
       this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist)})
-      console.log(this.state);
     }
   }
 
     mapArrayToState(tracksArray) {
       let selTracks = this.state.selectedTracks
-      tracksArray.map((track) => this.setState({selectedTracks: [...selTracks, track]}))
+      this.setState({
+        selectedTracks:["mango",...selTracks,...tracksArray]
+      })
     }
 
     removeTrackIfExists(tracksArray, stateTracksArray) {
@@ -95,11 +93,13 @@ class EventsList extends React.Component {
   }
 
     render() {
+      console.log(this.state.selectedTracks)
       let artists = this.props.artists || []
       let events = this.props.events || []
     return (
       <div className='Events-list-page'>
         <h1>Current Location: {this.props.match.params.name}</h1>
+        <Playlist />
         <DatePicker />
         <SelectedArtistsBox artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
         <div style={styles.root}>

@@ -7,15 +7,17 @@ import DatePicker from '../components/DatePicker'
 const Homepage = (props)=>{
 
   const handleClick=()=>{
-    let id=props.searchResults[0].id
-    let {name,state,country}=props.searchResults[0]
-    let city=`${name}-${state}-${country}`
-    location.href=`#events/${id}/${city}`
+    let id=props.metro.locationID
+    let {city,state,country}=props.metro
+    let metro
+    state === ' ' ? metro=`${city}-${country}` : metro=`${city}-${state}-${country}`
+    location.href=`#events/${id}/${metro}`
   }
 
   return(
     <div className='home-page'>
       <SearchBar />
+      <span>Optional</span>
       <DatePicker />
       <button onClick={()=>{handleClick()}}> Go </button>
     </div>
@@ -24,7 +26,7 @@ const Homepage = (props)=>{
 
 const mapState2Props = (state)=>{
   return {
-    searchResults:state.location.name
+    metro:state.users
   }
 }
 

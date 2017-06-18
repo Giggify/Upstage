@@ -28,6 +28,7 @@ class SelectedArtistsBox extends React.Component{
   }
 
   renderChip(data){
+    console.log(data);
     return(
       <Chip
         key={data.key}

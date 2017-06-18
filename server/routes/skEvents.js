@@ -72,7 +72,7 @@ router.get('/:locationID', (req,res) => {
           )
         })
       let artists = events.map((event)=> {
-        return event.artists[0]
+        return event.artists[0] //events.map((event) => getArtistId(event.artists[0]))
       })
       res.json({events,artists})
     }

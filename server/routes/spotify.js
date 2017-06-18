@@ -13,9 +13,7 @@ require('dotenv').config()
 
 const url = 'https://api.spotify.com'
 
-
-
-router.get('/:artistId/toptracks', (req, res) => {
+router.get('/artists/:artistId/toptracks', (req, res) => {
     request
     .get(`${url}/v1/artists/${req.params.artistId}/top-tracks?country=NZ`)
     .set('Authorization', `Bearer ${spotify.getConnection()}`)
@@ -25,7 +23,7 @@ router.get('/:artistId/toptracks', (req, res) => {
     })
 })
 
-router.get('/:artistId', (req, res) => {
+router.get('/artists/:artistId', (req, res) => {
   request
     .get(`${url}/v1/artists/${req.params.artistId}`)
     .set('Authorization', `Bearer ${spotify.getConnection()}`)
@@ -37,7 +35,7 @@ router.get('/:artistId', (req, res) => {
 
 router.get('/search/:searchStr', (req, res) => {
   request
-    .get(`${url}/v1/search?q=${req.params.searchStr}&type=artist`)
+    .get(`${url}/v1/search?q=${req.params.searchStr}&type=artist&limit=1`)
     .set('Authorization', `Bearer ${spotify.getConnection()}`)
     .set('Accept', 'application/json')
     .end((error, response) => {
@@ -56,14 +54,53 @@ router.get('/users/:id', (req, res) => {
 })
 
 // Protect all routes beneath this point
-router.use(
-  verifyJwt({
-    getToken: auth.getToken,
-    secret: auth.getSecret
-  }),
-  auth.handleError
-)
+// router.use(
+//   verifyJwt({
+//     getToken: auth.getToken,
+//     secret: auth.getSecret
+//   }),
+//   auth.handleError
+// )
 
 // These routes are protected
+
+router.post('/users/playlist'), (req,res) => {
+  request
+    .post(`${url}/v1/users/7g8xB3sDX6uMvXG0wlIFCE/playlist`)
+    .send({
+      "name": "New Upstage Playlist",
+      "public": true,
+      "collaborative": false,
+      "description": "Top tracks from artists performing near you"
+    })
+    .set('Authorization', req.user.accessToken)
+    .set('Accept', 'application/json')
+    .end((err,result) => {
+      if(err) {
+        alert('Oops! Playlist creation failed.')
+      }
+      else {
+        res.send(result.body)
+      }
+    })
+}
+
+router.post('/users/:id/playlist/:playlist_id/tracks'), (req,res) => {
+  request
+    .post(`${url}/v1/users/{req.params.id}/playlist/{req.params.playlist_id}/tracks`)
+    .send({
+      "uris": req.body.tracks
+    })
+    .set('Authorization', req.user.accessToken)
+    .set('Accept', 'application/json')
+    .end((err,result) => {
+      if(err) {
+        alert('Oops! Track addition failed.')
+      }
+      else {
+        res.sendStatus(201)
+      }
+    })
+}
 
 module.exports = router

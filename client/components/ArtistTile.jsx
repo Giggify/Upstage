@@ -42,13 +42,14 @@ class ArtistTile extends React.Component {
   }
 
   render(){
+    console.log(this.state.tracksArray)
     let event = this.props.event || []
     let color = this.props.checkArtist(event.artists[0])
     return (
       <GridTile
         key={this.props.i}
-        title={event.gig}
-        subtitle={<span>Headline Act: <b>{event.artists[0]}</b></span>}
+        title={event.artists[0]}
+        subtitle={<span><b>{event.date}</b></span>}
         actionIcon={
           <IconButton>
             <CheckBox color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)}/>

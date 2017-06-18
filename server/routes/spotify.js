@@ -64,9 +64,9 @@ router.use(
 
 // These routes are protected
 
-router.post('/users/:id/playlist'), (req,res) => {
+router.post('/users/playlist'), (req,res) => {
   request
-    .post(`${url}/v1/users/{req.params.id}/playlist`)
+    .post(`${url}/v1/users/${req.user.id}/playlist`)
     .send({
       "name": "New Upstage Playlist",
       "public": true,
@@ -80,14 +80,14 @@ router.post('/users/:id/playlist'), (req,res) => {
         alert('Oops! Playlist creation failed.')
       }
       else {
-        res.send(result.body)
+        res.send(result.body.id, req.user.id)
       }
     })
 }
 
-router.post('/users/:id/playlist/:playlist_id/tracks'), (req,res) => {
+router.post('/users/playlist/:playlist_id/tracks'), (req,res) => {
   request
-    .post(`${url}/v1/users/{req.params.id}/playlist/{req.params.playlist_id}/tracks`)
+    .post(`${url}/v1/users/${req.user.id}/playlist/${req.params.playlist_id}/tracks`)
     .send({
       "uris": req.body.tracks
     })

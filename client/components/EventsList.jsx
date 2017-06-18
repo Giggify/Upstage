@@ -7,6 +7,7 @@ import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 import DatePicker from './DatePicker'
 
 import {fetchEvents} from '../actions/events'
+import {createPlaylist, addTrackToPlaylist} from '../api'
 import SelectedArtistsBox from './SelectedArtistsBox'
 import ArtistTile from './ArtistTile'
 import Playlist from '../container/Playlist'
@@ -33,6 +34,10 @@ class EventsList extends React.Component {
       artistIDs: [], // this will be the end target of the filter, showing only events
       //within the date range.
       selectedTracks: [],
+      playlistID: '',
+      user: '',
+      show: false,
+      loadingPlaylist: true,
       events,
       users,
       artists,
@@ -55,6 +60,21 @@ class EventsList extends React.Component {
     })
   }
 
+  handlePlaylistCreation() {
+    this.setState({loadingPlaylist: true})
+    createPlaylist()
+      .then((id, user) => {
+      this.setState({playlistID: id, user: user})
+      let apiTracklist = []
+      let tracklist = this.state.selectedTracks
+      tracklist.forEach((track) => apiTracklist.push(`spotify:track:${track}`))
+      })
+      addTrackToPlaylist(apiTracklist)
+      .then(()=> {
+        this.setState({show: !this.state.show, loadingPlaylist: false});
+      })
+  }
+
   handleClick(e, artist, tracksArray) {
     e.preventDefault()
     let selTracks = this.state.selectedTracks
@@ -62,7 +82,8 @@ class EventsList extends React.Component {
     if(selArtists.indexOf(artist) == -1) {
       this.mapArrayToState(tracksArray)
       this.setState({selectedArtists: [...selArtists,artist]})
-    }else {
+    }
+    else {
       this.removeTrackIfExists(tracksArray, [...this.state.selectedTracks])
       this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist)})
     }
@@ -98,7 +119,7 @@ class EventsList extends React.Component {
     return (
       <div className='Events-list-page'>
         <h1>Current Location: {this.props.match.params.name}</h1>
-        <Playlist />
+        <Playlist handlePlaylist={this.handlePlaylistCreation.bind(this)} state={this.state}/>
         <DatePicker />
         <SelectedArtistsBox artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
         <div style={styles.root}>

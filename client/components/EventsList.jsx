@@ -32,6 +32,7 @@ class EventsList extends React.Component {
       selectedArtists: [], // push to this when they select an artist
       artistIDs: [], // this will be the end target of the filter, showing only events
       //within the date range.
+      selectedTracks: [],
       events,
       users,
       artists,
@@ -52,17 +53,33 @@ class EventsList extends React.Component {
       maxDate
     })
   }
-  handleClick(e, artist, artistId, tracksArray) {
+  handleClick(e, artist, tracksArray) {
     e.preventDefault()
-    console.log(tracksArray);
-    let selTracks = this.state.tracks
+    let selTracks = this.state.selectedTracks
     let selArtists= this.state.selectedArtists
-    let artIDs = this.state.artistIDs
-    let artistPresent = selArtists.indexOf(artist)
-    artistPresent == -1 ? this.setState({selectedArtists: [...selArtists,artist], artistIDs: [...artIDs,artistId]}) :
-    this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist),artistIDs: [...artIDs].filter((oldIDs)=> oldIDs != artistId)})
-
+    let delThisArtistTracks = this.removeTrackIfExists(tracksArray, selTracks)
+    if(selArtists.indexOf(artist) == -1) {
+      this.mapArrayToState(tracksArray)
+      this.setState({selectedArtists: [...selArtists,artist]})
+      console.log(this.state);
+      }
+    else {
+      this.removeTrackIfExists(tracksArray, this.state.selectedTracks)
+      this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist)})
+      console.log(this.state);
+    }
   }
+
+    mapArrayToState(tracksArray) {
+      let selTracks = this.state.selectedTracks
+      tracksArray.map((track) => this.setState({selectedTracks: [...selTracks, track]}))
+    }
+
+    removeTrackIfExists(tracksArray, stateTracksArray) {
+      return stateTracksArray.filter((track) => {
+        return tracksArray.indexOf(track) == -1 ? track : null
+      })
+    }
 
   checkArtistSelected(artist){
     if (this.state.selectedArtists.indexOf(artist) == -1) return "white"

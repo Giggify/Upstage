@@ -56,7 +56,7 @@ class ArtistTile extends React.Component {
         subtitle={<span>Headline Act: <b>{event.artists[0]}</b></span>}
         actionIcon={
           <IconButton>
-            <CheckBox color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.artistID,this.state.tracksArray)}/>
+            <CheckBox color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)}/>
           </IconButton>}
       >
         <img src={this.state.artist.images[0].url} />

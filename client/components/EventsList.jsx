@@ -82,9 +82,11 @@ class EventsList extends React.Component {
     if(selArtists.indexOf(artist) == -1) {
       this.mapArrayToState(tracksArray)
       this.setState({selectedArtists: [...selArtists,artist]})
-    }else {
-      this.removeTrackIfExists(tracksArray, [...this.state.selectedTracks])
-      this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist)})
+    } else {
+      this.setState({
+        selectedTracks: this.removeTrackIfExists(tracksArray, [...this.state.selectedTracks]),
+        selectedArtists: [...selArtists].filter((name)=> name != artist)
+      })
     }
   }
 

@@ -41,9 +41,6 @@ class ArtistTile extends React.Component {
             .then(() => {
               this.setState({tracksArray})
             })
-            .then(() => {
-              console.log(this.state.tracksArray);
-            })
       })
 
   }
@@ -57,7 +54,10 @@ class ArtistTile extends React.Component {
         key={this.props.i}
         title={event.gig}
         subtitle={<span>Headline Act: <b>{event.artists[0]}</b></span>}
-        actionIcon={<IconButton><CheckBox color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.artistID)}/></IconButton>}
+        actionIcon={
+          <IconButton>
+            <CheckBox color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.artistID,this.state.tracksArray)}/>
+          </IconButton>}
       >
         <img src={this.state.artist.images[0].url} />
       </GridTile>

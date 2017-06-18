@@ -52,9 +52,9 @@ class EventsList extends React.Component {
       maxDate
     })
   }
-  handleClick(e, artist, artistId) {
+  handleClick(e, artist, artistId, tracksArray) {
     e.preventDefault()
-    let tracksArray = []
+    console.log(tracksArray);
     let selTracks = this.state.tracks
     let selArtists= this.state.selectedArtists
     let artIDs = this.state.artistIDs

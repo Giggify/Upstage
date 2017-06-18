@@ -27852,8 +27852,6 @@ var ArtistTile = function (_React$Component) {
           });
         }).then(function () {
           _this2.setState({ tracksArray: tracksArray });
-        }).then(function () {
-          console.log(_this2.state.tracksArray);
         });
       });
     }
@@ -27884,7 +27882,7 @@ var ArtistTile = function (_React$Component) {
             _IconButton2.default,
             null,
             _react2.default.createElement(_checkBox2.default, { color: color, onClick: function onClick(e) {
-                return _this3.props.handleClick(e, event.artists[0], _this3.state.artistID);
+                return _this3.props.handleClick(e, event.artists[0], _this3.state.artistID, _this3.state.tracksArray);
               } })
           )
         },
@@ -28172,9 +28170,9 @@ var EventsList = function (_React$Component) {
     }
   }, {
     key: 'handleClick',
-    value: function handleClick(e, artist, artistId) {
+    value: function handleClick(e, artist, artistId, tracksArray) {
       e.preventDefault();
-      var tracksArray = [];
+      console.log(tracksArray);
       var selTracks = this.state.tracks;
       var selArtists = this.state.selectedArtists;
       var artIDs = this.state.artistIDs;

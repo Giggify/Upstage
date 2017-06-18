@@ -13,16 +13,10 @@ class ArtistTile extends React.Component {
     let {artists} = props
     super(props)
     this.state = {
+      artist:undefined,
       tracksArray: [],
       artistID: '',
-      trackIDs: []
-      artist: {
-        images: [
-          {
-            url: '/images/unknownartist.png'
-          }
-        ]
-      },
+      trackIDs: [],
     tracks: []
     }
   }
@@ -33,23 +27,23 @@ class ArtistTile extends React.Component {
       })
       .then(() => {
         let tracksArray = []
+        if(this.state.artist!=undefined){
           getTopTracks(this.state.artist.id)
-            .then((tracks) => {
-              tracks.map((track) => {
-                tracksArray.push(track.id)
+              .then((tracks) => {
+                tracks.map((track) => {
+                  tracksArray.push(track.id)
+                })
               })
-            })
-            .then(() => {
-              this.setState({tracksArray})
-            })
+              .then(() => {
+                this.setState({tracksArray})
+              })
+        }
       })
-
   }
 
-  render() {
+  render(){
     let event = this.props.event || []
     let color = this.props.checkArtist(event.artists[0])
-
     return (
       <GridTile
         key={this.props.i}
@@ -60,7 +54,8 @@ class ArtistTile extends React.Component {
             <CheckBox color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)}/>
           </IconButton>}
       >
-        <img src={this.state.artist.images[0].url} />
+        {this.state.artist===undefined ? <img src='/images/unknownartist.png' /> : <img src={this.state.artist.images[0].url} />
+        }
       </GridTile>
     )
   }

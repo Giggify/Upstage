@@ -27825,6 +27825,7 @@ var ArtistTile = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (ArtistTile.__proto__ || Object.getPrototypeOf(ArtistTile)).call(this, props));
 
     _this.state = {
+      tracksArray: [],
       artists: artists,
       artist: {
         images: [{
@@ -27843,6 +27844,17 @@ var ArtistTile = function (_React$Component) {
 
       (0, _api.getArtist)(this.props.event.artists[0]).then(function (artist) {
         _this2.setState({ artist: artist });
+      }).then(function () {
+        var tracksArray = [];
+        (0, _api.getTopTracks)(_this2.state.artist.id).then(function (tracks) {
+          tracks.map(function (track) {
+            tracksArray.push(track.id);
+          });
+        }).then(function () {
+          _this2.setState({ tracksArray: tracksArray });
+        }).then(function () {
+          console.log(_this2.state.tracksArray);
+        });
       });
     }
   }, {
@@ -28122,6 +28134,7 @@ var EventsList = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (EventsList.__proto__ || Object.getPrototypeOf(EventsList)).call(this, props));
 
     _this.state = {
+      tracksArray: [],
       selectedArtists: [], // push to this when they select an artist
       artistIDs: [], // this will be the end target of the filter, showing only events
       //within the date range.
@@ -28159,16 +28172,17 @@ var EventsList = function (_React$Component) {
     }
   }, {
     key: 'handleClick',
-    value: function handleClick(e, artist, id) {
+    value: function handleClick(e, artist, artistId) {
       e.preventDefault();
-      console.log(this.state.selectedArtists, this.state.artistIDs);
+      var tracksArray = [];
+      var selTracks = this.state.tracks;
       var selArtists = this.state.selectedArtists;
       var artIDs = this.state.artistIDs;
       var artistPresent = selArtists.indexOf(artist);
-      artistPresent == -1 ? this.setState({ selectedArtists: [].concat(_toConsumableArray(selArtists), [artist]), artistIDs: [].concat(_toConsumableArray(artIDs), [id]) }) : this.setState({ selectedArtists: [].concat(_toConsumableArray(selArtists)).filter(function (name) {
+      artistPresent == -1 ? this.setState({ selectedArtists: [].concat(_toConsumableArray(selArtists), [artist]), artistIDs: [].concat(_toConsumableArray(artIDs), [artistId]) }) : this.setState({ selectedArtists: [].concat(_toConsumableArray(selArtists)).filter(function (name) {
           return name != artist;
         }), artistIDs: [].concat(_toConsumableArray(artIDs)).filter(function (oldIDs) {
-          return oldIDs != id;
+          return oldIDs != artistId;
         }) });
     }
   }, {

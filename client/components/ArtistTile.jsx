@@ -13,6 +13,7 @@ class ArtistTile extends React.Component {
     let {artists} = props
     super(props)
     this.state = {
+      tracksArray: [],
       artists,
       artist: {
         images: [
@@ -28,6 +29,21 @@ class ArtistTile extends React.Component {
     getArtist(this.props.event.artists[0])
       .then((artist) => {
         this.setState({artist})
+      })
+      .then(() => {
+        let tracksArray = []
+          getTopTracks(this.state.artist.id)
+            .then((tracks) => {
+              tracks.map((track) => {
+                tracksArray.push(track.id)
+              })
+            })
+            .then(() => {
+              this.setState({tracksArray})
+            })
+            .then(() => {
+              console.log(this.state.tracksArray);
+            })
       })
 
   }

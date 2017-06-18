@@ -28,6 +28,7 @@ class EventsList extends React.Component {
     let {events,users,artists,minDate,maxDate,dispatch} = props
     super(props)
     this.state = {
+      tracksArray: [],
       selectedArtists: [], // push to this when they select an artist
       artistIDs: [], // this will be the end target of the filter, showing only events
       //within the date range.
@@ -51,14 +52,16 @@ class EventsList extends React.Component {
       maxDate
     })
   }
-  handleClick(e,artist,id) {
+  handleClick(e, artist, artistId) {
     e.preventDefault()
-    console.log(this.state.selectedArtists,this.state.artistIDs);
+    let tracksArray = []
+    let selTracks = this.state.tracks
     let selArtists= this.state.selectedArtists
     let artIDs = this.state.artistIDs
     let artistPresent = selArtists.indexOf(artist)
-    artistPresent==-1 ? this.setState({selectedArtists: [...selArtists,artist], artistIDs: [...artIDs,id]}) :
-    this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist),artistIDs: [...artIDs].filter((oldIDs)=> oldIDs != id)})
+    artistPresent == -1 ? this.setState({selectedArtists: [...selArtists,artist], artistIDs: [...artIDs,artistId]}) :
+    this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist),artistIDs: [...artIDs].filter((oldIDs)=> oldIDs != artistId)})
+
   }
 
   checkArtistSelected(artist){

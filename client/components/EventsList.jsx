@@ -67,6 +67,8 @@ class EventsList extends React.Component {
       this.setState({playlistID: id, user: user})
       let apiTracklist = []
       let tracklist = this.state.selectedTracks
+      console.log("####")
+      console.log(tracklist)
       tracklist.forEach((track) => apiTracklist.push(`spotify:track:${track}`))
       })
       addTrackToPlaylist(apiTracklist)

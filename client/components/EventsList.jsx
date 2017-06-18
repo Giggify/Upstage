@@ -105,7 +105,6 @@ class EventsList extends React.Component {
   }
 
 const mapState2Props = (state) => {
-  console.log(state.users)
   return {
     users:state.users,
     events: state.events.events,

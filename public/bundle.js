@@ -15895,7 +15895,6 @@ var DatePickerExampleToggle = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      console.log(this.state.ma);
       return _react2.default.createElement(
         _MuiThemeProvider2.default,
         { muiTheme: muiTheme },
@@ -28106,7 +28105,6 @@ var EventsList = function (_React$Component) {
 }(_react2.default.Component);
 
 var mapState2Props = function mapState2Props(state) {
-  console.log(state.users);
   return {
     users: state.users,
     events: state.events.events,
@@ -28219,6 +28217,10 @@ var _events = __webpack_require__(155);
 
 var _users = __webpack_require__(156);
 
+var _SearchBarPopularPlaces = __webpack_require__(647);
+
+var _SearchBarPopularPlaces2 = _interopRequireDefault(_SearchBarPopularPlaces);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -28254,6 +28256,7 @@ var SearchBar = function (_React$Component) {
     }, _this.handleClick = function () {
       _this.props.dispatch((0, _locations.fetchLocations)(_this.state.value));
     }, _this.handleSelect = function (result) {
+      console.log(result);
       _this.setState({
         value: result.name + ' ' + result.state + ' ' + result.country,
         showResults: false
@@ -28278,6 +28281,7 @@ var SearchBar = function (_React$Component) {
         _react2.default.createElement(
           'div',
           { className: 'search-bar' },
+          _react2.default.createElement(_SearchBarPopularPlaces2.default, null),
           _react2.default.createElement(_materialUi.TextField, {
             id: 'text-field-controlled',
             hintText: 'city name',
@@ -71308,6 +71312,162 @@ module.exports = function() {
 	throw new Error("define cannot be used indirect");
 };
 
+
+/***/ }),
+/* 647 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _IconMenu = __webpack_require__(421);
+
+var _IconMenu2 = _interopRequireDefault(_IconMenu);
+
+var _MenuItem = __webpack_require__(125);
+
+var _MenuItem2 = _interopRequireDefault(_MenuItem);
+
+var _IconButton = __webpack_require__(45);
+
+var _IconButton2 = _interopRequireDefault(_IconButton);
+
+var _place = __webpack_require__(648);
+
+var _place2 = _interopRequireDefault(_place);
+
+var _MuiThemeProvider = __webpack_require__(75);
+
+var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
+
+var _reactRedux = __webpack_require__(64);
+
+var _users = __webpack_require__(156);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * The `maxHeight` property limits the height of the menu, above which it will be scrollable.
+ */
+
+var savedPlaces = [{ value: { id: 31455, name: { country: "New Zealand", name: "Wellington", state: " " } },
+  displayName: 'Wellington, NZ' }, { value: { id: 31422, name: { country: "New Zealand", name: "Auckland", state: " " } },
+  displayName: 'Auckland, NZ' }, { value: { id: 31443, name: { country: "New Zealand", name: "Christchurch", state: " " } },
+  displayName: 'Christchurch, NZ' }, { value: { id: 26790, name: { country: "Australia", name: "Melbourne", state: "VIC" } },
+  displayName: 'Melbourne, AUS' }, { value: { id: 7644, name: { country: "US", name: "New York", state: "NY" } },
+  displayName: 'NYC, USA' }, { value: { id: 24426, name: { country: "UK", name: "London", state: " " } },
+  displayName: 'Lonson, UK' }];
+
+var PopularPlaces = function (_React$Component) {
+  _inherits(PopularPlaces, _React$Component);
+
+  function PopularPlaces() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, PopularPlaces);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = PopularPlaces.__proto__ || Object.getPrototypeOf(PopularPlaces)).call.apply(_ref, [this].concat(args))), _this), _this.handleChange = function (event, value) {
+      _this.props.dispatch((0, _users.saveLocationId)(value.id));
+      _this.props.dispatch((0, _users.saveLocationName)(value.name));
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(PopularPlaces, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        'Choose a popular city',
+        _react2.default.createElement(
+          _MuiThemeProvider2.default,
+          null,
+          _react2.default.createElement(
+            _IconMenu2.default,
+            {
+              iconButtonElement: _react2.default.createElement(
+                _IconButton2.default,
+                null,
+                _react2.default.createElement(_place2.default, null)
+              ),
+              anchorOrigin: { horizontal: 'left', vertical: 'top' },
+              targetOrigin: { horizontal: 'left', vertical: 'top' },
+              maxHeight: 272,
+              onChange: this.handleChange
+            },
+            savedPlaces.map(function (place, index) {
+              return _react2.default.createElement(_MenuItem2.default, { key: index, value: place.value, primaryText: place.displayName });
+            })
+          )
+        )
+      );
+    }
+  }]);
+
+  return PopularPlaces;
+}(_react2.default.Component);
+
+exports.default = (0, _reactRedux.connect)()(PopularPlaces);
+
+/***/ }),
+/* 648 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _pure = __webpack_require__(21);
+
+var _pure2 = _interopRequireDefault(_pure);
+
+var _SvgIcon = __webpack_require__(20);
+
+var _SvgIcon2 = _interopRequireDefault(_SvgIcon);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var MapsPlace = function MapsPlace(props) {
+  return _react2.default.createElement(
+    _SvgIcon2.default,
+    props,
+    _react2.default.createElement('path', { d: 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z' })
+  );
+};
+MapsPlace = (0, _pure2.default)(MapsPlace);
+MapsPlace.displayName = 'MapsPlace';
+MapsPlace.muiName = 'SvgIcon';
+
+exports.default = MapsPlace;
 
 /***/ })
 /******/ ]);

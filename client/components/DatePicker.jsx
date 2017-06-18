@@ -84,7 +84,6 @@ class DatePickerExampleToggle extends React.Component {
   };
 
   render() {
-    console.log(this.state.ma)
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
       <div>

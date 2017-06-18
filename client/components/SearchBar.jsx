@@ -8,6 +8,7 @@ injectTapEventPlugin();
 import {fetchLocations} from '../actions/locations'
 import {fetchEvents} from '../actions/events'
 import {saveLocationId, saveLocationName} from '../actions/users'
+import PopularPlaces from './SearchBarPopularPlaces'
 
 class SearchBar extends React.Component{
   state={
@@ -26,6 +27,7 @@ class SearchBar extends React.Component{
     this.props.dispatch(fetchLocations(this.state.value))
   }
   handleSelect = (result) => {
+    console.log(result)
     this.setState({
       value:`${result.name} ${result.state} ${result.country}`,
       showResults:false,
@@ -43,6 +45,7 @@ class SearchBar extends React.Component{
     return (
     <MuiThemeProvider>
       <div className='search-bar'>
+        <PopularPlaces />
         <TextField
           id='text-field-controlled'
           hintText="city name"

@@ -85,16 +85,17 @@ router.post('/users/playlist', (req,res) => {
 
 
 router.post('/users/playlist/:playlist_id/tracks', (req,res) => {
+  console.log(req.body);
   request
-    .post(`${url}/v1/users/${req.user.id}/playlist/${req.params.playlist_id}/tracks`)
+    .post(`${url}/v1/users/${req.user.id}/playlists/${req.params.playlist_id}/tracks`)
     .send({
-      "uris": req.body.tracks
+      "uris": req.body
     })
-    .set('Authorization', req.user.accessToken)
+    .set('Authorization', `Bearer ${req.user.accessToken}`)
     .set('Accept', 'application/json')
     .end((err,result) => {
       if(err) {
-        alert('Oops! Track addition failed.')
+        console.log(err);
       }
       else {
         res.sendStatus(201)

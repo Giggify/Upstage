@@ -65,7 +65,7 @@ export function createPlaylist() {
     request
       .post('/api/v1/spotify/users/playlist')
       .send({
-        "name": "New Upstage Playlist",
+        "name": "Test Upstage Playlist",
         "public": true,
         "collaborative": false,
         "description": "Top tracks from artists performing near you"
@@ -78,6 +78,7 @@ export function createPlaylist() {
 
 export function addTrackToPlaylist(tracks, playlist_id) {
   return new Promise((resolve, reject) => {
+    console.log(tracks+" is tracks");
     request
       .post(`/api/v1/spotify/users/playlist/${playlist_id}/tracks`)
       .send(tracks)

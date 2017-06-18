@@ -6,28 +6,26 @@ import IconButton from 'material-ui/IconButton';
 import AddToPlaylist from 'material-ui/svg-icons/AV/playlist-add';
 
 import {getArtist, getTopTracks} from '../api'
-import {fetchEvents} from '../actions/events'
 
 class ArtistTile extends React.Component {
   constructor(props) {
-    let {artists} = props
     super(props)
     this.state = {
-      artist:undefined,
       tracksArray: [],
-      artists,
       artist: {
-        images: [
-          {
-            url: '/images/unknownartist.png'
-          }
-        ]
+        images: [{url: '/images/unknownartist.png'}]
       },
       tracks: []
     }
   }
-  componentDidMount() {
+  componentWillMount(){
     getArtist(this.props.event.artists[0])
+      .then((artist) => {
+        if (artist) this.setState({artist})
+      })
+  }
+  componentWillReceiveProps(nextProps) {
+    getArtist(nextProps.event.artists[0])
       .then((artist) => {
         if (artist) this.setState({artist})
       })
@@ -65,10 +63,4 @@ class ArtistTile extends React.Component {
   }
 }
 
-  const mapState2Props = (state) => {
-    return {
-      artists: state.events.artists
-    }
-  }
-
-  export default ArtistTile
+export default ArtistTile

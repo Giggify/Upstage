@@ -23,9 +23,10 @@ const styles = {
   },
 };
 
+let filteredEvents
+
 class EventsList extends React.Component {
   constructor(props) {
-    let {events,users,artists,minDate,maxDate,dispatch} = props
     super(props)
     this.state = {
       tracksArray: [],
@@ -33,64 +34,45 @@ class EventsList extends React.Component {
       artistIDs: [], // this will be the end target of the filter, showing only events
       //within the date range.
       selectedTracks: [],
-      events,
-      users,
-      artists,
-      minDate,
-      maxDate,
-      dispatch
+      minDate:this.props.minDate,
+      maxDate:this.props.maxDate,
+      what:'wtf'
     }
   }
   componentWillMount(){
     this.props.dispatch(fetchEvents(this.props.match.params.id))
-    if (this.state.minDate || this.state.maxDate) {
-      console.log('yeah yeah')
-      let unfilteredEvents=this.state.events
-      let minUnix=Date.parse(this.state.minDate)
-      let maxUnix=Date.parse(this.state.maxDate)
-      const fitsDates=(event)=>{
-        let eventDateUnix=new Date(event.date).getTime()
-        return (
-          minUnix <= eventDateUnix <= maxUnix
-        )
-      }
-      let filteredEvents=unfilteredEvents.filter(fitsDates)
-      this.setState({
-        events:filteredEvents
-      })
-    }
   }
 
-  componentWillReceiveProps({events,users,artists,minDate,maxDate,selectedTracks}) {
-    this.setState({
-      events,
-      users,
-      artists,
-      minDate,
-      maxDate
-    })
-    if (minDate || maxDate) {
-      let unfilteredEvents=this.state.events
-      let minUnix=Date.parse(minDate)
-      let maxUnix=Date.parse(maxDate)
-      const fitsDates=(event)=>{
-        let eventDateUnix=new Date(event.date).getTime()
-        if (minUnix && !maxUnix) {
-          return minUnix <= eventDateUnix
+  componentWillReceiveProps({minDate,maxDate,events}) {
+      if (minDate || maxDate) {
+        let unfilteredEvents=events
+        let minUnix=Date.parse(minDate)
+        let maxUnix=Date.parse(maxDate)
+        const fitsDates=(event)=>{
+          let eventDateUnix=new Date(event.date).getTime()
+          if (minUnix && !maxUnix) {
+            return minUnix <= eventDateUnix
+          }
+          if (maxUnix && !minUnix) {
+            return eventDateUnix<= maxUnix
+          }
+          if (minUnix && maxUnix){
+            return minUnix <= eventDateUnix && eventDateUnix<= maxUnix
+          }
         }
-        if (maxUnix && !minUnix) {
-          return eventDateUnix<= maxUnix
-        }
-        if (minUnix && maxUnix){
-          return minUnix <= eventDateUnix && eventDateUnix<= maxUnix
-        }
+        filteredEvents=unfilteredEvents.filter(fitsDates)
       }
-      let filteredEvents=unfilteredEvents.filter(fitsDates)
-      console.log('apple',filteredEvents)
-      this.setState({
-        events:filteredEvents
-      })
-    }
+      if(filteredEvents===undefined){
+        this.setState({
+          events:events,
+          what:'doh'
+        })
+      } else {
+        this.setState({
+          events:filteredEvents,
+          what:'123'
+        })
+      }
   }
 
   handleClick(e, artist, tracksArray) {
@@ -130,9 +112,7 @@ class EventsList extends React.Component {
   }
 
     render() {
-      console.log(this.state.maxDate)
-      let artists = this.props.artists || []
-      let events = this.props.events || []
+      let events = this.state.events || []
     return (
       <div className='Events-list-page'>
         <h1>Current Location: {this.props.match.params.name}</h1>

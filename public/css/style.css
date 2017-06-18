@@ -44,6 +44,8 @@ body{
   height: 50px;
   margin: auto;
   padding: 5px;
+  font-family: 'Lato';
+  font-size: 20px;
   display: flex;
 }
 .spotifylogo {

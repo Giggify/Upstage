@@ -68,8 +68,9 @@ class EventsList extends React.Component {
       let apiTracklist = tracklist.map((track) =>
       `spotify:track:${track}`)
       addTrackToPlaylist(apiTracklist,this.state.playlistID)
-      .then(()=> {
-      this.setState({show: !this.state.show, loadingPlaylist: false});
+      .then((result2)=> {
+        console.log(result2);
+      this.setState({show: !this.state.show, loadingPlaylist: false, user:result2});
       })
     })
   }

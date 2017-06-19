@@ -24,8 +24,6 @@ const styles = {
   },
 };
 
-let filteredEvents
-
 class EventsList extends React.Component {
   constructor(props) {
     let {events,users,artists,minDate,maxDate,dispatch} = props
@@ -40,44 +38,25 @@ class EventsList extends React.Component {
       user: '',
       show: false,
       loadingPlaylist: true,
-      minDate:this.props.minDate,
-      maxDate:this.props.maxDate
+      events,
+      users,
+      artists,
+      minDate,
+      maxDate,
+      dispatch
     }
   }
   componentWillMount(){
     this.props.dispatch(fetchEvents(this.props.match.params.id))
   }
-
-  componentWillReceiveProps({minDate,maxDate,events}) {
-    if (minDate || maxDate) {
-      let unfilteredEvents=events
-      let minUnix=Date.parse(minDate)
-      let maxUnix=Date.parse(maxDate)
-      const fitsDates=(event)=>{
-        let eventDateUnix=new Date(event.date).getTime()
-        if (minUnix && !maxUnix) {
-          return minUnix <= eventDateUnix
-        }
-        if (maxUnix && !minUnix) {
-          return eventDateUnix<= maxUnix
-        }
-        if (minUnix && maxUnix){
-          return minUnix <= eventDateUnix && eventDateUnix<= maxUnix
-        }
-      }
-      filteredEvents=unfilteredEvents.filter(fitsDates)
-    }
-    if(filteredEvents===undefined){
-      this.setState({
-        events:events,
-        what:'doh'
-      })
-    } else {
-      this.setState({
-        events:filteredEvents,
-        what:'123'
-      })
-    }
+  componentWillReceiveProps({events,users,artists,minDate,maxDate,selectedTracks}) {
+    this.setState({
+      events,
+      users,
+      artists,
+      minDate,
+      maxDate
+    })
   }
 
   handlePlaylistCreation() {
@@ -89,9 +68,8 @@ class EventsList extends React.Component {
       let apiTracklist = tracklist.map((track) =>
       `spotify:track:${track}`)
       addTrackToPlaylist(apiTracklist,this.state.playlistID)
-      .then((result2)=> {
-        console.log(result2);
-      this.setState({show: !this.state.show, loadingPlaylist: false, user:result2});
+      .then((userid)=> {
+      this.setState({show: !this.state.show, loadingPlaylist: false, user: userid});
       })
     })
   }
@@ -101,7 +79,6 @@ class EventsList extends React.Component {
     let selTracks = this.state.selectedTracks
     let selArtists= this.state.selectedArtists
     if(selArtists.indexOf(artist) == -1) {
-      console.log(tracksArray);
       this.mapArrayToState(tracksArray)
       this.setState({selectedArtists: [...selArtists,artist]})
     }
@@ -136,7 +113,7 @@ class EventsList extends React.Component {
 
     render() {
       let artists = this.props.artists || []
-      let events = this.state.events || []
+      let events = this.props.events || []
       console.log(this.state.selectedTracks);
     return (
       <div className='Events-list-page'>
@@ -171,8 +148,9 @@ const mapState2Props = (state) => {
     events: state.events.events,
     artists: state.events.artists,
     selectedArtists: state.selectedArtists,
-    minDate: state.users.minDate,
-    maxDate: state.users.maxDate
+    minDate: state.users.minDate || "2017-01-01",
+    maxDate: state.users.maxDate || "2017-12-30"
+
   }
 }
 

@@ -39,7 +39,9 @@ class EventsList extends React.Component {
       playlistID: '',
       user: '',
       show: false,
-      loadingPlaylist: true
+      loadingPlaylist: true,
+      minDate:this.props.minDate,
+      maxDate:this.props.maxDate
     }
   }
   componentWillMount(){
@@ -47,33 +49,35 @@ class EventsList extends React.Component {
   }
 
   componentWillReceiveProps({minDate,maxDate,events}) {
-      if (minDate || maxDate) {
-        let unfilteredEvents=events
-        let minUnix=Date.parse(minDate)
-        let maxUnix=Date.parse(maxDate)
-        const fitsDates=(event)=>{
-          let eventDateUnix=new Date(event.date).getTime()
-          if (minUnix && !maxUnix) {
-            return minUnix <= eventDateUnix
-          }
-          if (maxUnix && !minUnix) {
-            return eventDateUnix<= maxUnix
-          }
-          if (minUnix && maxUnix){
-            return minUnix <= eventDateUnix && eventDateUnix<= maxUnix
-          }
+    if (minDate || maxDate) {
+      let unfilteredEvents=events
+      let minUnix=Date.parse(minDate)
+      let maxUnix=Date.parse(maxDate)
+      const fitsDates=(event)=>{
+        let eventDateUnix=new Date(event.date).getTime()
+        if (minUnix && !maxUnix) {
+          return minUnix <= eventDateUnix
         }
-        filteredEvents=unfilteredEvents.filter(fitsDates)
+        if (maxUnix && !minUnix) {
+          return eventDateUnix<= maxUnix
+        }
+        if (minUnix && maxUnix){
+          return minUnix <= eventDateUnix && eventDateUnix<= maxUnix
+        }
       }
-      if(filteredEvents===undefined){
-        this.setState({
-          events:events,
-        })
-      } else {
-        this.setState({
-          events:filteredEvents,
-        })
-      }
+      filteredEvents=unfilteredEvents.filter(fitsDates)
+    }
+    if(filteredEvents===undefined){
+      this.setState({
+        events:events,
+        what:'doh'
+      })
+    } else {
+      this.setState({
+        events:filteredEvents,
+        what:'123'
+      })
+    }
   }
 
   handlePlaylistCreation() {
@@ -97,6 +101,7 @@ class EventsList extends React.Component {
     let selTracks = this.state.selectedTracks
     let selArtists= this.state.selectedArtists
     if(selArtists.indexOf(artist) == -1) {
+      console.log(tracksArray);
       this.mapArrayToState(tracksArray)
       this.setState({selectedArtists: [...selArtists,artist]})
     }
@@ -131,7 +136,7 @@ class EventsList extends React.Component {
 
     render() {
       let artists = this.props.artists || []
-      let events = this.props.events || []
+      let events = this.state.events || []
       console.log(this.state.selectedTracks);
     return (
       <div className='Events-list-page'>

@@ -54,6 +54,8 @@ router.get('/users/:id', (req, res) => {
 })
 
 // Protect all routes beneath this point
+// console.log(auth.getSecret())
+
 router.use(
   verifyJwt({
     getToken: auth.getToken,
@@ -63,44 +65,42 @@ router.use(
 )
 
 // These routes are protected
-
-router.post('/users/:id/playlist'), (req,res) => {
+router.post('/users/playlist', (req,res) => {
   request
-    .post(`${url}/v1/users/{req.params.id}/playlist`)
+  .post(`${url}/v1/users/${req.user.id}/playlists`)
+  .send(req.body)
+  .set('Authorization',  `Bearer ${req.user.accessToken}`)
+  .set('Accept', 'application/json')
+  .end((err,result) => {
+    if(err) {
+      console.log(err)
+    }
+    else {
+      console.log(result.body.id)
+      res.status(201).send(result.body)
+
+    }
+  })
+})
+
+
+router.post('/users/playlist/:playlist_id/tracks', (req,res) => {
+  console.log(req.body+"is the req body???");
+  request
+    .post(`${url}/v1/users/${req.user.id}/playlists/${req.params.playlist_id}/tracks`)
     .send({
-      "name": "New Upstage Playlist",
-      "public": true,
-      "collaborative": false,
-      "description": "Top tracks from artists performing near you"
+      "uris": req.body
     })
-    .set('Authorization', req.user.accessToken)
+    .set('Authorization', `Bearer ${req.user.accessToken}`)
     .set('Accept', 'application/json')
     .end((err,result) => {
       if(err) {
-        alert('Oops! Playlist creation failed.')
+        console.log(err);
       }
       else {
-        res.send(result.body)
+        res.status(201).send(req.user.id)
       }
     })
-}
-
-router.post('/users/:id/playlist/:playlist_id/tracks'), (req,res) => {
-  request
-    .post(`${url}/v1/users/{req.params.id}/playlist/{req.params.playlist_id}/tracks`)
-    .send({
-      "uris": req.body.tracks
-    })
-    .set('Authorization', req.user.accessToken)
-    .set('Accept', 'application/json')
-    .end((err,result) => {
-      if(err) {
-        alert('Oops! Track addition failed.')
-      }
-      else {
-        res.sendStatus(201)
-      }
-    })
-}
+})
 
 module.exports = router

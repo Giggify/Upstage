@@ -20,6 +20,24 @@ export function fetchLocationsSuccess(res){
   }
 }
 
+
+function filterLocation (locations) { //filter location to remove duplicates
+    var obj = {};
+
+    for ( var i=0, len=locations.length; i < len; i++ ){
+        obj[locations[i]['id']] = locations[i];
+    }
+
+    locations = new Array();
+
+    for ( var key in obj ) {
+        locations.push(obj[key]);
+    }
+
+    return locations
+
+ }
+
 export function fetchLocations(cityName){
   return (dispatch) => {
     dispatch(fetchLocationsRequest())
@@ -29,7 +47,8 @@ export function fetchLocations(cityName){
         if (err) {
           dispatch((fetchLocationsFailure(err)))
         } else {
-          dispatch((fetchLocationsSuccess(res.body)))
+
+          dispatch(fetchLocationsSuccess(filterLocation(res.body)))
         }
       })
   }

@@ -7,6 +7,7 @@ import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 import DatePicker from './DatePicker'
 
 import {fetchEvents} from '../actions/events'
+import {createPlaylist, addTrackToPlaylist} from '../api'
 import SelectedArtistsBox from './SelectedArtistsBox'
 import ArtistTile from './ArtistTile'
 import Playlist from '../container/Playlist'
@@ -33,7 +34,17 @@ class EventsList extends React.Component {
       selectedArtists: [], // push to this when they select an artist
       artistIDs: [], // this will be the end target of the filter, showing only events
       //within the date range.
-      selectedTracks: []  
+      selectedTracks: [],
+      playlistID: '',
+      user: '',
+      show: false,
+      loadingPlaylist: true,
+      events,
+      users,
+      artists,
+      minDate,
+      maxDate,
+      dispatch
     }
   }
   componentWillMount(){
@@ -69,6 +80,21 @@ class EventsList extends React.Component {
         })
       }
   }
+
+  handlePlaylistCreation() {
+      this.setState({loadingPlaylist: true})
+      createPlaylist()
+        .then((result) => {
+        this.setState({playlistID: result.id})
+        let tracklist = this.state.selectedTracks
+        let apiTracklist = tracklist.map((track) =>
+        `spotify:track:${track}`)
+        addTrackToPlaylist(apiTracklist,this.state.playlistID)
+        .then((userid)=> {
+        this.setState({show: !this.state.show, loadingPlaylist: false, user: userid});
+        })
+      })
+    }
 
   handleClick(e, artist, tracksArray) {
     e.preventDefault()
@@ -113,7 +139,7 @@ class EventsList extends React.Component {
     return (
       <div className='Events-list-page'>
         <h1>Current Location: {this.props.match.params.name}</h1>
-        <Playlist />
+        <Playlist handlePlaylist={this.handlePlaylistCreation.bind(this)} show={this.state.show} user={this.state.user} loading={this.state.loadingPlaylist} playlist={this.state.playlistID}/>
         <DatePicker />
         <SelectedArtistsBox artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
         <div style={styles.root}>

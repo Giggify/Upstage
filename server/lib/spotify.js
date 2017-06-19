@@ -31,3 +31,18 @@ function filterArtists(artists, searchStr) {
     }
   })
 }
+
+function getArtistId(artistName) {
+ return new Promise(function(resolve, reject) {
+   request
+   .get(`/api/v1/spotify/search/${artistName}`)
+   .end((err, res) => {
+       if(res) {
+           console.log(res)
+           resolve()
+       } else {
+           reject()
+       }
+   })
+ })
+}

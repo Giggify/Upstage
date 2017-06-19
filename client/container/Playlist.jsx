@@ -24,7 +24,7 @@ class Playlist extends React.Component {
   else if(this.props.show && this.props.loading){
     return (
       <div className="Playlist">
-<p>Creating Playlist: This is where we put that orange spinny wheel!</p>
+          <p>Creating Playlist: This is where we put that orange spinny wheel!</p>
       </div>
     )
   }

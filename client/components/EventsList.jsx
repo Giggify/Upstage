@@ -5,12 +5,14 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Subheader from 'material-ui/Subheader';
 import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 import DatePicker from './DatePicker'
+import Drawer from './Drawer'
 
 import {fetchEvents} from '../actions/events'
 import {createPlaylist, addTrackToPlaylist} from '../api'
 import SelectedArtistsBox from './SelectedArtistsBox'
 import ArtistTile from './ArtistTile'
 import Playlist from '../container/Playlist'
+import PopInfo from './PopInfo'
 
 const styles = {
   root: {
@@ -41,7 +43,8 @@ class EventsList extends React.Component {
       show: false,
       loadingPlaylist: true,
       minDate:this.props.minDate,
-      maxDate:this.props.maxDate
+      maxDate:this.props.maxDate,
+      showInfo:false
     }
   }
   componentWillMount(){
@@ -98,6 +101,7 @@ class EventsList extends React.Component {
 
   handleClick(e, artist, tracksArray) {
     e.preventDefault()
+    console.log(this.state.open)
     let selTracks = this.state.selectedTracks
     let selArtists= this.state.selectedArtists
     if(selArtists.indexOf(artist) == -1) {
@@ -126,12 +130,22 @@ class EventsList extends React.Component {
   checkArtistSelected(artist){
     if (this.state.selectedArtists.indexOf(artist) == -1) return "white"
     else return "orange"
+
   }
 
   handleDeleteFromBox(artistIndex){
     let artistsInBox=[...this.state.selectedArtists]
     artistsInBox.splice(artistIndex,1)
     this.setState({selectedArtists: artistsInBox})
+  }
+
+  expandInfo(event){
+    this.setState({eventInBox:event})
+    this.state.showInfo ? this.setState({
+    showInfo:false
+    }) : this.setState({
+    showInfo:true
+    })
   }
 
     render() {
@@ -143,7 +157,8 @@ class EventsList extends React.Component {
         <h1>Current Location: {this.props.match.params.name}</h1>
         <Playlist handlePlaylist={this.handlePlaylistCreation.bind(this)} show={this.state.show} user={this.state.user} loading={this.state.loadingPlaylist} playlist={this.state.playlistID}/>
         <DatePicker />
-        <SelectedArtistsBox artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
+          {this.state.showInfo && <PopInfo event={this.state.eventInBox}/>}
+        <SelectedArtistsBox handlePlaylist={this.handlePlaylistCreation.bind(this)} artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
         <div style={styles.root}>
          <MuiThemeProvider>
           <GridList
@@ -154,7 +169,8 @@ class EventsList extends React.Component {
           >
             <Subheader></Subheader>
             {events.map((event, i) => (
-              <ArtistTile event={event} key={i} i={i} checkArtist={this.checkArtistSelected.bind(this)} handleClick={this.handleClick.bind(this)}/> // the i={i} is cause react doesn't like you grabbing key from props :(
+              <ArtistTile event={event} key={i} i={i} checkArtist={this.checkArtistSelected.bind(this)}  handleClick={this.handleClick.bind(this)}
+              expandInfo={this.expandInfo.bind(this)}/> // the i={i} is cause react doesn't like you grabbing key from props :(
             ))}
           </GridList>
         </MuiThemeProvider>

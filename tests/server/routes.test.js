@@ -8,6 +8,8 @@ var environment = process.env.NODE_ENV || 'development'
 var dbConfig = require('../../knexfile')[environment]
 var connection = require('knex')(dbConfig)
 
+var createToken = require('../../server/lib/auth').createToken
+
 var isTest = true
 
 const server = require('../../server/server')

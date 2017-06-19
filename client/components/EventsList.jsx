@@ -42,14 +42,9 @@ class EventsList extends React.Component {
       user: '',
       show: false,
       loadingPlaylist: true,
-      events,
-      users,
-      artists,
-      dispatch,
       minDate:this.props.minDate,
       maxDate:this.props.maxDate,
       showInfo:false
-
     }
   }
   componentWillMount(){

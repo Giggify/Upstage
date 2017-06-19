@@ -28507,14 +28507,9 @@ var EventsList = function (_React$Component) {
       user: '',
       show: false,
       loadingPlaylist: true,
-      events: events,
-      users: users,
-      artists: artists,
-      dispatch: dispatch,
       minDate: _this.props.minDate,
       maxDate: _this.props.maxDate,
       showInfo: false
-
     };
     return _this;
   }

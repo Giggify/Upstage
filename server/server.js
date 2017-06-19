@@ -18,8 +18,8 @@ const spotifyLib = require('./lib/spotify')
 const app = express()
 
 
-
-// How to set this?!?!
+// let spotifyConnection = null
+//
 // setInterval(function() {
 //   spotifyConnection = spotifyLib.setConnection('test')
 // }, 60*1000*60)

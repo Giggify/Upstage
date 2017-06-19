@@ -12,21 +12,6 @@ router.get('/test', (req, res) => {
   res.send(req.user)
 })
 
-// This route will set the req.user object if it exists, but is still public
-router.get('/open',
-  verifyJwt({
-    credentialsRequired: false,
-    getToken: auth.getToken,
-    secret: getSecret
-  }),
-  (req, res) => {
-    const json = { message: 'This route is public.' }
-    if (req.user) {
-      json.user = `Your user ID is: ${req.user.id}`
-    }
-    res.json(json)
-  }
-)
 
 //Protect all routes beneath this point
 router.use(

@@ -10,7 +10,7 @@ var app = require('../../server/server')
 // })
 
 //
-test.skip('API route /city/cityName returns a location ID json', (t) => {
+test('API route /city/cityName returns a location ID json', (t) => {
   const data = {
     resultsPage: {
       results: {

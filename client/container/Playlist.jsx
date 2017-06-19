@@ -1,39 +1,39 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import ToggleDisplay from 'react-toggle-display'
-import Loading from 'react-loading'
+import Modal from 'simple-react-modal'
 
 class Playlist extends React.Component {
+  constructor() {
+    super()
+      this.state = {
+        isShowingModal: false
+      }
+    }
+handleClick = () => this.setState({isShowingModal: true})
+handleClose = () => this.setState({isShowingModal: false})
 
- constructor() {
-   super();
-   this.state = { show: false };
- }
-
- handleClick() {
-   this.setState({
-     show: !this.state.show
-   });
- }
-
- render() {
-   return (
-     <div className="Playlist">
-         <button onClick={ () => this.handleClick() }>Create Playlist</button>
-       <ToggleDisplay show={this.state.show}>
-  <iframe src={`https://open.spotify.com/embed/user/${this.state.username}/playlist/${this.state.stuff}`} width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
-       </ToggleDisplay>
-     </div>
-   )
- }
+render() {
+  return (
+    <div className="Playlist">
+      <button className="Create-Playlist"onClick={this.handleClick}>Create Playlist</button>
+      {
+        this.state.isShowingModal &&
+          <Modal
+            show={this.state.isShowingModal}
+            onClose={() => this.handleClose.bind(this)}
+            style={{width: "100%"}}
+            containerStyle={{background: 'none'}}
+            closeOnOuterClick={true}
+            >
+              <div style={{width: '100%'}} className="inner-modal">
+                <p style={{width: '100%', marginLeft: '25vh', fontSize: '25px'}} onClick={() => this.handleClose()} >&#10007;</p>
+                <iframe src={`https://open.spotify.com/embed/user/${this.props.user}/playlist/${this.props.playlist}`} width="380" height="450" frameborder="0" allowtransparency="false"></iframe>
+              </div>
+          </Modal>
+      }
+    </div>
+    )
+  }
 }
 
 export default Playlist
-
-
-
-// <ToggleDisplay
-//   className="LoadPlaylist"
-//   show={this.props.loadplaylist}>
-//   {/* <Loading type="spin" color="#ff6900" /> */}
-// </ToggleDisplay>

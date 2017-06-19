@@ -15,18 +15,18 @@ const home = require('./routes/home')
 
 const spotifyLib = require('./lib/spotify')
 
-
-
-let spotifyConnection = spotifyLib.setConnection()
-
-setInterval(function() {
-  spotifyConnection = spotifyLib.setConnection('test')
-}, 60*1000*60)
-
 const app = express()
 
+spotifyLib.getToken()
+  .then((token) => {
+    app.set('spotifyToken', token)
+  })
 
-// app.set('spotifyConnection': )
+// How to set this?!?!
+// setInterval(function() {
+//   spotifyConnection = spotifyLib.setConnection('test')
+// }, 60*1000*60)
+
 
 app.set('JWT_SECRET', process.env.JWT_SECRET)
 
@@ -42,6 +42,5 @@ app.use('/home', home )
 app.use('/api/v1/events', skEventSearch)
 app.use('/api/v1/metros', skGetAreaID)
 app.use('/api/v1/spotify', spotify)
-
 
 module.exports = app

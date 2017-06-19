@@ -6,12 +6,6 @@ require('dotenv').config()
 
 const app = require('../../server/server')
 
-const spotify = require('../../server/lib/spotify')
-
-test.skip('faking passing test', t=>{
-  t.pass()
-})
-
 test.cb('check top tracks route', t => {
  const tracksObj = {
    tracks: [

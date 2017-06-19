@@ -1,10 +1,9 @@
-var SpotifyWebApi = require('spotify-web-api-node');
+var SpotifyWebApi = require('spotify-web-api-node')
 
 module.exports = {
-  setConnection,
-  getConnection,
   filterTracks,
-  filterArtists
+  filterArtists,
+  getToken
 }
 
 var spotifyApi = new SpotifyWebApi({
@@ -12,16 +11,11 @@ var spotifyApi = new SpotifyWebApi({
   clientSecret : process.env.SPOTIFY_SECRET
 })
 
-
-function setConnection() {
+function getToken() {
   return spotifyApi.clientCredentialsGrant()
-    .then(function(data) {
-      spotifyApi.setAccessToken(data.body['access_token'])
-    })
-}
-
-function getConnection() {
-  return spotifyApi.getAccessToken()
+  .then(function(data) {
+    return data.body['access_token']
+  })
 }
 
 function filterTracks(tracks) {

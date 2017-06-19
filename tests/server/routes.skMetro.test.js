@@ -5,11 +5,7 @@ require('dotenv').config()
 
 var app = require('../../server/server')
 
-test.skip('faking passing test', t=>{
-  t.pass()
-})
-
-test.skip('API route /city/cityName returns a location ID json', (t) => {
+test.cb('API route /city/cityName returns a location ID json', (t) => {
   const data = {
     resultsPage: {
       results: {

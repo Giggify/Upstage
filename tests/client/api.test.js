@@ -11,7 +11,7 @@ test.cb('getArtist returns artist object', t=>{
   api.getArtist('lorde')
     .then((res)=>{
       scope.done()
-      t.deepEqual(res.body[0],helperData.spotifyArtistSearch)
+      t.deepEqual(res,helperData.spotifyArtistSearch)
       t.end()
     })
 })

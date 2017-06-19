@@ -85,7 +85,7 @@ router.post('/users/playlist', (req,res) => {
 
 
 router.post('/users/playlist/:playlist_id/tracks', (req,res) => {
-  console.log(req.body);
+  console.log(req.body+"is the req body???");
   request
     .post(`${url}/v1/users/${req.user.id}/playlists/${req.params.playlist_id}/tracks`)
     .send({

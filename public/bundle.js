@@ -10591,7 +10591,6 @@ function fetchEventsRequest() {
 }
 
 function fetchEventsFailure(err) {
-  alert(err);
   return {
     type: 'FETCH_EVENTS_FAILURE',
     err: err
@@ -27981,12 +27980,15 @@ Object.defineProperty(exports, "__esModule", {
 exports.fetchLocationsRequest = fetchLocationsRequest;
 exports.fetchLocationsFailure = fetchLocationsFailure;
 exports.fetchLocationsSuccess = fetchLocationsSuccess;
+exports.filterLocation = filterLocation;
 exports.fetchLocations = fetchLocations;
-var request = __webpack_require__(96);
+var request = __webpack_require__(96
+//only last function is needed for app, but exporting all functions for testing
 
-function fetchLocationsRequest() {
+);function fetchLocationsRequest() {
   return {
-    type: 'FETCH_LOCATIONS_REQUEST'
+    type: 'FETCH_LOCATIONS_REQUEST',
+    message: 'Searching locations...'
   };
 }
 
@@ -28066,11 +28068,7 @@ var _starBorder2 = _interopRequireDefault(_starBorder);
 
 var _api = __webpack_require__(158);
 
-var _events = __webpack_require__(98);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -28082,44 +28080,47 @@ var ArtistTile = function (_React$Component) {
   _inherits(ArtistTile, _React$Component);
 
   function ArtistTile(props) {
-    var _this$state;
-
     _classCallCheck(this, ArtistTile);
-
-    var artists = props.artists;
 
     var _this = _possibleConstructorReturn(this, (ArtistTile.__proto__ || Object.getPrototypeOf(ArtistTile)).call(this, props));
 
-    _this.state = (_this$state = {
-      artist: undefined,
+    _this.state = {
       tracksArray: [],
-      artists: artists
-    }, _defineProperty(_this$state, 'artist', {
-      images: [{
-        url: '/images/unknownartist.png'
-      }]
-    }), _defineProperty(_this$state, 'tracks', []), _this$state);
+      artist: {
+        images: [{ url: '/images/unknownartist.png' }]
+      },
+      tracks: []
+    };
     return _this;
   }
 
   _createClass(ArtistTile, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
+    key: 'componentWillMount',
+    value: function componentWillMount() {
       var _this2 = this;
 
       (0, _api.getArtist)(this.props.event.artists[0]).then(function (artist) {
         if (artist) _this2.setState({ artist: artist });
+      });
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      var _this3 = this;
+
+      (0, _api.getArtist)(nextProps.event.artists[0]).then(function (artist) {
+        if (artist) _this3.setState({ artist: artist });
       }).then(function () {
         var tracksArray = [];
-        if (_this2.state.artist != undefined) {
-          (0, _api.getTopTracks)(_this2.state.artist.id).then(function (tracks) {
+        if (_this3.state.artist != undefined) {
+          (0, _api.getTopTracks)(_this3.state.artist.id).then(function (tracks) {
             if (tracks.status != 400) {
               tracks.map(function (track) {
                 tracksArray.push(track.id);
               });
             }
           }).then(function () {
-            _this2.setState({ tracksArray: tracksArray });
+            _this3.setState({ tracksArray: tracksArray });
           });
         }
       });
@@ -28127,7 +28128,7 @@ var ArtistTile = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       var event = this.props.event || [];
       var color = this.props.checkArtist(event.artists[0]);
@@ -28149,23 +28150,19 @@ var ArtistTile = function (_React$Component) {
             _IconButton2.default,
             null,
             _react2.default.createElement(_starBorder2.default, { color: color, onClick: function onClick(e) {
-                return _this3.props.handleClick(e, event.artists[0], _this3.state.tracksArray);
+                return _this4.props.handleClick(e, event.artists[0], _this4.state.tracksArray);
               } })
           )
         },
-        _react2.default.createElement('img', { src: this.state.artist.images[0].url || "/images/unknownartist.png" })
+        _react2.default.createElement('img', { src: this.state.artist.images[0].url || "/images/unknownartist.png", onClick: function onClick() {
+            return _this4.props.expandInfo({ event: event });
+          } })
       );
     }
   }]);
 
   return ArtistTile;
 }(_react2.default.Component);
-
-var mapState2Props = function mapState2Props(state) {
-  return {
-    artists: state.events.artists
-  };
-};
 
 exports.default = ArtistTile;
 
@@ -28222,6 +28219,10 @@ var _Playlist = __webpack_require__(277);
 
 var _Playlist2 = _interopRequireDefault(_Playlist);
 
+var _PopInfo = __webpack_require__(652);
+
+var _PopInfo2 = _interopRequireDefault(_PopInfo);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -28272,7 +28273,8 @@ var EventsList = function (_React$Component) {
       show: false,
       loadingPlaylist: true,
       minDate: _this.props.minDate,
-      maxDate: _this.props.maxDate
+      maxDate: _this.props.maxDate,
+      showInfo: false
     };
     return _this;
   }
@@ -28383,6 +28385,16 @@ var EventsList = function (_React$Component) {
       this.setState({ selectedArtists: artistsInBox });
     }
   }, {
+    key: 'expandInfo',
+    value: function expandInfo(event) {
+      this.setState({ eventInBox: event });
+      this.state.showInfo ? this.setState({
+        showInfo: false
+      }) : this.setState({
+        showInfo: true
+      });
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this3 = this;
@@ -28401,6 +28413,7 @@ var EventsList = function (_React$Component) {
         ),
         _react2.default.createElement(_Playlist2.default, { handlePlaylist: this.handlePlaylistCreation.bind(this), show: this.state.show, user: this.state.user, loading: this.state.loadingPlaylist, playlist: this.state.playlistID }),
         _react2.default.createElement(_DatePicker2.default, null),
+        this.state.showInfo && _react2.default.createElement(_PopInfo2.default, { event: this.state.eventInBox }),
         _react2.default.createElement(_SelectedArtistsBox2.default, { artists: this.state.selectedArtists, deleteArtist: this.handleDeleteFromBox.bind(this) }),
         _react2.default.createElement(
           'div',
@@ -28418,7 +28431,8 @@ var EventsList = function (_React$Component) {
               },
               _react2.default.createElement(_Subheader2.default, null),
               events.map(function (event, i) {
-                return _react2.default.createElement(_ArtistTile2.default, { event: event, key: i, i: i, checkArtist: _this3.checkArtistSelected.bind(_this3), handleClick: _this3.handleClick.bind(_this3) }) // the i={i} is cause react doesn't like you grabbing key from props :(
+                return _react2.default.createElement(_ArtistTile2.default, { event: event, key: i, i: i, checkArtist: _this3.checkArtistSelected.bind(_this3), handleClick: _this3.handleClick.bind(_this3),
+                  expandInfo: _this3.expandInfo.bind(_this3) }) // the i={i} is cause react doesn't like you grabbing key from props :(
                 ;
               })
             )
@@ -29185,7 +29199,8 @@ function location() {
   switch (action.type) {
     case 'FETCH_LOCATIONS_REQUEST':
       return _extends({}, state, {
-        fetching: true
+        fetching: true,
+        message: action.message
       });
     case 'FETCH_LOCATIONS_FAILURE':
       return _extends({}, state, {
@@ -71909,6 +71924,142 @@ module.exports = function() {
 	throw new Error("define cannot be used indirect");
 };
 
+
+/***/ }),
+/* 652 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Card = __webpack_require__(396);
+
+var _FlatButton = __webpack_require__(82);
+
+var _FlatButton2 = _interopRequireDefault(_FlatButton);
+
+var _Toggle = __webpack_require__(471);
+
+var _Toggle2 = _interopRequireDefault(_Toggle);
+
+var _MuiThemeProvider = __webpack_require__(58);
+
+var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PopInfo = function (_React$Component) {
+  _inherits(PopInfo, _React$Component);
+
+  function PopInfo(props) {
+    _classCallCheck(this, PopInfo);
+
+    var _this = _possibleConstructorReturn(this, (PopInfo.__proto__ || Object.getPrototypeOf(PopInfo)).call(this, props));
+
+    _this.handleExpandChange = function (expanded) {
+      _this.setState({ expanded: expanded });
+    };
+
+    _this.handleToggle = function (event, toggle) {
+      _this.setState({ expanded: toggle });
+    };
+
+    _this.handleExpand = function () {
+      _this.setState({ expanded: true });
+    };
+
+    _this.handleReduce = function () {
+      _this.setState({ expanded: false });
+    };
+
+    _this.linkToConcert = function () {
+      location.href = '' + _this.state.concertUrl;
+    };
+
+    _this.linkToArtist = function () {
+      location.href = '' + _this.state.artistUrl;
+    };
+
+    _this.linkToVenue = function () {
+      location.href = '' + _this.state.venueUrl;
+    };
+
+    _this.state = {
+      expanded: true,
+      concertUrl: _this.props.event.event.concertUrl,
+      artistUrl: _this.props.event.event.artistUrl[0],
+      venueUrl: _this.props.event.event.venueUrl
+    };
+    return _this;
+  }
+
+  _createClass(PopInfo, [{
+    key: 'render',
+    value: function render() {
+      var _props$event$event = this.props.event.event,
+          gig = _props$event$event.gig,
+          time = _props$event$event.time,
+          artists = _props$event$event.artists,
+          artistUrl = _props$event$event.artistUrl,
+          venue = _props$event$event.venue,
+          venueUrl = _props$event$event.venueUrl,
+          concertUrl = _props$event$event.concertUrl;
+
+      return _react2.default.createElement(
+        _MuiThemeProvider2.default,
+        null,
+        _react2.default.createElement(
+          _Card.Card,
+          { expanded: this.state.expanded, onExpandChange: this.handleExpandChange },
+          _react2.default.createElement(_Card.CardHeader, {
+            title: gig + '  Time:' + time,
+            actAsExpander: true,
+            showExpandableButton: true
+          }),
+          _react2.default.createElement(_Card.CardMedia, {
+            expandable: true }),
+          _react2.default.createElement(
+            _Card.CardText,
+            { expandable: true },
+            'Artists Playing: ',
+            artists.map(function (artist) {
+              return artist;
+            }),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(_FlatButton2.default, { label: 'Concert', secondary: true, onTouchTap: this.linkToConcert }),
+            _react2.default.createElement(_FlatButton2.default, { label: 'Artist', secondary: true, onTouchTap: this.linkToArtist }),
+            _react2.default.createElement(_FlatButton2.default, { label: 'Venue', secondary: true, onTouchTap: this.linkToVenue })
+          ),
+          _react2.default.createElement(
+            _Card.CardActions,
+            null,
+            _react2.default.createElement(_FlatButton2.default, { label: 'Close', onTouchTap: this.handleReduce })
+          )
+        )
+      );
+    }
+  }]);
+
+  return PopInfo;
+}(_react2.default.Component);
+
+exports.default = PopInfo;
 
 /***/ })
 /******/ ]);

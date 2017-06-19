@@ -3,7 +3,7 @@ import React from 'react'
 const Header = () => {
   return (
     <div className='header'>
-      <h1 className="upstage">UPSTAGE</h1>
+      <img src="./css/TITLE.png" width="50%"/>
     </div>
   )
 }

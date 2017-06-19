@@ -26,6 +26,8 @@ const styles = {
   },
 };
 
+let filteredEvents
+
 class EventsList extends React.Component {
   constructor(props) {
     let {events,users,artists,minDate,maxDate,dispatch} = props
@@ -53,14 +55,36 @@ class EventsList extends React.Component {
   componentWillMount(){
     this.props.dispatch(fetchEvents(this.props.match.params.id))
   }
-  componentWillReceiveProps({events,users,artists,minDate,maxDate,selectedTracks}) {
-    this.setState({
-      events,
-      users,
-      artists,
-      minDate,
-      maxDate
-    })
+  componentWillReceiveProps({minDate,maxDate,events}) {
+    if (minDate || maxDate) {
+      let unfilteredEvents=events
+      let minUnix=Date.parse(minDate)
+      let maxUnix=Date.parse(maxDate)
+      const fitsDates=(event)=>{
+        let eventDateUnix=new Date(event.date).getTime()
+        if (minUnix && !maxUnix) {
+          return minUnix <= eventDateUnix
+        }
+        if (maxUnix && !minUnix) {
+          return eventDateUnix<= maxUnix
+        }
+        if (minUnix && maxUnix){
+          return minUnix <= eventDateUnix && eventDateUnix<= maxUnix
+        }
+      }
+      filteredEvents=unfilteredEvents.filter(fitsDates)
+    }
+    if(filteredEvents===undefined){
+      this.setState({
+        events:events,
+        what:'doh'
+      })
+    } else {
+      this.setState({
+        events:filteredEvents,
+        what:'123'
+      })
+    }
   }
 
   handlePlaylistCreation() {
@@ -127,7 +151,7 @@ class EventsList extends React.Component {
 
     render() {
       let artists = this.props.artists || []
-      let events = this.props.events || []
+      let events = this.state.events || []
       console.log(this.state.selectedTracks);
     return (
       <div className='Events-list-page'>

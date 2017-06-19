@@ -30,6 +30,7 @@ test('check top tracks route', t => {
    .get('/api/v1/spotify/artists/2hazSY4Ef3aB9ATXW7F5w3/toptracks')
    .expect(200)
    .then((res) => {
+     console.log(res.body);
      scope.done()
      t.is(res.body.length, 2)
      t.end()

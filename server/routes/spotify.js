@@ -7,14 +7,15 @@ const router = express.Router()
 const spotify = require('../lib/spotify')
 const testMode = false
 
-spotify.setConnection(testMode)
+let spotifyConnection = spotify.setConnection(testMode)
 
-let spotifyConnection = setTimeout(function delay() {
-  spotify.setConnection(testMode)
-  spotifyConnection = setTimeout(delay, 3600000)
-}, 3600000)
+setInterval(function() {
+  spotifyConnection = spotify.setConnection(testMode)
+}, 60*1000*60)
 
 require('dotenv').config()
+
+// let token = spotify.getConnection() ? spotify.getConnection() : 'pretendtoken'
 
 const url = 'https://api.spotify.com'
 

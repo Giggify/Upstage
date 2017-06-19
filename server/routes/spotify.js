@@ -9,6 +9,11 @@ const testMode = false
 
 spotify.setConnection(testMode)
 
+let spotifyConnection = setTimeout(function delay() {
+  spotify.setConnection(testMode)
+  spotifyConnection = setTimeout(delay, 3600000)
+}, 3600000)
+
 require('dotenv').config()
 
 const url = 'https://api.spotify.com'

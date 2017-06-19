@@ -2,18 +2,21 @@ import React from 'react'
 import {HashRouter as Router, Route} from 'react-router-dom'
 
 import Header from './Header'
+import LoginPage from './LoginPage'
 import Homepage from '../container/Homepage'
 import NavBar from './NavBar'
 import EventsList from './EventsList'
+
+import {getUserInfo} from '../api'
 import Drawer from './Drawer'
 
 export default class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
+    constructor(props) {
+        super(props)
+        this.state = {
 
+        }
     }
-  }
 
   render() {
     return (

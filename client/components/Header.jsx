@@ -1,11 +1,34 @@
 import React from 'react'
 
-const Header = () => {
-  return (
-    <div className='header'>
-      <img src="./css/TITLE.png" width="50%"/>
-    </div>
-  )
+import {getUserInfo} from '../api'
+
+class Header extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      user: '',
+      image: ''
+    }
+  }
+  componentWillMount() {
+    getUserInfo(document.cookie || null)
+
+    //if no cookie, redirect to home.
+    .then((result) => {
+      this.setState({user: result.id, image: result.image})
+    })
+  }
+  render() {
+    return (
+      <div className='header'>
+        <img src="./css/TITLE.png" width="50%"/>
+        <div className="spotifydetails">
+          <img className='spotifyimage' src={this.state.image}/>
+          <a className='spotifyusername' href="/auth/logout">{this.state.user} 🡻</a>
+        </div>
+      </div>
+    )
+  }
 }
 
 export default Header

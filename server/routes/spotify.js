@@ -110,7 +110,6 @@ router.post('/users/playlist', (req,res) => {
 
 
 router.post('/users/playlist/:playlist_id/tracks', (req,res) => {
-  console.log(req.body+"is the req body???");
   request
     .post(`${url}/v1/users/${req.user.id}/playlists/${req.params.playlist_id}/tracks`)
     .send({
@@ -127,5 +126,14 @@ router.post('/users/playlist/:playlist_id/tracks', (req,res) => {
       }
     })
 })
+
+router.get('/me', (req,res) => {
+      var userDetails = {
+        id: req.user.id,
+        image: req.user.image
+      }
+      res.status(200).json(userDetails)
+    })
+
 
 module.exports = router

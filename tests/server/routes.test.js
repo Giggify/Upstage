@@ -5,20 +5,18 @@ import nock from 'nock'
 require('dotenv').config()
 
 const app = require('../../server/server')
-const isTest = true
-const spotify = require('../../server/lib/spotify')
 
-spotify.setConnection(isTest)
+const spotify = require('../../server/lib/spotify')
 
 test.skip('faking passing test', t=>{
   t.pass()
 })
 
-test('check top tracks route', t => {
+test.cb('check top tracks route', t => {
  const tracksObj = {
    tracks: [
-     { id: "4hTXeWayUVMwoz6v1CviSN", name: "Copacabana" },
-     { id: "3iaj0MtII6VPVhwQa4eeX3", name: "Qué Bien" }
+     { id: '4hTXeWayUVMwoz6v1CviSN', name: 'Copacabana' },
+     { id: '3iaj0MtII6VPVhwQa4eeX3', name: 'Qué Bien' }
    ]
  }
 
@@ -30,9 +28,9 @@ test('check top tracks route', t => {
    .get('/api/v1/spotify/artists/2hazSY4Ef3aB9ATXW7F5w3/toptracks')
    .expect(200)
    .then((res) => {
-     console.log(res.body);
      scope.done()
      t.is(res.body.length, 2)
+     t.is(res.body[1].id, '3iaj0MtII6VPVhwQa4eeX3')
      t.end()
    })
 })

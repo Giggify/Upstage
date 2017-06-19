@@ -13,6 +13,14 @@ const index = require('./routes/index')
 const spotify = require('./routes/spotify')
 const home = require('./routes/home')
 
+const spotifyLib = require('./lib/spotify')
+
+let spotifyConnection = spotifyLib.setConnection()
+
+setInterval(function() {
+  spotifyConnection = spotifyLib.setConnection('test')
+}, 60*1000*60)
+
 const app = express()
 
 app.set('JWT_SECRET', process.env.JWT_SECRET)

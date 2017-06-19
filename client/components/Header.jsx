@@ -24,7 +24,7 @@ class Header extends React.Component {
         <h3 className="upstagesmall">UPSTAGE</h3>
         <div className="spotifydetails">
           <img className='spotifyimage' src={this.state.image}/>
-          <a className='spotifyusername' href="/auth/logout">{this.state.user}</a>
+          <a className='spotifyusername' href="/auth/logout">{this.state.user} 🡻</a>
         </div>
       </div>
     )

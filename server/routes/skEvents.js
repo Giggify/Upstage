@@ -4,26 +4,16 @@ const verifyJwt = require('express-jwt')
 const auth = require('../lib/auth')
 const router = express.Router()
 
-function getSecret (req, payload, done) {
-  done(null, req.app.get('JWT_SECRET'))
-}
-
-router.get('/test', (req, res) => {
-  res.send(req.user)
-})
-
-
 //Protect all routes beneath this point
 router.use(
   verifyJwt({
     getToken: auth.getToken,
-    secret: getSecret
+    secret: auth.getSecret
   }),
   auth.handleError
 )
 
 // These routes are protected
-
 router.get('/:locationID', (req,res) => {
   request
   .get(`http://api.songkick.com/api/3.0/metro_areas/${req.params.locationID}/calendar.json?apikey=${process.env.SONGKICK_API}`)

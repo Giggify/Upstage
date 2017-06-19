@@ -3,7 +3,6 @@ var request = require('supertest')
 var nock = require('nock')
 var createToken = require('../../server/lib/auth').createToken
 require('dotenv').config()
-
 var app = require('../../server/server')
 
 test.cb('User without login is denied the access to this route', t => {
@@ -16,7 +15,6 @@ test.cb('User without login is denied the access to this route', t => {
       t.end()
     })
 })
-
 
 test.cb('API route /events/locationID returns a json', (t) => {
   const data = {

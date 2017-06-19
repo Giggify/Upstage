@@ -15847,6 +15847,7 @@ exports.getTopTracks = getTopTracks;
 exports.createTracklistArray = createTracklistArray;
 exports.createPlaylist = createPlaylist;
 exports.addTrackToPlaylist = addTrackToPlaylist;
+exports.getUserInfo = getUserInfo;
 
 var _superagent = __webpack_require__(96);
 
@@ -15922,6 +15923,20 @@ function addTrackToPlaylist(tracks, playlist_id) {
       console.log(res);
       err ? reject(err) : resolve(res.text);
     });
+  });
+}
+
+function getUserInfo(cookie) {
+  return new Promise(function (resolve, reject) {
+    if (cookie.length > 0) {
+      _superagent2.default.get('/api/v1/spotify/me').end(function (err, res) {
+        err ? reject(err) : resolve(res.body);
+      });
+    } else {
+      _superagent2.default.get('/api/v1/spotify/users/me').end(function (err, res) {
+        err ? reject(err) : resolve("No cookies");
+      });
+    }
   });
 }
 
@@ -28079,6 +28094,10 @@ var _Header = __webpack_require__(276);
 
 var _Header2 = _interopRequireDefault(_Header);
 
+var _LoginPage = __webpack_require__(654);
+
+var _LoginPage2 = _interopRequireDefault(_LoginPage);
+
 var _Homepage = __webpack_require__(282);
 
 var _Homepage2 = _interopRequireDefault(_Homepage);
@@ -28090,6 +28109,8 @@ var _NavBar2 = _interopRequireDefault(_NavBar);
 var _EventsList = __webpack_require__(275);
 
 var _EventsList2 = _interopRequireDefault(_EventsList);
+
+var _api = __webpack_require__(160);
 
 var _Drawer = __webpack_require__(162);
 
@@ -28459,8 +28480,6 @@ var styles = {
   }
 };
 
-var filteredEvents = void 0;
-
 var EventsList = function (_React$Component) {
   _inherits(EventsList, _React$Component);
 
@@ -28486,9 +28505,14 @@ var EventsList = function (_React$Component) {
       user: '',
       show: false,
       loadingPlaylist: true,
+      events: events,
+      users: users,
+      artists: artists,
+      dispatch: dispatch,
       minDate: _this.props.minDate,
       maxDate: _this.props.maxDate,
       showInfo: false
+
     };
     return _this;
   }
@@ -28501,39 +28525,20 @@ var EventsList = function (_React$Component) {
   }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(_ref) {
-      var minDate = _ref.minDate,
+      var events = _ref.events,
+          users = _ref.users,
+          artists = _ref.artists,
+          minDate = _ref.minDate,
           maxDate = _ref.maxDate,
-          events = _ref.events;
+          selectedTracks = _ref.selectedTracks;
 
-      if (minDate || maxDate) {
-        var unfilteredEvents = events;
-        var minUnix = Date.parse(minDate);
-        var maxUnix = Date.parse(maxDate);
-        var fitsDates = function fitsDates(event) {
-          var eventDateUnix = new Date(event.date).getTime();
-          if (minUnix && !maxUnix) {
-            return minUnix <= eventDateUnix;
-          }
-          if (maxUnix && !minUnix) {
-            return eventDateUnix <= maxUnix;
-          }
-          if (minUnix && maxUnix) {
-            return minUnix <= eventDateUnix && eventDateUnix <= maxUnix;
-          }
-        };
-        filteredEvents = unfilteredEvents.filter(fitsDates);
-      }
-      if (filteredEvents === undefined) {
-        this.setState({
-          events: events,
-          what: 'doh'
-        });
-      } else {
-        this.setState({
-          events: filteredEvents,
-          what: '123'
-        });
-      }
+      this.setState({
+        events: events,
+        users: users,
+        artists: artists,
+        minDate: minDate,
+        maxDate: maxDate
+      });
     }
   }, {
     key: 'handlePlaylistCreation',
@@ -28547,9 +28552,8 @@ var EventsList = function (_React$Component) {
         var apiTracklist = tracklist.map(function (track) {
           return 'spotify:track:' + track;
         });
-        (0, _api.addTrackToPlaylist)(apiTracklist, _this2.state.playlistID).then(function (result2) {
-          console.log(result2);
-          _this2.setState({ show: !_this2.state.show, loadingPlaylist: false, user: result2 });
+        (0, _api.addTrackToPlaylist)(apiTracklist, _this2.state.playlistID).then(function (userid) {
+          _this2.setState({ show: !_this2.state.show, loadingPlaylist: false, user: userid });
         });
       });
     }
@@ -28613,7 +28617,8 @@ var EventsList = function (_React$Component) {
       var _this3 = this;
 
       var artists = this.props.artists || [];
-      var events = this.state.events || [];
+      var events = this.props.events || [];
+      console.log(this.state.selectedTracks);
       return _react2.default.createElement(
         'div',
         { className: 'Events-list-page' },
@@ -28663,8 +28668,9 @@ var mapState2Props = function mapState2Props(state) {
     events: state.events.events,
     artists: state.events.artists,
     selectedArtists: state.selectedArtists,
-    minDate: state.users.minDate,
-    maxDate: state.users.maxDate
+    minDate: state.users.minDate || "2017-01-01",
+    maxDate: state.users.maxDate || "2017-12-30"
+
   };
 };
 
@@ -28681,23 +28687,73 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _api = __webpack_require__(160);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Header = function Header() {
-  return _react2.default.createElement(
-    'div',
-    { className: 'header' },
-    _react2.default.createElement(
-      'h1',
-      { className: 'upstage' },
-      'UPSTAGE'
-    )
-  );
-};
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Header = function (_React$Component) {
+  _inherits(Header, _React$Component);
+
+  function Header(props) {
+    _classCallCheck(this, Header);
+
+    var _this = _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).call(this, props));
+
+    _this.state = {
+      user: '',
+      image: ''
+    };
+    return _this;
+  }
+
+  _createClass(Header, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      var _this2 = this;
+
+      (0, _api.getUserInfo)(document.cookie || null
+
+      //if no cookie, redirect to home.
+      ).then(function (result) {
+        _this2.setState({ user: result.id, image: result.image });
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { className: 'header' },
+        _react2.default.createElement('img', { src: './css/TITLE.png', width: '50%' }),
+        _react2.default.createElement(
+          'div',
+          { className: 'spotifydetails' },
+          _react2.default.createElement('img', { className: 'spotifyimage', src: this.state.image }),
+          _react2.default.createElement(
+            'a',
+            { className: 'spotifyusername', href: '/auth/logout' },
+            this.state.user,
+            ' \uD83E\uDC7B'
+          )
+        )
+      );
+    }
+  }]);
+
+  return Header;
+}(_react2.default.Component);
 
 exports.default = Header;
 
@@ -72203,6 +72259,47 @@ module.exports = function() {
 	throw new Error("define cannot be used indirect");
 };
 
+
+/***/ }),
+/* 654 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Header = function Header() {
+  return _react2.default.createElement(
+    'div',
+    { className: 'loginpage' },
+    _react2.default.createElement(
+      'h1',
+      { className: 'upstage' },
+      'UPSTAGE'
+    ),
+    _react2.default.createElement(
+      'div',
+      { className: 'login' },
+      _react2.default.createElement('img', { className: 'spotifylogo', src: 'https://image.flaticon.com/icons/png/512/7/7709.png' }),
+      _react2.default.createElement(
+        'a',
+        { className: 'spotifylogin', href: '/auth' },
+        'Login'
+      )
+    )
+  );
+};
+
+exports.default = Header;
 
 /***/ })
 /******/ ]);

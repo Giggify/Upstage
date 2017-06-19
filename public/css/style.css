@@ -48,23 +48,46 @@ body{
 #search-result-item:hover{
   background-color: #BADA55;
 }
+.header {
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-bottom: 0px;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
 .login {
   border-radius: 8px;
   background-color: #6AE368;
   border: 4px solid black;
   width: 150px;
   height: 50px;
-  margin: auto;
+  margin-left: 150px;
   padding: 5px;
   font-family: 'Lato';
   font-size: 20px;
   display: flex;
 }
-.spotifylogo {
+.spotifydetails {
+  border-radius: 8px;
+  background-color: #6AE368;
+  border: 4px solid black;
+  width: 200px;
+  height: 50px;
+  margin-left: 150px;
+  padding: 5px;
+  font-family: 'Lato';
+  font-size: 20px;
+  display: flex;
+}
+.spotifylogo, .spotifyimage {
   padding-top: 2px;
   display: block;
   height: 44px;
   width: 44px;
+}
+.spotifyimage {
+  border-radius:  30px;
 }
 .spotifylogin {
   display: block;
@@ -76,6 +99,22 @@ body{
   font-size: 20pt;
   font-weight: 400;
   text-decoration: none;
+}
+.spotifyusername {
+  display: block;
+  padding-top: 15px;
+  padding-left: 20px;
+  /*padding-bottom: 9px;*/
+  float: right;
+  color: #000;
+  font-size: 15pt;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.headerpanel {
+  display: flex;
+  direction: row;
 }
 .login a:hover {
   color: #fff;
@@ -96,7 +135,19 @@ body{
   font-family: 'Bungee Outline', cursive;
   font-size: 90px;
 }
+.upstagesmall {
+  font-family: 'Bungee Outline', cursive;
+  font-size: 30px;
+}
 
 .eventlistheader {
   font-family: 'Oleo Script';
+}
+
+.Create-Playlist {
+  background-color: #FF6900;
+  color: black;
+  border-radius: 2px;
+  font-family: 'Oleo Script';
+
 }

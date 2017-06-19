@@ -1,9 +1,17 @@
 var test = require('ava')
 var request = require('supertest')
 var nock = require('nock')
+require('dotenv').config()
+
+var environment = process.env.NODE_ENV || 'development'
+var dbConfig = require('../../knexfile')[environment]
+var connection = require('knex')(dbConfig)
+
+var isTest = true
+
 var createToken = require('../../server/lib/auth').createToken
-require('dotenv').config()//
-var app = require('../../server/server')
+const server = require('../../server/server')
+let app = server(connection, isTest)
 
 test.cb('API route /city/cityName returns a location ID json', (t) => {
   const data = {
@@ -35,7 +43,8 @@ test.cb('API route /city/cityName returns a location ID json', (t) => {
     .set('Cookie', `token=${token}`)
     .expect(200)
     .then((res) => {
-      t.is(res.body[0].hasOwnProperty('id'), true)
+      scope.done()
+      t.true(res.body[0].hasOwnProperty('id'))
       t.end()
+      })
     })
-})

@@ -101,6 +101,7 @@ class EventsList extends React.Component {
     let selTracks = this.state.selectedTracks
     let selArtists= this.state.selectedArtists
     if(selArtists.indexOf(artist) == -1) {
+      console.log(tracksArray);
       this.mapArrayToState(tracksArray)
       this.setState({selectedArtists: [...selArtists,artist]})
     }

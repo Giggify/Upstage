@@ -98,7 +98,7 @@ router.post('/users/playlist/:playlist_id/tracks', (req,res) => {
         console.log(err);
       }
       else {
-        res.sendStatus(201)
+        res.status(201).send(req.user.id)
       }
     })
 })

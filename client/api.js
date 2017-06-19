@@ -83,7 +83,8 @@ export function addTrackToPlaylist(tracks, playlist_id) {
       .post(`/api/v1/spotify/users/playlist/${playlist_id}/tracks`)
       .send(tracks)
       .end((err, res) => {
-        err ? reject(err) : resolve("tracks added")
+        console.log(res);
+        err ? reject(err) : resolve(res.text)
       })
   })
 }

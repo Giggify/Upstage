@@ -65,7 +65,7 @@ export function createPlaylist() {
     request
       .post('/api/v1/spotify/users/playlist')
       .send({
-        "name": "Test Upstage Playlist",
+        "name": "This Is An Upstage Playlist",
         "public": true,
         "collaborative": false,
         "description": "Top tracks from artists performing near you"

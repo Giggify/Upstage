@@ -28498,6 +28498,8 @@ var styles = {
   }
 };
 
+var filteredEvents = void 0;
+
 var EventsList = function (_React$Component) {
   _inherits(EventsList, _React$Component);
 
@@ -28523,14 +28525,9 @@ var EventsList = function (_React$Component) {
       user: '',
       show: false,
       loadingPlaylist: true,
-      events: events,
-      users: users,
-      artists: artists,
-      dispatch: dispatch,
       minDate: _this.props.minDate,
       maxDate: _this.props.maxDate,
       showInfo: false
-
     };
     return _this;
   }
@@ -28543,20 +28540,39 @@ var EventsList = function (_React$Component) {
   }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(_ref) {
-      var events = _ref.events,
-          users = _ref.users,
-          artists = _ref.artists,
-          minDate = _ref.minDate,
+      var minDate = _ref.minDate,
           maxDate = _ref.maxDate,
-          selectedTracks = _ref.selectedTracks;
+          events = _ref.events;
 
-      this.setState({
-        events: events,
-        users: users,
-        artists: artists,
-        minDate: minDate,
-        maxDate: maxDate
-      });
+      if (minDate || maxDate) {
+        var unfilteredEvents = events;
+        var minUnix = Date.parse(minDate);
+        var maxUnix = Date.parse(maxDate);
+        var fitsDates = function fitsDates(event) {
+          var eventDateUnix = new Date(event.date).getTime();
+          if (minUnix && !maxUnix) {
+            return minUnix <= eventDateUnix;
+          }
+          if (maxUnix && !minUnix) {
+            return eventDateUnix <= maxUnix;
+          }
+          if (minUnix && maxUnix) {
+            return minUnix <= eventDateUnix && eventDateUnix <= maxUnix;
+          }
+        };
+        filteredEvents = unfilteredEvents.filter(fitsDates);
+      }
+      if (filteredEvents === undefined) {
+        this.setState({
+          events: events,
+          what: 'doh'
+        });
+      } else {
+        this.setState({
+          events: filteredEvents,
+          what: '123'
+        });
+      }
     }
   }, {
     key: 'handlePlaylistCreation',
@@ -28636,7 +28652,7 @@ var EventsList = function (_React$Component) {
       var _this3 = this;
 
       var artists = this.props.artists || [];
-      var events = this.props.events || [];
+      var events = this.state.events || [];
       console.log(this.state.selectedTracks);
       return _react2.default.createElement(
         'div',

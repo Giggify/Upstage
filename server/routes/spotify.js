@@ -54,13 +54,13 @@ router.get('/users/:id', (req, res) => {
 })
 
 // Protect all routes beneath this point
-// router.use(
-//   verifyJwt({
-//     getToken: auth.getToken,
-//     secret: auth.getSecret
-//   }),
-//   auth.handleError
-// )
+router.use(
+  verifyJwt({
+    getToken: auth.getToken,
+    secret: auth.getSecret
+  }),
+  auth.handleError
+)
 
 // These routes are protected
 
@@ -85,22 +85,50 @@ router.post('/users/playlist'), (req,res) => {
     })
 }
 
-router.post('/users/:id/playlist/:playlist_id/tracks'), (req,res) => {
+router.use(
+  verifyJwt({
+    getToken: auth.getToken,
+    secret: auth.getSecret
+  }),
+  auth.handleError
+)
+
+// These routes are protected
+router.post('/users/playlist', (req,res) => {
   request
-    .post(`${url}/v1/users/{req.params.id}/playlist/{req.params.playlist_id}/tracks`)
+  .post(`${url}/v1/users/${req.user.id}/playlists`)
+  .send(req.body)
+  .set('Authorization',  `Bearer ${req.user.accessToken}`)
+  .set('Accept', 'application/json')
+  .end((err,result) => {
+    if(err) {
+      console.log(err)
+    }
+    else {
+      console.log(result.body.id)
+      res.status(201).send(result.body)
+    }
+  })
+})
+
+
+router.post('/users/playlist/:playlist_id/tracks', (req,res) => {
+  console.log(req.body+"is the req body???");
+  request
+    .post(`${url}/v1/users/${req.user.id}/playlists/${req.params.playlist_id}/tracks`)
     .send({
-      "uris": req.body.tracks
+      "uris": req.body
     })
-    .set('Authorization', req.user.accessToken)
+    .set('Authorization', `Bearer ${req.user.accessToken}`)
     .set('Accept', 'application/json')
     .end((err,result) => {
       if(err) {
-        alert('Oops! Track addition failed.')
+        console.log(err);
       }
       else {
-        res.sendStatus(201)
+        res.status(201).send(req.user.id)
       }
     })
-}
+})
 
 module.exports = router

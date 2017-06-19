@@ -59,3 +59,32 @@ export function createTracklistArray(artistNamesArray) {
     resolve(tracks)
   })
 }
+
+export function createPlaylist() {
+  return new Promise((resolve, reject) => {
+    request
+      .post('/api/v1/spotify/users/playlist')
+      .send({
+        "name": "This Is An Upstage Playlist",
+        "public": true,
+        "collaborative": false,
+        "description": "Top tracks from artists performing near you"
+      })
+      .end((err, res) => {
+        err ? reject(err) : resolve(res.body)
+      })
+  })
+}
+
+export function addTrackToPlaylist(tracks, playlist_id) {
+  return new Promise((resolve, reject) => {
+    console.log(tracks+" is tracks");
+    request
+      .post(`/api/v1/spotify/users/playlist/${playlist_id}/tracks`)
+      .send(tracks)
+      .end((err, res) => {
+        console.log(res);
+        err ? reject(err) : resolve(res.text)
+      })
+  })
+}

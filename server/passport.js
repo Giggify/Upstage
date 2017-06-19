@@ -18,7 +18,10 @@ module.exports = function(app) {
            users.getById(profile.id, connection) //find or create
            .then(function(user){
                 if (user) {
-                    return done(null, user)
+                    users.updateUserTokens(profile.id, accessToken, refreshToken, connection)
+                        .then(function(res) {
+                            return done(null, user)
+                        })
                 } else {
                     let newUser = {id: profile.id, username: profile.displayName, email: profile._json.email, image: profile.photos[0], accessToken, refreshToken}
                     users.create(newUser, connection)

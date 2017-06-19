@@ -1,30 +1,40 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import ToggleDisplay from 'react-toggle-display'
-import Loading from 'react-loading'
+// import ToggleDisplay from 'react-toggle-display'
+// import Loading from 'react-loading'
 
 class Playlist extends React.Component {
 
- constructor() {
-   super();
-   this.state = { show: false };
- }
-
- handleClick() {
-   this.setState({
-     show: !this.state.show
-   });
+ constructor(props) {
+   super(props)
+     this.state = {
+       show: props.show,
+       loading: props.loading
+   }
  }
 
  render() {
-   return (
-     <div className="Playlist">
-     <button onClick={ () => this.handleClick() }>Create Playlist</button>
-      <ToggleDisplay show={this.state.show}>
-  <iframe src={`https://open.spotify.com/embed/user/${this.state.username}/playlist/${this.state.stuff}`} width="300" height="380" frameBorder="0" allowTransparency="true"></iframe>
-       </ToggleDisplay>
-     </div>
-   )
+   if(this.props.show && !this.props.loading) {
+     return (
+       <div className="Playlist">
+         <iframe src={`https://open.spotify.com/embed/user/${this.props.user}/playlist/${this.props.playlist}`} width="300" height="380" frameBorder="0" allowTransparency="true"></iframe>
+       </div>
+     )
+   }
+  else if(this.props.show && this.props.loading){
+    return (
+      <div className="Playlist">
+<p>Creating Playlist: This is where we put that orange spinny wheel!</p>
+      </div>
+    )
+  }
+  else if (!this.props.show) {
+    return (
+      <div className="Playlist">
+        <button onClick={ () => this.props.handlePlaylist() }>Create Playlist</button>
+      </div>
+    )
+  }
  }
 }
 

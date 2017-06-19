@@ -1,10 +1,12 @@
 var SpotifyWebApi = require('spotify-web-api-node');
+var request = require('superagent')
 
 module.exports = {
   setConnection,
   getConnection,
   filterTracks,
-  filterArtists
+  filterArtists,
+  getArtistId
 }
 
 let isTest = false
@@ -36,7 +38,7 @@ function getConnection() {
 
 function filterTracks(tracks) {
   return tracks.map((track) => {
-    return {id: track.id, name: track.name}
+    return {id: track.id}
   })
 }
 
@@ -46,4 +48,19 @@ function filterArtists(artists, searchStr) {
       return artist
     }
   })
+}
+
+function getArtistId(artistName) {
+ return new Promise(function(resolve, reject) {
+   request
+   .get(`/api/v1/spotify/search/${artistName}`)
+   .end((err, res) => {
+       if(res) {
+           console.log(res)
+           resolve()
+       } else {
+           reject()
+       }
+   })
+ })
 }

@@ -6,6 +6,7 @@ module.exports = {
   exists,
   getById,
   getByName,
+  updateUserTokens
 }
 
 function create (user, testDb) { // insert spotify_id, username, image, access/refresh tokens here
@@ -29,6 +30,14 @@ function getById (id, testDb) {
   const connection = testDb || knex
   return connection('users')
     .where('id', id)
+    .first()
+}
+
+function updateUserTokens (id, accessToken, refreshToken, testDb) {
+    const connection = testDb || knex
+    return connection('users')
+        .where('id', id)
+        .update({accessToken, refreshToken})
 }
 
 function getByName (username, testDb) {

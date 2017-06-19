@@ -12,27 +12,26 @@ module.exports = function(app) {
       clientID: process.env.SPOTIFY_ID,
       clientSecret: process.env.SPOTIFY_SECRET,
       callbackURL: 'http://localhost:3000/auth/callback',
-      //profileFields: ['id', 'displayName', 'email', 'photos']  // edit this
-
     },
 
     function(accessToken, refreshToken, profile, done) {
            users.getById(profile.id, connection) //find or create
-            .then(function(user){
+           .then(function(user){
                 if (user) {
-                    return done(null, user)
+                    users.updateUserTokens(profile.id, accessToken, refreshToken, connection)
+                        .then(function(res) {
+                            return done(null, user)
+                        })
                 } else {
                     let newUser = {id: profile.id, username: profile.displayName, email: profile._json.email, image: profile.photos[0], accessToken, refreshToken}
                     users.create(newUser, connection)
                     .then(function(res){
-                        newUser.id = res[0]
-                        user = newUser
-                        return done(null, user);
+                        return done(null, newUser);
 
                     })
                     .catch(function (err) {
                         return done(null, false, {
-                          message: 'DB Error'
+                          message: 'Create User Error'
                         });
                     })
                 }

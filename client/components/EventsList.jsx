@@ -24,6 +24,8 @@ const styles = {
   },
 };
 
+let filteredEvents
+
 class EventsList extends React.Component {
   constructor(props) {
     let {events,users,artists,minDate,maxDate,dispatch} = props
@@ -37,26 +39,41 @@ class EventsList extends React.Component {
       playlistID: '',
       user: '',
       show: false,
-      loadingPlaylist: true,
-      events,
-      users,
-      artists,
-      minDate,
-      maxDate,
-      dispatch
+      loadingPlaylist: true
     }
   }
   componentWillMount(){
     this.props.dispatch(fetchEvents(this.props.match.params.id))
   }
-  componentWillReceiveProps({events,users,artists,minDate,maxDate,selectedTracks}) {
-    this.setState({
-      events,
-      users,
-      artists,
-      minDate,
-      maxDate
-    })
+
+  componentWillReceiveProps({minDate,maxDate,events}) {
+      if (minDate || maxDate) {
+        let unfilteredEvents=events
+        let minUnix=Date.parse(minDate)
+        let maxUnix=Date.parse(maxDate)
+        const fitsDates=(event)=>{
+          let eventDateUnix=new Date(event.date).getTime()
+          if (minUnix && !maxUnix) {
+            return minUnix <= eventDateUnix
+          }
+          if (maxUnix && !minUnix) {
+            return eventDateUnix<= maxUnix
+          }
+          if (minUnix && maxUnix){
+            return minUnix <= eventDateUnix && eventDateUnix<= maxUnix
+          }
+        }
+        filteredEvents=unfilteredEvents.filter(fitsDates)
+      }
+      if(filteredEvents===undefined){
+        this.setState({
+          events:events,
+        })
+      } else {
+        this.setState({
+          events:filteredEvents,
+        })
+      }
   }
 
   handlePlaylistCreation() {
@@ -149,9 +166,8 @@ const mapState2Props = (state) => {
     events: state.events.events,
     artists: state.events.artists,
     selectedArtists: state.selectedArtists,
-    minDate: state.users.minDate || "2017-01-01",
-    maxDate: state.users.maxDate || "2017-12-30"
-
+    minDate: state.users.minDate,
+    maxDate: state.users.maxDate
   }
 }
 

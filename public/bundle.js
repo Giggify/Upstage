@@ -29226,6 +29226,8 @@ var SelectedArtistsBox = function (_React$Component) {
     };
 
     _this.handleToggle = function () {
+      console.log(_this.props);
+      _this.props.handlePlaylist();
       _this.setState({ open: !_this.state.open });
     };
 
@@ -29235,7 +29237,7 @@ var SelectedArtistsBox = function (_React$Component) {
 
     _this.state = {
       chipData: [],
-      open: true
+      open: false
 
     };
     _this.styles = {
@@ -29306,7 +29308,7 @@ var SelectedArtistsBox = function (_React$Component) {
             ),
             _react2.default.createElement(_RaisedButton2.default, {
               label: 'Create Playlist',
-              onTouchClick: this.props.handlePlaylist()
+              onClick: this.handleToggle
             })
           )
         )

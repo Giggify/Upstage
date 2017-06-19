@@ -9,7 +9,7 @@ class SelectedArtistsBox extends React.Component{
     super(props)
     this.state = {
       chipData:[],
-      open: true
+      open: false
 
     }
     this.styles = {
@@ -33,6 +33,8 @@ class SelectedArtistsBox extends React.Component{
 
 
    handleToggle = () => {
+       console.log(this.props)
+       this.props.handlePlaylist()
        this.setState({open: !this.state.open});
    }
 
@@ -78,7 +80,7 @@ class SelectedArtistsBox extends React.Component{
        </div>
        <RaisedButton
                    label="Create Playlist"
-                   onTouchClick={this.handleToggle}
+                   onClick={this.handleToggle}
         />
       </Drawer>
       </div>

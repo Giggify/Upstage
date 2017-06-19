@@ -158,7 +158,7 @@ class EventsList extends React.Component {
         <Playlist handlePlaylist={this.handlePlaylistCreation.bind(this)} show={this.state.show} user={this.state.user} loading={this.state.loadingPlaylist} playlist={this.state.playlistID}/>
         <DatePicker />
           {this.state.showInfo && <PopInfo event={this.state.eventInBox}/>}
-        <SelectedArtistsBox artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
+        <SelectedArtistsBox handlePlaylist={this.handlePlaylistCreation.bind(this)} artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
         <div style={styles.root}>
          <MuiThemeProvider>
           <GridList

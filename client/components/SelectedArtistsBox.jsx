@@ -1,12 +1,16 @@
 import React from 'react'
 import {Chip, Avatar} from 'material-ui'
+import Drawer from 'material-ui/Drawer';
+import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class SelectedArtistsBox extends React.Component{
   constructor(props){
     super(props)
     this.state = {
-      chipData:[]
+      chipData:[],
+      open: true
+
     }
     this.styles = {
       chip:{
@@ -27,6 +31,13 @@ class SelectedArtistsBox extends React.Component{
     this.props.deleteArtist(key)
   }
 
+
+   handleToggle = () => {
+       this.setState({open: !this.state.open});
+   }
+
+   handleClose = () => this.setState({open: false});
+
   renderChip(data){
     return(
       <Chip
@@ -46,15 +57,30 @@ class SelectedArtistsBox extends React.Component{
       )
     })
     this.setState({
-      chipData:artists
+      chipData:artists,
+      open: true
     })
   }
 
   render(){
     return(
       <MuiThemeProvider>
-      <div style={this.styles.wrapper}>
-        {this.state.chipData.map(this.renderChip, this)}
+      <div>
+
+      <Drawer
+        docked={false}
+        width={200}
+        open={this.state.open}
+        onRequestChange={(open) => this.setState({open})}
+        >
+       <div style={this.styles.wrapper}>
+          {this.state.chipData.map(this.renderChip, this)}
+       </div>
+       <RaisedButton
+                   label="Create Playlist"
+                   onTouchClick={this.handleToggle}
+        />
+      </Drawer>
       </div>
     </MuiThemeProvider>
     )

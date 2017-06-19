@@ -5,6 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Subheader from 'material-ui/Subheader';
 import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 import DatePicker from './DatePicker'
+import Drawer from './Drawer'
 
 import {fetchEvents} from '../actions/events'
 import {createPlaylist, addTrackToPlaylist} from '../api'
@@ -100,6 +101,7 @@ class EventsList extends React.Component {
 
   handleClick(e, artist, tracksArray) {
     e.preventDefault()
+    console.log(this.state.open)
     let selTracks = this.state.selectedTracks
     let selArtists= this.state.selectedArtists
     if(selArtists.indexOf(artist) == -1) {
@@ -128,6 +130,7 @@ class EventsList extends React.Component {
   checkArtistSelected(artist){
     if (this.state.selectedArtists.indexOf(artist) == -1) return "white"
     else return "orange"
+
   }
 
   handleDeleteFromBox(artistIndex){
@@ -166,7 +169,7 @@ class EventsList extends React.Component {
           >
             <Subheader></Subheader>
             {events.map((event, i) => (
-              <ArtistTile event={event} key={i} i={i} checkArtist={this.checkArtistSelected.bind(this)} handleClick={this.handleClick.bind(this)}
+              <ArtistTile event={event} key={i} i={i} checkArtist={this.checkArtistSelected.bind(this)}  handleClick={this.handleClick.bind(this)}
               expandInfo={this.expandInfo.bind(this)}/> // the i={i} is cause react doesn't like you grabbing key from props :(
             ))}
           </GridList>

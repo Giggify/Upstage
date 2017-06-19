@@ -59,7 +59,36 @@ router.get('/users/:id', (req, res) => {
 })
 
 // Protect all routes beneath this point
-// console.log(auth.getSecret())
+router.use(
+  verifyJwt({
+    getToken: auth.getToken,
+    secret: auth.getSecret
+  }),
+  auth.handleError
+)
+
+// These routes are protected
+
+router.post('/users/playlist'), (req,res) => {
+  request
+    .post(`${url}/v1/users/7g8xB3sDX6uMvXG0wlIFCE/playlist`)
+    .send({
+      "name": "New Upstage Playlist",
+      "public": true,
+      "collaborative": false,
+      "description": "Top tracks from artists performing near you"
+    })
+    .set('Authorization', req.user.accessToken)
+    .set('Accept', 'application/json')
+    .end((err,result) => {
+      if(err) {
+        alert('Oops! Playlist creation failed.')
+      }
+      else {
+        res.send(result.body)
+      }
+    })
+}
 
 router.use(
   verifyJwt({
@@ -83,7 +112,6 @@ router.post('/users/playlist', (req,res) => {
     else {
       console.log(result.body.id)
       res.status(201).send(result.body)
-
     }
   })
 })

@@ -1,8 +1,19 @@
 var express = require('express')
 var request = require('superagent')
-
+const verifyJwt = require('express-jwt')
+const auth = require('../lib/auth')
 const router = express.Router()
 
+//Protect all routes beneath this point
+router.use(
+  verifyJwt({
+    getToken: auth.getToken,
+    secret: auth.getSecret
+  }),
+  auth.handleError
+)
+
+// These routes are protected
 router.get('/city/:cityName', (req,res) => {
   request
   .get(`http://api.songkick.com/api/3.0/search/locations.json?query=${req.params.cityName}&apikey=${process.env.SONGKICK_API}`)

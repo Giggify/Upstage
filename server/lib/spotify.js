@@ -1,42 +1,26 @@
-var SpotifyWebApi = require('spotify-web-api-node');
+var SpotifyWebApi = require('spotify-web-api-node')
 
 module.exports = {
-  setConnection,
-  getConnection,
   filterTracks,
-  filterArtists
+  filterArtists,
+  getToken
 }
-
-let isTest = false
 
 var spotifyApi = new SpotifyWebApi({
   clientId : process.env.SPOTIFY_ID,
   clientSecret : process.env.SPOTIFY_SECRET
 })
 
-
-function setConnection(testMode) {
-  if(!testMode) {
-    return spotifyApi.clientCredentialsGrant()
-      .then(function(data) {
-        spotifyApi.setAccessToken(data.body['access_token'])
-    })
-  } else {
-    isTest = true
-  }
-}
-
-function getConnection() {
-  if(!isTest) {
-    return spotifyApi.getAccessToken()
-  } else {
-    return 'pretendtoken'
-  }
+function getToken() {
+  return spotifyApi.clientCredentialsGrant()
+  .then(function(data) {
+    return data.body['access_token']
+  })
 }
 
 function filterTracks(tracks) {
   return tracks.map((track) => {
-    return {id: track.id, name: track.name}
+    return {id: track.id}
   })
 }
 
@@ -46,4 +30,19 @@ function filterArtists(artists, searchStr) {
       return artist
     }
   })
+}
+
+function getArtistId(artistName) {
+ return new Promise(function(resolve, reject) {
+   request
+   .get(`/api/v1/spotify/search/${artistName}`)
+   .end((err, res) => {
+       if(res) {
+           console.log(res)
+           resolve()
+       } else {
+           reject()
+       }
+   })
+ })
 }

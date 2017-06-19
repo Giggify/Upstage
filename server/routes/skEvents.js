@@ -4,30 +4,16 @@ const verifyJwt = require('express-jwt')
 const auth = require('../lib/auth')
 const router = express.Router()
 
-function getSecret (req, payload, done) {
-  done(null, req.app.get('JWT_SECRET'))
-}
-
-router.get('/test', (req, res) => {
-  res.send(req.user)
-})
-
-// This route will set the req.user object if it exists, but is still public
-router.get('/open',
+//Protect all routes beneath this point
+router.use(
   verifyJwt({
-    credentialsRequired: false,
     getToken: auth.getToken,
-    secret: getSecret
+    secret: auth.getSecret
   }),
-  (req, res) => {
-    const json = { message: 'This route is public.' }
-    if (req.user) {
-      json.user = `Your user ID is: ${req.user.id}`
-    }
-    res.json(json)
-  }
+  auth.handleError
 )
 
+// These routes are protected
 router.get('/:locationID', (req,res) => {
   request
   .get(`http://api.songkick.com/api/3.0/metro_areas/${req.params.locationID}/calendar.json?apikey=${process.env.SONGKICK_API}`)
@@ -36,7 +22,7 @@ router.get('/:locationID', (req,res) => {
       res.status(500).send(err.message)
     }
     else {
-      let searchResults = result.body.resultsPage.results.event
+      let searchResults = result.body.resultsPage.results.event || []
       let events = searchResults.map((result)=> {
           return (
             {
@@ -48,28 +34,20 @@ router.get('/:locationID', (req,res) => {
               // if we only want headline artists then this becomes:
               // artists: result.performance[0].artist.displayName
               date: result.start.date || "NA",
-              time: result.start.time || "NA"
+              time: result.start.time || "NA",
+              concertUrl: result.uri || "NA",
+              artistUrl: result.performance.map(performer => performer.artist.uri) || "NA",
+              venue:result.venue.displayName || "NA",
+              venueUrl:result.venue.uri || "NA"
             }
           )
         })
       let artists = events.map((event)=> {
-        return event.artists[0]
+        return event.artists[0] //events.map((event) => getArtistId(event.artists[0]))
       })
       res.json({events,artists})
     }
   })
 })
-
-// Protect all routes beneath this point
-router.use(
-  verifyJwt({
-    getToken: auth.getToken,
-    secret: auth.getSecret
-  }),
-  auth.handleError
-)
-
-
-
 
 module.exports = router

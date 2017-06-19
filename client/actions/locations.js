@@ -1,8 +1,10 @@
 var request = require('superagent')
+//only last function is needed for app, but exporting all functions for testing
 
 export function fetchLocationsRequest(){
   return{
-    type:'FETCH_LOCATIONS_REQUEST'
+    type:'FETCH_LOCATIONS_REQUEST',
+    message:'Searching locations...'
   }
 }
 
@@ -20,6 +22,23 @@ export function fetchLocationsSuccess(res){
   }
 }
 
+export function filterLocation (locations) { //filter location to remove duplicates
+    var obj = {};
+
+    for ( var i=0, len=locations.length; i < len; i++ ){
+        obj[locations[i]['id']] = locations[i];
+    }
+
+    locations = new Array();
+
+    for ( var key in obj ) {
+        locations.push(obj[key]);
+    }
+
+    return locations
+
+ }
+
 export function fetchLocations(cityName){
   return (dispatch) => {
     dispatch(fetchLocationsRequest())
@@ -29,7 +48,8 @@ export function fetchLocations(cityName){
         if (err) {
           dispatch((fetchLocationsFailure(err)))
         } else {
-          dispatch((fetchLocationsSuccess(res.body)))
+
+          dispatch(fetchLocationsSuccess(filterLocation(res.body)))
         }
       })
   }

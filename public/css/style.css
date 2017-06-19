@@ -143,3 +143,11 @@ body{
 .eventlistheader {
   font-family: 'Oleo Script';
 }
+
+.Create-Playlist {
+  background-color: #FF6900;
+  color: black;
+  border-radius: 2px;
+  font-family: 'Oleo Script';
+
+}

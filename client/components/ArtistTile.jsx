@@ -6,28 +6,26 @@ import IconButton from 'material-ui/IconButton'
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 
 import {getArtist, getTopTracks} from '../api'
-import {fetchEvents} from '../actions/events'
 
 class ArtistTile extends React.Component {
   constructor(props) {
-    let {artists} = props
     super(props)
     this.state = {
-      artist:undefined,
       tracksArray: [],
-      artists,
       artist: {
-        images: [
-          {
-            url: '/images/unknownartist.png'
-          }
-        ]
+        images: [{url: '/images/unknownartist.png'}]
       },
       tracks: []
     }
   }
-  componentDidMount() {
+  componentWillMount(){
     getArtist(this.props.event.artists[0])
+      .then((artist) => {
+        if (artist) this.setState({artist})
+      })
+  }
+  componentWillReceiveProps(nextProps) {
+    getArtist(nextProps.event.artists[0])
       .then((artist) => {
         if (artist) this.setState({artist})
       })
@@ -59,16 +57,10 @@ class ArtistTile extends React.Component {
         subtitle={<span><b>{event.date}</b></span>}
         actionIcon={<IconButton><StarBorder color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)}/></IconButton>}
       >
-        <img src={this.state.artist.images[0].url || "/images/unknownartist.png"} />
+        <img src={this.state.artist.images[0].url || "/images/unknownartist.png"} onClick={()=>this.props.expandInfo({event})} />
       </GridTile>
     )
   }
 }
 
-  const mapState2Props = (state) => {
-    return {
-      artists: state.events.artists
-    }
-  }
-
-  export default ArtistTile
+export default ArtistTile

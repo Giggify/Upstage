@@ -84,5 +84,6 @@ module.exports = {
   issueJwt,
   verify,
   getToken,
-  getSecret
+  getSecret,
+  createToken
 }

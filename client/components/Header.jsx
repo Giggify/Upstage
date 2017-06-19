@@ -21,7 +21,7 @@ class Header extends React.Component {
   render() {
     return (
       <div className='header'>
-        <h3 className="upstagesmall">UPSTAGE</h3>
+        <img src="./css/TITLE.png" width="50%"/>
         <div className="spotifydetails">
           <img className='spotifyimage' src={this.state.image}/>
           <a className='spotifyusername' href="/auth/logout">{this.state.user} 🡻</a>

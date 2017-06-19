@@ -5,6 +5,7 @@ import nock from 'nock'
 require('dotenv').config()
 
 const app = require('../../server/server')
+app.set('spotifyToken', 'thisisatoken')
 
 test.cb('check top tracks route', t => {
  const tracksObj = {

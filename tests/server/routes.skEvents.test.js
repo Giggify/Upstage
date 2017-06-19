@@ -4,6 +4,7 @@ var nock = require('nock')
 require('dotenv').config()
 
 var app = require('../../server/server')
+app.set('spotifyToken', 'thisisatoken')
 
 test.cb('API route /events/locationID returns a json', (t) => {
   const data = {

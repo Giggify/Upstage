@@ -57,7 +57,7 @@ class ArtistTile extends React.Component {
         subtitle={<span><b>{event.date}</b></span>}
         actionIcon={<IconButton><StarBorder color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)}/></IconButton>}
       >
-        <img src={this.state.artist.images[0].url || "/images/unknownartist.png"} onClick={()=>this.props.expandInfo({event})} />
+        <img src={this.state.artist.images[0]? this.state.artist.images[0].url : "/images/unknownartist.png"} onClick={()=>this.props.expandInfo({event})} />
       </GridTile>
     )
   }

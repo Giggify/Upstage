@@ -28,15 +28,23 @@ import {saveLocationId, saveLocationName} from '../actions/users'
  ]
 
 class PopularPlaces extends React.Component{
+  constructor(props){
+    super(props)
+    this.state={
+      showCity:false
+    }
+  }
 
   handleChange=(event,value)=>{
+    this.setState({showCity:`${value.name.name}`})
+    console.log(value.name)
     this.props.dispatch(saveLocationId(value.id))
     this.props.dispatch(saveLocationName(value.name))
   }
   render(){
     return(
       <div>
-        Choose a popular city
+        {this.state.showCity? `${this.state.showCity}` : `${"Choose a popular city"}`  }
       <MuiThemeProvider>
       <IconMenu
         iconButtonElement={<IconButton><MapsPlace /></IconButton>}

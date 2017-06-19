@@ -101,11 +101,9 @@ class EventsList extends React.Component {
 
   handleClick(e, artist, tracksArray) {
     e.preventDefault()
-    console.log(this.state.open)
     let selTracks = this.state.selectedTracks
     let selArtists= this.state.selectedArtists
     if(selArtists.indexOf(artist) == -1) {
-      console.log(tracksArray);
       this.mapArrayToState(tracksArray)
       this.setState({selectedArtists: [...selArtists,artist]})
     }
@@ -151,7 +149,6 @@ class EventsList extends React.Component {
     render() {
       let artists = this.props.artists || []
       let events = this.state.events || []
-      console.log(this.state.selectedTracks);
     return (
       <div className='Events-list-page'>
         <h1>Current Location: {this.props.match.params.name}</h1>

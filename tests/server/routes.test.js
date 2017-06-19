@@ -4,8 +4,14 @@ import nock from 'nock'
 
 require('dotenv').config()
 
-const app = require('../../server/server')
-app.set('spotifyToken', 'thisisatoken')
+var environment = process.env.NODE_ENV || 'development'
+var dbConfig = require('../../knexfile')[environment]
+var connection = require('knex')(dbConfig)
+
+var isTest = true
+
+const server = require('../../server/server')
+let app = server(connection, isTest)
 
 test.cb('check top tracks route', t => {
  const tracksObj = {

@@ -17,16 +17,12 @@ const spotifyLib = require('./lib/spotify')
 
 const app = express()
 
-spotifyLib.getToken()
-  .then((token) => {
-    app.set('spotifyToken', token)
-  })
+
 
 // How to set this?!?!
 // setInterval(function() {
 //   spotifyConnection = spotifyLib.setConnection('test')
 // }, 60*1000*60)
-
 
 app.set('JWT_SECRET', process.env.JWT_SECRET)
 
@@ -43,4 +39,13 @@ app.use('/api/v1/events', skEventSearch)
 app.use('/api/v1/metros', skGetAreaID)
 app.use('/api/v1/spotify', spotify)
 
-module.exports = app
+module.exports = (connection, isTest) => {
+  isTest
+  ? app.set('spotifyToken', 'testtoken')
+  : spotifyLib.getToken()
+    .then((token) => {
+      app.set('spotifyToken', token)
+    })
+  app.set('connection', connection)
+  return app
+}

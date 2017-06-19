@@ -13,7 +13,7 @@ class Header extends React.Component {
   componentWillMount() {
     var cookie = document.cookie
     if (cookie.length < 1) {
-      window.location.assign('http://localhost:3000/') 
+      window.location.assign('http://localhost:3000/#/login') 
     }
     else {
       getUserInfo(cookie || null)

@@ -3,6 +3,7 @@ import {HashRouter as Router, Route} from 'react-router-dom'
 
 import Header from './Header'
 import LoginPage from './LoginPage'
+import ErrorLogin from './ErrorLogin'
 import Homepage from '../container/Homepage'
 import NavBar from './NavBar'
 import EventsList from './EventsList'
@@ -23,6 +24,8 @@ export default class App extends React.Component {
       <Router>
         <div className="app-container">
           <Route exact path='/' component={LoginPage} />
+          <Route exact path='/login' component={LoginPage} />
+          <Route exact path='/login' component={ErrorLogin} />
           <Route exact path='/search' component={Header} />
           <Route exact path='/search' component={Homepage} />
           <Route exact path='/events/:id/:name' component={Header} />

@@ -7,6 +7,7 @@ import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 import DatePicker from './DatePicker'
 
 import {fetchEvents} from '../actions/events'
+import {createPlaylist, addTrackToPlaylist} from '../api'
 import SelectedArtistsBox from './SelectedArtistsBox'
 import ArtistTile from './ArtistTile'
 import Playlist from '../container/Playlist'
@@ -28,6 +29,7 @@ let filteredEvents
 
 class EventsList extends React.Component {
   constructor(props) {
+    let {events,users,artists,minDate,maxDate,dispatch} = props
     super(props)
     this.state = {
       tracksArray: [],
@@ -35,6 +37,12 @@ class EventsList extends React.Component {
       artistIDs: [], // this will be the end target of the filter, showing only events
       //within the date range.
       selectedTracks: [],
+      playlistID: '',
+      user: '',
+      show: false,
+      loadingPlaylist: true,
+      minDate:this.props.minDate,
+      maxDate:this.props.maxDate,
       showInfo:false
     }
   }
@@ -43,33 +51,51 @@ class EventsList extends React.Component {
   }
 
   componentWillReceiveProps({minDate,maxDate,events}) {
-      if (minDate || maxDate) {
-        let unfilteredEvents=events
-        let minUnix=Date.parse(minDate)
-        let maxUnix=Date.parse(maxDate)
-        const fitsDates=(event)=>{
-          let eventDateUnix=new Date(event.date).getTime()
-          if (minUnix && !maxUnix) {
-            return minUnix <= eventDateUnix
-          }
-          if (maxUnix && !minUnix) {
-            return eventDateUnix<= maxUnix
-          }
-          if (minUnix && maxUnix){
-            return minUnix <= eventDateUnix && eventDateUnix<= maxUnix
-          }
+    if (minDate || maxDate) {
+      let unfilteredEvents=events
+      let minUnix=Date.parse(minDate)
+      let maxUnix=Date.parse(maxDate)
+      const fitsDates=(event)=>{
+        let eventDateUnix=new Date(event.date).getTime()
+        if (minUnix && !maxUnix) {
+          return minUnix <= eventDateUnix
         }
-        filteredEvents=unfilteredEvents.filter(fitsDates)
+        if (maxUnix && !minUnix) {
+          return eventDateUnix<= maxUnix
+        }
+        if (minUnix && maxUnix){
+          return minUnix <= eventDateUnix && eventDateUnix<= maxUnix
+        }
       }
-      if(filteredEvents===undefined){
-        this.setState({
-          events:events,
-        })
-      } else {
-        this.setState({
-          events:filteredEvents,
-        })
-      }
+      filteredEvents=unfilteredEvents.filter(fitsDates)
+    }
+    if(filteredEvents===undefined){
+      this.setState({
+        events:events,
+        what:'doh'
+      })
+    } else {
+      this.setState({
+        events:filteredEvents,
+        what:'123'
+      })
+    }
+  }
+
+  handlePlaylistCreation() {
+    this.setState({loadingPlaylist: true})
+    createPlaylist()
+      .then((result) => {
+      this.setState({playlistID: result.id})
+      let tracklist = this.state.selectedTracks
+      let apiTracklist = tracklist.map((track) =>
+      `spotify:track:${track}`)
+      addTrackToPlaylist(apiTracklist,this.state.playlistID)
+      .then((result2)=> {
+        console.log(result2);
+      this.setState({show: !this.state.show, loadingPlaylist: false, user:result2});
+      })
+    })
   }
 
   handleClick(e, artist, tracksArray) {
@@ -77,13 +103,13 @@ class EventsList extends React.Component {
     let selTracks = this.state.selectedTracks
     let selArtists= this.state.selectedArtists
     if(selArtists.indexOf(artist) == -1) {
+      console.log(tracksArray);
       this.mapArrayToState(tracksArray)
       this.setState({selectedArtists: [...selArtists,artist]})
-    } else {
-      this.setState({
-        selectedTracks: this.removeTrackIfExists(tracksArray, [...this.state.selectedTracks]),
-        selectedArtists: [...selArtists].filter((name)=> name != artist)
-      })
+    }
+    else {
+      this.removeTrackIfExists(tracksArray, [...this.state.selectedTracks])
+      this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist)})
     }
   }
 
@@ -120,11 +146,13 @@ class EventsList extends React.Component {
   }
 
     render() {
+      let artists = this.props.artists || []
       let events = this.state.events || []
+      console.log(this.state.selectedTracks);
     return (
       <div className='Events-list-page'>
         <h1>Current Location: {this.props.match.params.name}</h1>
-        <Playlist />
+        <Playlist handlePlaylist={this.handlePlaylistCreation.bind(this)} show={this.state.show} user={this.state.user} loading={this.state.loadingPlaylist} playlist={this.state.playlistID}/>
         <DatePicker />
           {this.state.showInfo && <PopInfo event={this.state.eventInBox}/>}
         <SelectedArtistsBox artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
@@ -158,7 +186,6 @@ const mapState2Props = (state) => {
     selectedArtists: state.selectedArtists,
     minDate: state.users.minDate,
     maxDate: state.users.maxDate
-
   }
 }
 

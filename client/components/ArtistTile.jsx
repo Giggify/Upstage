@@ -1,9 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {GridTile} from 'material-ui/GridList';
-import IconButton from 'material-ui/IconButton';
-import AddToPlaylist from 'material-ui/svg-icons/AV/playlist-add';
+import {GridTile} from 'material-ui/GridList'
+import IconButton from 'material-ui/IconButton'
+import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 
 import {getArtist, getTopTracks} from '../api'
 
@@ -29,22 +29,22 @@ class ArtistTile extends React.Component {
       .then((artist) => {
         if (artist) this.setState({artist})
       })
-      // .then(() => {
-      //   let tracksArray = []
-      //   if(this.state.artist!=undefined){
-      //     getTopTracks(this.state.artist.id)
-      //         .then((tracks) => {
-      //           if(tracks.status!=400){
-      //             tracks.map((track) => {
-      //               tracksArray.push(track.id)
-      //             })
-      //           }
-      //         })
-      //         .then(() => {
-      //           this.setState({tracksArray})
-      //         })
-      //   }
-      // })
+      .then(() => {
+        let tracksArray = []
+        if(this.state.artist!=undefined){
+          getTopTracks(this.state.artist.id)
+              .then((tracks) => {
+                if(tracks.status!=400){
+                  tracks.map((track) => {
+                    tracksArray.push(track.id)
+                  })
+                }
+              })
+              .then(() => {
+                this.setState({tracksArray})
+              })
+        }
+      })
   }
 
   render(){
@@ -55,7 +55,7 @@ class ArtistTile extends React.Component {
         key={this.props.i}
         title={event.artists[0]}
         subtitle={<span><b>{event.date}</b></span>}
-        actionIcon={<IconButton><AddToPlaylist color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)}/></IconButton>}
+        actionIcon={<IconButton><StarBorder color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)}/></IconButton>}
       >
         <img src={this.state.artist.images[0].url || "/images/unknownartist.png"} onClick={()=>this.props.expandInfo({event})} />
       </GridTile>

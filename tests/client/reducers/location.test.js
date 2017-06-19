@@ -11,7 +11,7 @@ test('reducer should return initial state', t => {
 )
 
 test('reducer should handle FETCH_LOCATIONS_REQUEST by adding loading to store', t=>{
-  const expectedState = {fetching:true}
+  const expectedState = {fetching:true, message:'Searching locations...'}
   const actual=location({},actions.fetchLocationsRequest())
   t.deepEqual(actual,expectedState)
 })

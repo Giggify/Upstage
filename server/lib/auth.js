@@ -53,9 +53,9 @@ function issueJwt (req, res, next) {
             info: info.message
           })
         }
-        const token = createToken(users, req.app.get('JWT_SECRET'))
+        const token = createToken(user, req.app.get('JWT_SECRET'))
         // Ideally use `secure: true` in production
-        res.cookie('token', token, { httpOnly: true })
+        res.cookie('token', token, { httpOnly: false })
         res.redirect('/home')
       })(req, res, next)
 }
@@ -84,5 +84,6 @@ module.exports = {
   issueJwt,
   verify,
   getToken,
-  getSecret
+  getSecret,
+  createToken
 }

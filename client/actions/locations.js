@@ -1,8 +1,10 @@
 var request = require('superagent')
+//only last function is needed for app, but exporting all functions for testing
 
 export function fetchLocationsRequest(){
   return{
-    type:'FETCH_LOCATIONS_REQUEST'
+    type:'FETCH_LOCATIONS_REQUEST',
+    message:'Searching locations...'
   }
 }
 
@@ -20,8 +22,7 @@ export function fetchLocationsSuccess(res){
   }
 }
 
-
-function filterLocation (locations) { //filter location to remove duplicates
+export function filterLocation (locations) { //filter location to remove duplicates
     var obj = {};
 
     for ( var i=0, len=locations.length; i < len; i++ ){

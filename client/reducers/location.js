@@ -3,7 +3,8 @@ function location(state={},action){
     case 'FETCH_LOCATIONS_REQUEST':
       return{
         ...state,
-        fetching:true
+        fetching:true,
+        message:action.message
       }
     case 'FETCH_LOCATIONS_FAILURE':
       return{

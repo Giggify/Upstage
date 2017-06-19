@@ -7,7 +7,6 @@ export function fetchEventsRequest(){
 }
 
 export function fetchEventsFailure(err){
-  alert(err);
   return{
     type:'FETCH_EVENTS_FAILURE',
     err

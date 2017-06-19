@@ -15,6 +15,8 @@ const home = require('./routes/home')
 
 const spotifyLib = require('./lib/spotify')
 
+
+
 let spotifyConnection = spotifyLib.setConnection()
 
 setInterval(function() {
@@ -22,6 +24,9 @@ setInterval(function() {
 }, 60*1000*60)
 
 const app = express()
+
+
+// app.set('spotifyConnection': )
 
 app.set('JWT_SECRET', process.env.JWT_SECRET)
 

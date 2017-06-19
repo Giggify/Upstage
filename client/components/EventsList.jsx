@@ -135,7 +135,9 @@ class EventsList extends React.Component {
   }
 
     render() {
-      let events = this.state.events || []
+      let artists = this.props.artists || []
+      let events = this.props.events || []
+      console.log(this.state.selectedTracks);
     return (
       <div className='Events-list-page'>
         <h1>Current Location: {this.props.match.params.name}</h1>

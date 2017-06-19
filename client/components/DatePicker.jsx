@@ -4,6 +4,7 @@ import {orange400, orange300, orange800, grey50, grey100, grey300 ,grey400, grey
 import DatePicker from 'material-ui/DatePicker'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import {saveMinDate, saveMaxDate} from '../actions/users'
 
 const optionsStyle = {
   maxWidth: 255,
@@ -54,16 +55,32 @@ class DatePickerExampleToggle extends React.Component {
     };
   }
 
+  //For when it is rendered by giglist page
+  componentWillMount(){
+    if(this.props.minDate){
+      this.setState({
+        minDate: this.props.minDate
+      })
+    }
+    if(this.props.maxDate){
+      this.setState({
+        maxDate: this.props.maxDate
+      })
+    }
+  }
+
   handleChangeMinDate = (event, date) => {
     this.setState({
       minDate: date,
     });
+    this.props.dispatch(saveMinDate(date))
   };
 
   handleChangeMaxDate = (event, date) => {
     this.setState({
       maxDate: date,
     });
+    this.props.dispatch(saveMaxDate(date))
   };
 
   render() {
@@ -92,8 +109,8 @@ class DatePickerExampleToggle extends React.Component {
 
 const mapState2Props = (state)=>{
   return {
-    minDate:state.minDate,
-    maxDate:state.maxDate
+    minDate:state.users.minDate,
+    maxDate:state.users.maxDate
   }
 }
 

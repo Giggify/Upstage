@@ -36,7 +36,7 @@ function getConnection() {
 
 function filterTracks(tracks) {
   return tracks.map((track) => {
-    return {id: track.id, name: track.name}
+    return {id: track.id}
   })
 }
 

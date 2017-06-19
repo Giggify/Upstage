@@ -11,6 +11,7 @@ const skEventSearch = require('./routes/skEvents')
 const skGetAreaID = require('./routes/skMetro')
 const index = require('./routes/index')
 const spotify = require('./routes/spotify')
+const home = require('./routes/home')
 
 const app = express()
 
@@ -24,6 +25,7 @@ passport(app)
 
 // routes here
 app.use('/', index)
+app.use('/home', home )
 app.use('/api/v1/events', skEventSearch)
 app.use('/api/v1/metros', skGetAreaID)
 app.use('/api/v1/spotify', spotify)

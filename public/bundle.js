@@ -28712,11 +28712,7 @@ var Header = function Header() {
   return _react2.default.createElement(
     'div',
     { className: 'header' },
-    _react2.default.createElement(
-      'h1',
-      { className: 'upstage' },
-      'UPSTAGE'
-    )
+    _react2.default.createElement('img', { src: './css/TITLE.png', width: '50%' })
   );
 };
 

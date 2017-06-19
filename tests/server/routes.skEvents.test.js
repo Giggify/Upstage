@@ -34,8 +34,9 @@ test.cb('API route /events/locationID returns a json', (t) => {
     .set('Cookie', `token=${token}`)
     .expect('Content-Type', /json/)
     .expect(200)
-    .then((res) => {
+    .end((err, res) => {
      // scope.done()
+      t.ifError(err)
       t.true(res.body.hasOwnProperty('events'))
       t.true(res.body.hasOwnProperty('artists'))
       t.end()

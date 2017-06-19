@@ -18,6 +18,8 @@ module.exports = function(app) {
            users.getById(profile.id, connection) //find or create
            .then(function(user){
                 if (user) {
+                    console.log("received Access Token")
+                    console.log(accessToken)
                     users.updateUserTokens(profile.id, accessToken, refreshToken, connection)
                         .then(function(res) {
                             return done(null, user)

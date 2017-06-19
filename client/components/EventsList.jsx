@@ -24,9 +24,10 @@ const styles = {
   },
 };
 
+let filteredEvents
+
 class EventsList extends React.Component {
   constructor(props) {
-    let {events,users,artists,minDate,maxDate,dispatch} = props
     super(props)
     this.state = {
       tracksArray: [],
@@ -49,14 +50,35 @@ class EventsList extends React.Component {
   componentWillMount(){
     this.props.dispatch(fetchEvents(this.props.match.params.id))
   }
-  componentWillReceiveProps({events,users,artists,minDate,maxDate,selectedTracks}) {
-    this.setState({
-      events,
-      users,
-      artists,
-      minDate,
-      maxDate
-    })
+
+  componentWillReceiveProps({minDate,maxDate,events}) {
+      if (minDate || maxDate) {
+        let unfilteredEvents=events
+        let minUnix=Date.parse(minDate)
+        let maxUnix=Date.parse(maxDate)
+        const fitsDates=(event)=>{
+          let eventDateUnix=new Date(event.date).getTime()
+          if (minUnix && !maxUnix) {
+            return minUnix <= eventDateUnix
+          }
+          if (maxUnix && !minUnix) {
+            return eventDateUnix<= maxUnix
+          }
+          if (minUnix && maxUnix){
+            return minUnix <= eventDateUnix && eventDateUnix<= maxUnix
+          }
+        }
+        filteredEvents=unfilteredEvents.filter(fitsDates)
+      }
+      if(filteredEvents===undefined){
+        this.setState({
+          events:events,
+        })
+      } else {
+        this.setState({
+          events:filteredEvents,
+        })
+      }
   }
 
   handlePlaylistCreation() {
@@ -81,10 +103,11 @@ class EventsList extends React.Component {
     if(selArtists.indexOf(artist) == -1) {
       this.mapArrayToState(tracksArray)
       this.setState({selectedArtists: [...selArtists,artist]})
-    }
-    else {
-      this.removeTrackIfExists(tracksArray, [...this.state.selectedTracks])
-      this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist)})
+    } else {
+      this.setState({
+        selectedTracks: this.removeTrackIfExists(tracksArray, [...this.state.selectedTracks]),
+        selectedArtists: [...selArtists].filter((name)=> name != artist)
+      })
     }
   }
 
@@ -112,9 +135,7 @@ class EventsList extends React.Component {
   }
 
     render() {
-      let artists = this.props.artists || []
-      let events = this.props.events || []
-      console.log(this.state.selectedTracks);
+      let events = this.state.events || []
     return (
       <div className='Events-list-page'>
         <h1>Current Location: {this.props.match.params.name}</h1>
@@ -148,8 +169,8 @@ const mapState2Props = (state) => {
     events: state.events.events,
     artists: state.events.artists,
     selectedArtists: state.selectedArtists,
-    minDate: state.users.minDate || "2017-01-01",
-    maxDate: state.users.maxDate || "2017-12-30"
+    minDate: state.users.minDate,
+    maxDate: state.users.maxDate
 
   }
 }

@@ -5,6 +5,7 @@ import Header from './Header'
 import Homepage from '../container/Homepage'
 import NavBar from './NavBar'
 import EventsList from './EventsList'
+import Drawer from './Drawer'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -25,6 +26,8 @@ export default class App extends React.Component {
           </div>
           <Route exact path='/search' component={Homepage} />
           <Route exact path='/events/:id/:name' component={EventsList} />
+          <Route exact path='/drawer' component={Drawer} />
+
         </div>
       </Router>
     )

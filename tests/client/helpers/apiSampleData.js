@@ -1,3 +1,45 @@
+//'/api/v1/spotify/search/lorde' returns
+export const spotifyArtistSearch = [
+  {
+    "external_urls": {
+      "spotify": "https://open.spotify.com/artist/163tK9Wjr9P9DmM0AVK7lm"
+    },
+    "followers": {
+      "href": null,
+      "total": 2219228
+    },
+    "genres": [
+      "dance pop",
+      "metropopolis",
+      "pop"
+    ],
+    "href": "https://api.spotify.com/v1/artists/163tK9Wjr9P9DmM0AVK7lm",
+    "id": "163tK9Wjr9P9DmM0AVK7lm",
+    "images": [
+      {
+        "height": 640,
+        "url": "https://i.scdn.co/image/d25fc756cd04c8b3ea196b7c07c6d057685cc405",
+        "width": 640
+      },
+      {
+        "height": 320,
+        "url": "https://i.scdn.co/image/ca2e7772dcdfd03401cdd0c66aeee1bea8ea3904",
+        "width": 320
+      },
+      {
+        "height": 160,
+        "url": "https://i.scdn.co/image/2f22ea3ea1597887d86441a030204dac49a74a81",
+        "width": 160
+      }
+    ],
+    "name": "Lorde",
+    "popularity": 85,
+    "type": "artist",
+    "uri": "spotify:artist:163tK9Wjr9P9DmM0AVK7lm"
+  }
+]
+
+//'/api/v1/metros/city/wellington' returns
 export const locations = [
   {
     "id": 19511,
@@ -12,7 +54,7 @@ export const locations = [
     "country": "Australia"
   }
 ]
-
+//'/api/v1/events/31433' returns
 export const events = {
   "events": [
     {

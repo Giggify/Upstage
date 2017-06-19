@@ -11,20 +11,25 @@ class Header extends React.Component {
     }
   }
   componentWillMount() {
-    getUserInfo(document.cookie || null)
-
-    //if no cookie, redirect to home.
-    .then((result) => {
-      this.setState({user: result.id, image: result.image})
-    })
+    var cookie = document.cookie
+    if (cookie.length < 1) {
+      window.location.assign('http://localhost:3000/') 
+    }
+    else {
+      getUserInfo(cookie || null)
+      .then((result) => {
+        this.setState({user: result.id, image: result.image})
+      })
+    }
   }
   render() {
     return (
       <div className='header'>
-        <img src="./css/TITLE.png" width="50%"/>
+        <img src="./css/TITLE.png" width="8%" height="3%"/>
         <div className="spotifydetails">
           <img className='spotifyimage' src={this.state.image}/>
-          <a className='spotifyusername' href="/auth/logout">{this.state.user} 🡻</a>
+          <a className='spotifyusername' href="/auth/logout">{this.state.user} </a>
+          <a href="/auth/logout"><img src="./images/logout.png" className='spotifylogout'/></a>
         </div>
       </div>
     )

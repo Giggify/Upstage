@@ -72,7 +72,7 @@ body{
   border-radius: 8px;
   background-color: #6AE368;
   border: 4px solid black;
-  width: 200px;
+  width: 250px;
   height: 50px;
   margin-left: 150px;
   padding: 5px;
@@ -82,6 +82,14 @@ body{
 }
 .spotifylogo, .spotifyimage {
   padding-top: 2px;
+  display: block;
+  height: 44px;
+  width: 44px;
+}
+.spotifylogout {
+  padding-top: 2px;
+  padding-bottom: 10px;
+  padding-left: 15px;
   display: block;
   height: 44px;
   width: 44px;
@@ -150,4 +158,28 @@ body{
   border-radius: 2px;
   font-family: 'Oleo Script';
 
+}
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
 }

@@ -1,12 +1,6 @@
 import test from 'ava'
-import supertest from 'supertest'
-import nock from 'nock'
 
 const spotify = require('../../server/lib/spotify')
-
-test.skip('faking passing test', t=>{
-  t.pass()
-})
 
 test('filters artist to return correct artist', t => {
   let filteredArtist = spotify.filterArtists([{name: 'Oasis'}, {name: 'Oasiscasc'}], 'Oasis')

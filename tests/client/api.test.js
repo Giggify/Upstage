@@ -73,7 +73,6 @@ test.cb('addTrackToPlaylist', t => {
   api.addTrackToPlaylist(["track1","track2"],"73a")
     .then((data)=>{
       scope.done()
-      console.log(data);
       t.deepEqual(data, "{\"id\":\"test\"}")
       t.end()
     })

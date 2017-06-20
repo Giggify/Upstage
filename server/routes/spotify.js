@@ -134,6 +134,3 @@ router.get('/me', (req,res) => {
       }
       res.status(200).json(userDetails)
     })
-
-
-module.exports = router

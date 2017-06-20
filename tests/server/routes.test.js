@@ -118,7 +118,7 @@ test.cb('check get user route', t => {
      })
 })
 
-test.cb.only('check createPlaylist post route', t => {
+test.cb('check createPlaylist post route', t => {
 let scope = nock('https://api.spotify.com')
   .post(`/v1/users/eljordy_uk/playlists`)
   .reply(201, {test: "73a"})
@@ -132,3 +132,20 @@ let scope = nock('https://api.spotify.com')
       t.end()
     })
   })
+
+  test.cb('check addTrack post route', t => {
+  let scope = nock('https://api.spotify.com')
+    .post(`/v1/users/eljordy_uk/playlists/73a/tracks`)
+    .reply(201, {test: "haha"})
+    let token = createToken({id: "eljordy_uk"}, app.get('JWT_SECRET'))
+    request(app)
+      .post('/api/v1/spotify/users/playlist/73a/tracks')
+      .set('Cookie', `token=${token}`)
+      .then((result) => {
+        scope.done()
+        t.is(result.text, "eljordy_uk")
+        t.end()
+      })
+    })
+
+  test.todo('/me gets user id and image')

@@ -1,11 +1,11 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {TextField} from 'material-ui'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin();
+
+import{getMuiTheme, MuiThemeProvider} from 'material-ui/styles/'
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 
 import {fetchLocations} from '../actions/locations'
 import {fetchEvents} from '../actions/events'
@@ -47,9 +47,6 @@ class SearchBar extends React.Component{
     <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
       <div className='search-bar'>
         <PopularPlaces />
-        <div id='or'>
-          OR
-        </div>
         <div id='search-text-field'>
           <TextField
           id='text-field-controlled'
@@ -59,7 +56,8 @@ class SearchBar extends React.Component{
           onChange={this.handleUpdateInput}
           />
         </div>
-      <button id='search-button' onClick={()=>this.handleClick()}> search </button>
+        <img id='search-button' src='https://cdn2.iconfinder.com/data/icons/media-and-navigation-buttons-round/512/Button_15-128.png'
+        onClick={()=>this.handleClick()} />
         <div className='search-results'>
           {searchResults!=[] && this.state.showResults &&
             <div>
@@ -71,8 +69,8 @@ class SearchBar extends React.Component{
               }
             </div>
           }
-        </div>
       </div>
+    </div>
     </MuiThemeProvider>
     )
   }

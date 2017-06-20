@@ -1,0 +1,6 @@
+#search-result-item:hover{
+  color: #CCC;
+}
+#search-button{
+  transform: scale(0.4,0.4)
+}

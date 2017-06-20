@@ -12,50 +12,7 @@ body {
   height: 100%;
   width: 100%;
 }
-.search-bar{
-  background-color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width:80%;
-  margin-left: 30vh;
-}
-#or{
-  vertical-align: middle;
-}
-#search-text-field{
-  margin-left: 1em;
-  margin-top: -20px;
-}
-.search-bar input,button{
-  font-size:1em;
-  border-radius: 25px;
-  color:gray;
-  border-color: none;
-  border-style:none;
-  padding: 0.1em;
-  margin: 0.1em;
-}
 
-.search-bar button{
-  color:gray;
-  background-color:white;
-  border: 0.1em solid gray;
-}
-
-.search-results{
-  height:50%;
-  /* not working lol need to be modified */
-}
-
-#search-result-item{
-  font-size: 2em;
-  margin: 0.1em
-}
-
-#search-result-item:hover{
-  background-color: #32CD32;
-}
 .header {
   margin-left: 100px;
   margin-right: 100px;

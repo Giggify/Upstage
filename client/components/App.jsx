@@ -9,7 +9,6 @@ import NavBar from './NavBar'
 import EventsList from './EventsList'
 
 import {getUserInfo} from '../api'
-import Drawer from './Drawer'
 
 export default class App extends React.Component {
     constructor(props) {

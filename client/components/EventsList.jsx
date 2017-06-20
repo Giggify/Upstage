@@ -5,7 +5,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Subheader from 'material-ui/Subheader';
 import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 import DatePicker from './DatePicker'
-import Drawer from './Drawer'
 
 import {fetchEvents} from '../actions/events'
 import {createPlaylist, addTrackToPlaylist} from '../api'

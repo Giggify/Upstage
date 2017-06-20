@@ -1,8 +1,12 @@
 import React from 'react'
 import {Chip, Avatar} from 'material-ui'
+
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
 import Drawer from 'material-ui/Drawer';
 import RaisedButton from 'material-ui/RaisedButton';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class SelectedArtistsBox extends React.Component{
   constructor(props){
@@ -66,7 +70,7 @@ class SelectedArtistsBox extends React.Component{
 
   render(){
     return(
-      <MuiThemeProvider>
+      <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
       <div>
 
       <Drawer

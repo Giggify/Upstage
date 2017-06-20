@@ -7,6 +7,10 @@ export function getPlaylistId(playlistID){
   }
 }
 
+// export function addTracksToPlaylist(playlistID) {
+//   request
+// }
+
 export function playlistError (message) {
   return {
     type: 'THROW_ERROR',
@@ -44,7 +48,7 @@ export function fetchPlaylistId () {
         } else {
           dispatch(clearPlaylistError())
           dispatch(changeLoadState(false))
-          dispatch(getPlaylistId(res.body))
+          dispatch(getPlaylistId(res.body.id))
         }
       })
   }

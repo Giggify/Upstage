@@ -28407,7 +28407,7 @@ var ArtistTile = function (_React$Component) {
               } })
           )
         },
-        _react2.default.createElement('img', { src: this.state.artist.images[0].url || "/images/unknownartist.png", onClick: function onClick(e) {
+        _react2.default.createElement('img', { src: this.state.artist.images[0].url || "/images/UnknownPerson.png", onClick: function onClick(e) {
             return _this4.props.handleClick(e, event.artists[0], _this4.state.tracksArray);
           } })
       );
@@ -28699,7 +28699,7 @@ var EventsList = function (_React$Component) {
         { className: 'Events-list-page' },
         _react2.default.createElement(
           'h1',
-          null,
+          { className: 'currentlocation' },
           'Current Location: ',
           this.props.match.params.name
         ),

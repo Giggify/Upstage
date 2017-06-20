@@ -13,6 +13,7 @@ import SelectedArtistsBox from './SelectedArtistsBox'
 import ArtistTile from './ArtistTile'
 import Playlist from '../container/Playlist'
 import PopInfo from './PopInfo'
+import {filterEventsbyDates} from '../utils'
 
 const styles = {
   root: {
@@ -28,45 +29,36 @@ const styles = {
 
 class EventsList extends React.Component {
   constructor(props) {
-    let {events,users,artists,minDate,maxDate,dispatch} = props
+    let {events,minDate,maxDate} = props
     super(props)
     this.state = {
-      tracksArray: [],
       selectedArtists: [], // push to this when they select an artist
-      artistIDs: [], // this will be the end target of the filter, showing only events
-      //within the date range.
       selectedTracks: [],
       playlistID: '',
-      user: '',
       show: false,
       loadingPlaylist: true,
-      events,
-      users,
-      artists,
-      dispatch,
-      minDate:this.props.minDate,
-      maxDate:this.props.maxDate,
+      minDate:minDate,
+      maxDate:maxDate,
       showInfo:false
-
     }
   }
   componentWillMount(){
     this.props.dispatch(fetchEvents(this.props.match.params.id))
   }
-  componentWillReceiveProps({events,users,artists,minDate,maxDate,selectedTracks}) {
-    this.setState({
-      events,
-      users,
-      artists,
-      minDate,
-      maxDate
-    })
+  componentWillReceiveProps({minDate,maxDate,events}) {
+    //check if new dates have been received, and return a new list of events
+    let filteredEvents=filterEventsbyDates(minDate,maxDate,events)
+    this.setState(
+      filteredEvents === undefined ?
+      {events:events} : {events:filteredEvents}
+    )
   }
 
   handlePlaylistCreation() {
     this.setState({loadingPlaylist: true})
     createPlaylist()
       .then((result) => {
+        console.log(result);
       this.setState({playlistID: result.id})
       let tracklist = this.state.selectedTracks
       let apiTracklist = tracklist.map((track) =>
@@ -80,7 +72,6 @@ class EventsList extends React.Component {
 
   handleClick(e, artist, tracksArray) {
     e.preventDefault()
-    console.log(this.state.open)
     let selTracks = this.state.selectedTracks
     let selArtists= this.state.selectedArtists
     if(selArtists.indexOf(artist) == -1) {
@@ -106,8 +97,8 @@ class EventsList extends React.Component {
     }
 
   checkArtistSelected(artist){
-    if (this.state.selectedArtists.indexOf(artist) == -1) return "white"
-    else return "orange"
+    if (this.state.selectedArtists.indexOf(artist) == -1) return "noborder"
+    else return "orangeborder"
 
   }
 
@@ -128,7 +119,7 @@ class EventsList extends React.Component {
 
     render() {
       let artists = this.props.artists || []
-      let events = this.props.events || []
+      let events = this.state.events || []
       console.log(this.state.selectedTracks);
     return (
       <div className='Events-list-page'>
@@ -148,7 +139,7 @@ class EventsList extends React.Component {
             <Subheader></Subheader>
             {events.map((event, i) => (
               <ArtistTile event={event} key={i} i={i} checkArtist={this.checkArtistSelected.bind(this)}  handleClick={this.handleClick.bind(this)}
-              expandInfo={this.expandInfo.bind(this)}/> // the i={i} is cause react doesn't like you grabbing key from props :(
+              expandInfo={this.expandInfo.bind(this)}/>// the i={i} is cause react doesn't like you grabbing key from props :(
             ))}
           </GridList>
         </MuiThemeProvider>
@@ -161,12 +152,9 @@ class EventsList extends React.Component {
 
 const mapState2Props = (state) => {
   return {
-    users:state.users,
     events: state.events.events,
-    artists: state.events.artists,
-    selectedArtists: state.selectedArtists,
-    minDate: state.users.minDate || "2017-01-01",
-    maxDate: state.users.maxDate || "2017-12-30"
+    minDate: state.users.minDate,
+    maxDate: state.users.maxDate
 
   }
 }

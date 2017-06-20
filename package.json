@@ -80,6 +80,7 @@
     "express-session": "^1.15.3",
     "jsonwebtoken": "^7.4.1",
     "knex": "^0.13.0",
+    "material-design-icons": "^3.0.1",
     "material-ui": "^0.18.3",
     "narcissus": "^1.0.0",
     "passport": "^0.3.2",

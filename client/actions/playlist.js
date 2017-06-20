@@ -31,27 +31,31 @@ export function clearPlaylistError () {
 }
 
 export function saveSelectedTracks(tracks) {
+  console.log(tracks);
   return {
-    type:'SAVE_SELECTED_TRACKS',
-    tracks: tracks
+    type: 'SAVE_SELECTED_TRACKS',
+    tracks
   }
 }
 export function saveSelectedArtists(artists) {
   return {
-    type:'SAVE_SELECTED_ARTISTS',
-    artists: artists
+    type: 'SAVE_SELECTED_ARTISTS',
+    artists
   }
 }
 
-export function toggleArtist(artist, artistTracks, selArtists, selTracks) {
+export function toggleArtist(artist, artistTracks, selArtists, selTracks, dispatch) {
   if(selArtists.indexOf(artist) == -1) {
-    mapTracksArray(artistTracks, selTracks)
-    let updatedArtists = [selArtists, artist]
-    saveSelectedArtists(updatedArtists)
+    console.log("mapping over selected artists");
+    mapTracksArray(artistTracks, selTracks, dispatch)
+    let updatedArtists = [...selArtists, artist]
+    dispatch(saveSelectedArtists(updatedArtists))
   }
   else {
     let updatedTracks = removeTrackIfExists(artistTracks,selTracks)
     let updatedArtists = selArtists.filter((name)=> name != artist)
+    dispatch(saveSelectedArtists(updatedArtists))
+    dispatch(saveSelectedTracks(updatedTracks))
   }
 }
 
@@ -102,9 +106,9 @@ export function format(tracks) { //I dont think this needs export? Or anything b
       `spotify:track:${track}`)
 }
 
-export function mapTracksArray(tracksArray, selTracks) {
+export function mapTracksArray(tracksArray, selTracks, dispatch) {
   tracksArray.forEach((track) => selTracks.push(track))
-  saveSelectedTracks(selTracks)
+  dispatch(saveSelectedTracks(selTracks))
 }
 
 export function removeTrackIfExists(tracksArray, oldTracksArray) {

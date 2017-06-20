@@ -8,7 +8,7 @@ import Info from 'material-ui/svg-icons/action/info';
 import PlaylistAdd from 'material-ui/svg-icons/av/playlist-add';
 
 import {getArtist, getTopTracks} from '../api'
-import {saveSelectedArtists, saveSelectedTracks} from '../actions/playlist'
+import {toggleArtist} from '../actions/playlist'
 
 class ArtistTile extends React.Component {
   constructor(props) {
@@ -19,7 +19,6 @@ class ArtistTile extends React.Component {
         images: [{url: '/images/unknownartist.png'}]
       },
       tracks: [], //Zac wonders what is this doing?
-
     }
   }
   componentWillMount(){
@@ -45,47 +44,23 @@ class ArtistTile extends React.Component {
       })
   }
 
-  handleClick(e, artist, tracksArray) {
-      console.log("handleclick")
-        console.log(artist)
-        console.log(this.props.selectedArtists)
-      let selArtists= this.props.selectedArtists // we can probably chuch this.props.selected artists straight into the indexof?
-      if(selArtists.indexOf(artist) == -1) {
-        this.mapArrayToState(tracksArray)
-          .then(() => {
-            let updatedArtists = [...selArtists,artist]
-            this.props.dispatch(saveSelectedArtists(updatedArtists))
-          })
-        }
-      else {
-          let updatedTracks = this.removeTrackIfExists(tracksArray, [...this.props.selectedTracks])
-          let updatedArtists = [...selArtists].filter((name)=> name != artist)
-          this.props.dispatch(saveSelectedArtists(updatedArtists))
-            .then(() => {
-              this.props.dispatch(saveSelectedTracks(updatedTracks))
-            })
-      }
-    }
+  checkArtist(artist) {
+    if (this.props.selectedArtists.indexOf(artist) == -1) return "noborder"
+    else return "orangeborder"
+  }
+
+  handleArtistClick(artist) {
+    this.checkArtist(artist)
+    toggleArtist(artist,this.state.tracksArray, this.props.selectedArtists, this.props.selectedTracks, this.props.dispatch)
+  }
 
   handleInfoClick=(event)=>{
     window.open(event.concertUrl)
   }
 
-  mapArrayToState(tracksArray) {
-    let selTracks = [...this.props.selectedTracks]
-    tracksArray.forEach((track) => selTracks.push(track))
-    this.props.dispatch(saveSelectedTracks(selTracks))
-  }
-
-  removeTrackIfExists(tracksArray, stateTracksArray) {
-    return stateTracksArray.filter((track) => {
-      return tracksArray.indexOf(track) == -1
-    })
-  }
-
   render(){
     let event = this.props.event || []
-    let border = this.props.checkArtist(event.artists[0])
+    let border = this.checkArtist(event.artists[0])
     return (
       <GridTile
         className={border}
@@ -94,15 +69,13 @@ class ArtistTile extends React.Component {
         subtitle={<span><b>{event.date}</b></span>}
         actionIcon={<IconButton><Info color="white" onClick={(e)=>this.handleInfoClick(event)}/></IconButton>}
       >
-        <img src={this.state.artist.images[0].url} onClick={(e)=>this.handleClick(e,event.artists[0],this.state.tracksArray)} />
+        <img src={this.state.artist.images[0].url} onClick={(e)=>this.handleArtistClick(event.artists[0])} />
       </GridTile>
     )
   }
 }
 
 const mapState2Props = (state) => {
-    console.log("state")
-    console.log(state)
   return {
     selectedTracks: state.playlist.tracks,
     selectedArtists: state.playlist.artists

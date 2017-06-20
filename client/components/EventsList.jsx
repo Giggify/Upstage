@@ -60,12 +60,6 @@ class EventsList extends React.Component {
       })
     }
 
-  checkArtistSelected(artist){
-    if (this.state.selectedArtists.indexOf(artist) == -1) return "noborder"
-    else return "orangeborder"
-
-  }
-
   handleDeleteFromBox(artistIndex){
     let artistsInBox=[...this.state.selectedArtists]
     artistsInBox.splice(artistIndex,1)
@@ -82,7 +76,6 @@ class EventsList extends React.Component {
   }
 
     render() {
-      console.log(this.state.selectedTracks);
       let artists = this.props.artists || []
       let events = this.state.events || []
     return (
@@ -107,7 +100,7 @@ class EventsList extends React.Component {
           >
             <Subheader></Subheader>
             {events.map((event, i) => (
-              <ArtistTile event={event} key={i} i={i} checkArtist={this.checkArtistSelected.bind(this)}
+              <ArtistTile event={event} key={i} i={i}
               expandInfo={this.expandInfo.bind(this)}/>// the i={i} is cause react doesn't like you grabbing key from props :(
             ))}
           </GridList>
@@ -124,7 +117,6 @@ const mapState2Props = (state) => {
     events: state.events.events,
     minDate: state.users.minDate,
     maxDate: state.users.maxDate
-
   }
 }
 

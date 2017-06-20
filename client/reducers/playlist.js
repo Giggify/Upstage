@@ -1,27 +1,37 @@
-function playlist(state={playlistLoading: false, playlistID: null},action){
-  console.log(action)
+function playlist (state={
+  playlistLoading: false,
+  playlistID: null,
+  tracks: [],
+  artists: []}
+  ,action){
+  console.log("playlist action creator")
+  console.log({action, state})
   switch (action.type){
     case 'TOGGLE_PLAYLIST_LOADING_ON':
       return  {
+        ...state,
         playlistLoading:true
       }
     case 'TOGGLE_PLAYLIST_LOADING_OFF':
        return {
+         ...state,
          playlistLoading: false
        }
     case 'GET_PLAYLIST_ID':
-      return {...state,
+      return {
+        ...state,
         playlistID: action.playlistID
       }
-      case 'SAVE_SELECTED_TRACKS':
+    case 'SAVE_SELECTED_TRACKS':
+      console.log("hit selected tracks");
         return {
           ...state,
-          tracks: action.selectedTracks
+          tracks: action.tracks
         }
-      case 'SAVE_SELECTED_ARTISTS':
+    case 'SAVE_SELECTED_ARTISTS':
         return {
           ...state,
-          artists: action.selectedArtists
+          artists: action.artists
         }
     default:
       return state

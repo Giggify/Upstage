@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {getUserInfo} from '../api'
+import {saveUserDetails} from '../actions/users'
 
 class Header extends React.Component {
   constructor(props) {
@@ -37,9 +38,10 @@ class Header extends React.Component {
 }
 
 const mapStateToProps  = (state)  => {
+  console.log(state);
   return {
     image: state.users.image,
-    user: state.playlist.user
+    user: state.users.user
   }
 }
 export default connect(mapStateToProps)(Header)

@@ -74,10 +74,10 @@ router.post('/users/playlist'), (req,res) => {
     .set('Accept', 'application/json')
     .end((err,result) => {
       if(err) {
-        alert('Oops! Playlist creation failed.')
+        res.status(500).send('Oops! Playlist creation failed.')
       }
       else {
-        res.send(result.body)
+        res.status(201).send(result.body)
       }
     })
 }

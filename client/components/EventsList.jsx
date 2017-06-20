@@ -130,6 +130,7 @@ class EventsList extends React.Component {
           user={this.state.user}
           loading={this.state.loadingPlaylist}
           playlist={this.state.playlistID}
+          tracks={this.state.selectedTracks}
         />
         <DatePicker />
           {this.state.showInfo && <PopInfo event={this.state.eventInBox}/>}

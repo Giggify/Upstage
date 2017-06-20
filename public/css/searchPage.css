@@ -1,0 +1,23 @@
+#search-result-item:hover{
+  color: #CCC;
+}
+#search-button{
+  transform: scale(0.2,0.2)
+}
+.home-page{
+  font-size: 1em;
+}
+#popular-city{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.search-city{
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+#search-button{
+  margin-top: -4vh;
+  margin-left: -14vh;
+}

@@ -45,7 +45,7 @@ class PopularPlaces extends React.Component{
   }
   render(){
     return(
-      <div>
+      <div id='popular-city'>
         <p>{this.state.showCity? `${this.state.showCity}` : `${"Choose a popular city"}`  }</p>
       <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
       <IconMenu

@@ -47,6 +47,7 @@ class SearchBar extends React.Component{
     <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
       <div className='search-bar'>
         <PopularPlaces />
+        <div className='search-city'>
         <div id='search-text-field'>
           <TextField
           id='text-field-controlled'
@@ -58,6 +59,7 @@ class SearchBar extends React.Component{
         </div>
         <img id='search-button' src='https://cdn2.iconfinder.com/data/icons/media-and-navigation-buttons-round/512/Button_15-128.png'
         onClick={()=>this.handleClick()} />
+      </div>
         <div className='search-results'>
           {searchResults!=[] && this.state.showResults &&
             <div>

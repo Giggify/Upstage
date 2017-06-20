@@ -1,9 +1,5 @@
 import request from 'superagent'
 
-export function createPlayist(artists) {
-
-}
-
 export function getArtist(artistName) {
   return new Promise((resolve, reject) => {
     request
@@ -14,23 +10,23 @@ export function getArtist(artistName) {
   })
 }
 
-export function getArtistTopTracks(artistId) {
+export function getArtistDetails(artistID) {
   return new Promise((resolve, reject) => {
     request
-      .get(`/api/v1/spotify/artists/${artistId}/toptracks`)
+      .get(`/api/v1/spotify/artists/${artistID}`)
       .end((err, res) => {
         err ? reject(err) : resolve(res.body)
       })
   })
 }
 
-export function getTracks(artistId) {
+export function getArtistId(artistName) {
   return new Promise((resolve, reject) => {
     request
-      .get(`/api/v1/spotify/artists/${artistId}/toptracks`)
-      .end((err, res) => {
-        err ? reject(err) : resolve(res.body)
-      })
+    .get(`/api/v1/spotify/search/${artistName}`)
+    .end((err, res) => {
+      err ? reject(err) : resolve(res.body[0].id)
+    })
   })
 }
 
@@ -50,7 +46,7 @@ export function createTracklistArray(artistNamesArray) {
     artistNamesArray.map((artistName) => {
       getArtistId(artistName)
       .then((artistId) => {
-        getArtistTopTracks(artistId)
+        getTopTracks(artistId)
         .then((trackIDs) => {
           tracks.push(trackIDs)
         })

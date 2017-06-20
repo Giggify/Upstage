@@ -13,7 +13,6 @@ test.cb('fetchLocations dispatches correct series of actions', t=>{
   const dispatch = sinon.stub()
     .onFirstCall()
     .callsFake((action)=>{
-      console.log(action)
       t.deepEqual(action,
         {type:'FETCH_LOCATIONS_REQUEST',
         message:'Searching locations...'}
@@ -21,7 +20,6 @@ test.cb('fetchLocations dispatches correct series of actions', t=>{
     })
     .onSecondCall()
     .callsFake((action) => {
-      console.log(action)
       t.is(action.type, 'FETCH_LOCATIONS_SUCCESS')
       t.end()
     })

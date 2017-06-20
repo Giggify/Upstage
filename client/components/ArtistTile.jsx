@@ -43,8 +43,8 @@ class ArtistTile extends React.Component {
       })
   }
 
-  componentWillReceiveProps() {
-
+  handleInfoClick=(event)=>{
+    window.open(event.concertUrl)
   }
 
   render(){
@@ -56,7 +56,7 @@ class ArtistTile extends React.Component {
         key={this.props.i}
         title={event.artists[0]}
         subtitle={<span><b>{event.date}</b></span>}
-        actionIcon={<IconButton><Info color="white" onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)}/></IconButton>}
+        actionIcon={<IconButton><Info color="white" onClick={(e)=>this.handleInfoClick(event)}/></IconButton>}
       >
         <img src={this.state.artist.images[0].url || "/images/unknownartist.png"} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)} />
       </GridTile>

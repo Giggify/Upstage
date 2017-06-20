@@ -54,12 +54,29 @@ test.cb('getTopTracks', t => {
     })
 })
 
-test.skip('createPlaylist', t => {
-  t.pass()
+test.cb('createPlaylist', t => {
+  const scope = nock('http://localhost:80')
+    .post('/api/v1/spotify/users/playlist')
+    .reply(201,{id:"playlistID"})
+  api.createPlaylist()
+    .then((data)=>{
+      scope.done()
+      t.is(data.id,"playlistID")
+      t.end()
+    })
 })
 
-test.skip('addTrackToPlaylist', t => {
-  t.pass()
+test.cb('addTrackToPlaylist', t => {
+  const scope = nock('http://localhost:80')
+    .post(`/api/v1/spotify/users/playlist/73a/tracks`)
+    .reply(201,{id:"test"})
+  api.addTrackToPlaylist(["track1","track2"],"73a")
+    .then((data)=>{
+      scope.done()
+      console.log(data);
+      t.deepEqual(data, "{\"id\":\"test\"}")
+      t.end()
+    })
 })
 
 test.cb('getUserInfo with a fake cookie', t => {

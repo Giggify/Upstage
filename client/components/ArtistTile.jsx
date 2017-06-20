@@ -25,12 +25,6 @@ class ArtistTile extends React.Component {
       .then((artist) => {
         if (artist) this.setState({artist})
       })
-  }
-  componentWillReceiveProps(nextProps) {
-    getArtist(nextProps.event.artists[0])
-      .then((artist) => {
-        if (artist) this.setState({artist})
-      })
       .then(() => {
         let tracksArray = []
         if(this.state.artist!=undefined){
@@ -47,6 +41,10 @@ class ArtistTile extends React.Component {
               })
         }
       })
+  }
+
+  componentWillReceiveProps() {
+
   }
 
   render(){

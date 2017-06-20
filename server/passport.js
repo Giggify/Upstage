@@ -11,7 +11,7 @@ module.exports = function(app) {
   passport.use(new SpotifyStrategy({
       clientID: process.env.SPOTIFY_ID,
       clientSecret: process.env.SPOTIFY_SECRET,
-      callbackURL: 'https://up-stage.herokuapp.com/auth/callback',
+      callbackURL: process.env.SPOTIFY_CALLBACK,
     },
 
     function(accessToken, refreshToken, profile, done) {

@@ -4,13 +4,16 @@ import Modal from 'simple-react-modal'
 import ToggleDisplay from 'react-toggle-display'
 import Loading from 'react-loading'
 
-import {createPlayList} from '../actions/playlist'
+import {createPlayList, addTracksToPlaylist} from '../actions/playlist'
 
 class Playlist extends React.Component {
 
   create() {
-    const tracks = {"uris": ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M"]}
-    this.props.dispatch(createPlayList(tracks))
+    const tracks = ["4iV5W9uYEdYUVa79Axb7Rh", "1301WleyT98MSxVHPZCA6M"]
+    this.props.dispatch(createPlaylist())
+      .then(() => {
+        this.props.dispatch(addTracksToPlaylist(tracks,this.props.playlistID))
+      })
   }
 
   closeModal = () => this.setState({isShowingModal: false})
@@ -20,7 +23,7 @@ class Playlist extends React.Component {
    if(!this.props.playlistLoading && !this.props.playlistID) {
      return (
        <div className="Playlist">
-         <button onClick={ () => this.create() }>Create Playlist </button>
+         <button onClick={ () => this.create() }>Create Playlist Playlist</button>
        </div>
      )
    } else if(this.props.playlistLoading && !this.props.playlistID) {
@@ -55,7 +58,8 @@ const mapStateToProps  = (state)  => {
   return {
     playlistLoading: state.playlist.playlistLoading,
     error: state.error,
-    playlistID: state.playlist.playlistID
+    playlistID: state.playlist.playlistID,
+    user: state.users.user
   }
 }
 export default connect(mapStateToProps)(Playlist)

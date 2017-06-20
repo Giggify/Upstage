@@ -8,6 +8,7 @@ import Info from 'material-ui/svg-icons/action/info';
 import PlaylistAdd from 'material-ui/svg-icons/av/playlist-add';
 
 import {getArtist, getTopTracks} from '../api'
+import {saveSelectedArtists, saveSelectedTracks} from '../actions/playlist'
 
 class ArtistTile extends React.Component {
   constructor(props) {
@@ -17,7 +18,8 @@ class ArtistTile extends React.Component {
       artist: {
         images: [{url: '/images/unknownartist.png'}]
       },
-      tracks: []
+      tracks: [], //Zac wonders what is this doing?
+
     }
   }
   componentWillMount(){
@@ -43,8 +45,41 @@ class ArtistTile extends React.Component {
       })
   }
 
+  handleClick(e, artist, tracksArray) {
+    e.preventDefault()
+    let selArtists= this.props.selectedArtists // we can probably chuch this.props.selected artists straight into the indexof?
+      if(selArtists.indexOf(artist) == -1) {
+        this.mapArrayToState(tracksArray)
+          .then(() => {
+            let updatedArtists = [...selArtists,artist]
+            this.props.dispatch(saveSelectedArtists(updatedArtists))
+          })
+        }
+      else {
+          let updatedTracks = this.removeTrackIfExists(tracksArray, [...this.props.selectedTracks]),
+          let updatedArtists = [...selArtists].filter((name)=> name != artist)
+          this.props.dispatch(saveSelectedArtists(updatedArtists))
+            .then(() => {
+              this.props.dispatch(saveSelectedTracks(updatedTracks))
+            })
+        })
+      }
+    }
+
   handleInfoClick=(event)=>{
     window.open(event.concertUrl)
+  }
+
+  mapArrayToState(tracksArray) {
+    let selTracks = [...this.props.selectedTracks]
+    tracksArray.forEach((track) => selTracks.push(track))
+    this.props.dispatch(saveSelectedTracks(selTracks))
+  }
+
+  removeTrackIfExists(tracksArray, stateTracksArray) {
+    return stateTracksArray.filter((track) => {
+      return tracksArray.indexOf(track) == -1
+    })
   }
 
   render(){
@@ -58,10 +93,17 @@ class ArtistTile extends React.Component {
         subtitle={<span><b>{event.date}</b></span>}
         actionIcon={<IconButton><Info color="white" onClick={(e)=>this.handleInfoClick(event)}/></IconButton>}
       >
-        <img src={this.state.artist.images[0].url || "/images/unknownartist.png"} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)} />
+        <img src={this.state.artist.images[0].url} onClick={(e)=>this.handleClick(e,event.artists[0],this.state.tracksArray)} />
       </GridTile>
     )
   }
 }
 
-export default ArtistTile
+const mapState2Props = (state) => {
+  return {
+    selectedTracks: state.playlist.tracks,
+    selectedArtists: state.playlist.artists
+  }
+}
+
+export default connect(mapState2Props)(ArtistTile)

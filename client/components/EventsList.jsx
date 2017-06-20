@@ -5,7 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Subheader from 'material-ui/Subheader';
 import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 import DatePicker from './DatePicker'
-import Drawer from './Drawer'
+
 
 import {fetchEvents} from '../actions/events'
 import {createPlaylist, addTrackToPlaylist} from '../api'
@@ -53,43 +53,6 @@ class EventsList extends React.Component {
       {events:events} : {events:filteredEvents}
     )
   }
-
-  handlePlaylistCreation() {
-    this.setState({loadingPlaylist: true})
-    createPlaylist()
-      .then((result) => {
-        console.log(result);
-      this.setState({playlistID: result.id})
-      let tracklist = this.state.selectedTracks
-      let apiTracklist = tracklist.map((track) =>
-      `spotify:track:${track}`)
-      addTrackToPlaylist(apiTracklist,this.state.playlistID)
-      .then((userid)=> {
-      this.setState({show: !this.state.show, loadingPlaylist: false, user: userid});
-      })
-    })
-  }
-
-  handleClick(e, artist, tracksArray) {
-    e.preventDefault()
-    let selArtists= this.state.selectedArtists
-      if(selArtists.indexOf(artist) == -1) {
-        this.mapArrayToState(tracksArray)
-        this.setState({selectedArtists: [...selArtists,artist]})
-      }
-      else {
-        this.setState({
-          selectedTracks: this.removeTrackIfExists(tracksArray, [...this.state.selectedTracks]),
-          selectedArtists: [...selArtists].filter((name)=> name != artist)
-        })
-      }
-    }
-
-    mapArrayToState(tracksArray) {
-      let selTracks = [...this.state.selectedTracks]
-      tracksArray.forEach((track) => selTracks.push(track))
-      this.setState({selectedTracks: selTracks})
-    }
 
     removeTrackIfExists(tracksArray, stateTracksArray) {
       return stateTracksArray.filter((track) => {

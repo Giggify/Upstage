@@ -1,5 +1,5 @@
 import React from 'react'
-
+import {connect} from 'react-redux'
 import {getUserInfo} from '../api'
 
 class Header extends React.Component {
@@ -13,12 +13,12 @@ class Header extends React.Component {
   componentWillMount() {
     var cookie = document.cookie
     if (cookie.length < 1) {
-      window.location.assign('http://localhost:3000/#/login') 
+      window.location.assign('http://localhost:3000/#/login')
     }
     else {
-      getUserInfo(cookie || null)
+      getUserInfo(cookie)
       .then((result) => {
-        this.setState({user: result.id, image: result.image})
+        this.props.dispatch(saveUserDetails(result.id,result.image)) //spotify calls it id but it is the username so we change it to user.
       })
     }
   }
@@ -27,8 +27,8 @@ class Header extends React.Component {
       <div className='header'>
         <img src="./css/TITLE.png" width="8%" height="3%"/>
         <div className="spotifydetails">
-          <img className='spotifyimage' src={this.state.image}/>
-          <a className='spotifyusername' href="/auth/logout">{this.state.user} </a>
+          <img className='spotifyimage' src={this.props.image}/>
+          <a className='spotifyusername' href="/auth/logout">{this.props.user} </a>
           <a href="/auth/logout"><img src="./images/logout.png" className='spotifylogout'/></a>
         </div>
       </div>
@@ -36,4 +36,10 @@ class Header extends React.Component {
   }
 }
 
-export default Header
+const mapStateToProps  = (state)  => {
+  return {
+    image: state.users.image,
+    user: state.playlist.user
+  }
+}
+export default connect(mapStateToProps)(Header)

@@ -1,25 +1,29 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Modal from 'simple-react-modal'
-// import ToggleDisplay from 'react-toggle-display'
-// import Loading from 'react-loading'
+import ToggleDisplay from 'react-toggle-display'
+import Loading from 'react-loading'
 
 class Playlist extends React.Component {
 
  constructor(props) {
    super(props)
      this.state = {
-       show: props.show,
-       loading: props.loading,
+       loading: false,
        isShowingModal: false
    }
  }
 
- handleClick = () => this.setState({isShowingModal: true})
- handleClose = () => this.setState({isShowingModal: false})
+ // handleClick = () => this.setState({isShowingModal: true})
+ // this.props.handlePlaylist
+ handleClick() {
+   this.setState({loading: true})
+
+ }
+ // handleClose = () => this.setState({isShowingModal: false})
 
  render() {
-   if(this.props.show && !this.props.loading) {
+   if(this.props.isShowingModal && !this.props.loading) {
      return (
        <div className="Playlist">
          <button className="Create-Playlist"onClick={this.handleClick}>Create Playlist</button>
@@ -41,10 +45,22 @@ class Playlist extends React.Component {
        </div>
      )
    }
-  else if(this.props.show && this.props.loading){
+  else if(this.state.loading){
     return (
       <div className="Playlist">
-          <p>Creating Playlist: This is where we put that orange spinny wheel!</p>
+         <Loading
+           type='bars'
+           color='#ff6900'
+           height='667'
+           width='500'
+         />
+      </div>
+    )
+  }
+  else if (!this.props.show) {
+    return (
+      <div className="Playlist">
+        <button onClick={ () => this.handleClick() }>Create Playlist </button>
       </div>
     )
   }
@@ -54,9 +70,4 @@ class Playlist extends React.Component {
 export default Playlist
 
 
-
-// <ToggleDisplay
-//   className="LoadPlaylist"
-//   show={this.props.loadplaylist}>
-//   {/* <Loading type="spin" color="#ff6900" /> */}
-// </ToggleDisplay>
+ // show={this.props.loadplaylist}

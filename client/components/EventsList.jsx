@@ -100,17 +100,18 @@ class EventsList extends React.Component {
 
   handleClick(e, artist, tracksArray) {
     e.preventDefault()
-    let selTracks = this.state.selectedTracks
     let selArtists= this.state.selectedArtists
-    if(selArtists.indexOf(artist) == -1) {
-      this.mapArrayToState(tracksArray)
-      this.setState({selectedArtists: [...selArtists,artist]})
+      if(selArtists.indexOf(artist) == -1) {
+        this.mapArrayToState(tracksArray)
+        this.setState({selectedArtists: [...selArtists,artist]})
+      }
+      else {
+        this.setState({
+          selectedTracks: this.removeTrackIfExists(tracksArray, [...this.state.selectedTracks]),
+          selectedArtists: [...selArtists].filter((name)=> name != artist)
+        })
+      }
     }
-    else {
-      this.removeTrackIfExists(tracksArray, [...this.state.selectedTracks])
-      this.setState({selectedArtists: [...selArtists].filter((name)=> name != artist)})
-    }
-  }
 
     mapArrayToState(tracksArray) {
       let selTracks = [...this.state.selectedTracks]
@@ -146,9 +147,9 @@ class EventsList extends React.Component {
   }
 
     render() {
+      console.log(this.state.selectedTracks);
       let artists = this.props.artists || []
       let events = this.state.events || []
-      console.log(this.state.selectedTracks);
     return (
       <div className='Events-list-page'>
         <h1>Current Location: {this.props.match.params.name}</h1>

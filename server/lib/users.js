@@ -11,7 +11,6 @@ module.exports = {
 
 function create (user, testDb) { // insert spotify_id, username, image, access/refresh tokens here
   const connection = testDb || knex
-
   return connection('users')
     .insert(user)
 }

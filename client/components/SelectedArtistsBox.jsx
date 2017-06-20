@@ -1,8 +1,11 @@
 import React from 'react'
 import {Chip, Avatar} from 'material-ui'
+import {connect} from 'react-redux'
 import Drawer from 'material-ui/Drawer';
 import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+import {toggleArtist, createPlaylist, addTracksToPlaylist} from '../actions/playlist'
 
 class SelectedArtistsBox extends React.Component{
   constructor(props){
@@ -26,7 +29,7 @@ class SelectedArtistsBox extends React.Component{
   }
 
   handleRequestDelete = (key) => {
-    this.chipData = this.state.chipData
+    this.chipData = this.props.selectedArtists
     const chipToDelete = this.chipData.map((chip)=>chip.key).indexOf(key)
     this.chipData.splice(chipToDelete,1)
     this.setState({chipData: this.chipData})
@@ -34,10 +37,22 @@ class SelectedArtistsBox extends React.Component{
   }
 
 
-   handleToggle = () => {
-       console.log(this.props)
-       this.props.handlePlaylist()
+   handleToggle = () => { //REFACTORED!!!!!!
+       this.create()
        this.setState({open: !this.state.open});
+   }
+
+   handleArtistClick(artist) {
+     this.checkArtist(artist)
+     toggleArtist(artist,this.state.tracksArray, this.props.selectedArtists, this.props.selectedTracks, this.props.dispatch)
+   }
+
+   create() {
+     const tracks = this.props.
+     this.props.dispatch(createPlaylist())
+       .then(() => {
+         this.props.dispatch(addTracksToPlaylist(tracks,this.props.playlistID))
+       })
    }
 
    trimArtistName = (artistName) => {
@@ -99,4 +114,11 @@ class SelectedArtistsBox extends React.Component{
   }
 }
 
-export default SelectedArtistsBox
+const mapState2Props = (state) => {
+  return {
+    selectedTracks: state.playlist.tracks,
+    selectedArtists: state.playlist.artists
+  }
+}
+
+export default connect(mapState2Props)(SelectedArtistBox)

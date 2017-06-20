@@ -4,8 +4,6 @@ function playlist (state={
   tracks: [],
   artists: []}
   ,action){
-  console.log("playlist action creator")
-  console.log({action, state})
   switch (action.type){
     case 'TOGGLE_PLAYLIST_LOADING_ON':
       return  {
@@ -23,7 +21,6 @@ function playlist (state={
         playlistID: action.playlistID
       }
     case 'SAVE_SELECTED_TRACKS':
-      console.log("hit selected tracks");
         return {
           ...state,
           tracks: action.tracks

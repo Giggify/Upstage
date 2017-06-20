@@ -4,17 +4,9 @@ import Modal from 'simple-react-modal'
 import ToggleDisplay from 'react-toggle-display'
 import Loading from 'react-loading'
 
-import {createPlayList, addTracksToPlaylist} from '../actions/playlist'
-
 class Playlist extends React.Component {
 
-  create() {
-    const tracks = ["4iV5W9uYEdYUVa79Axb7Rh", "1301WleyT98MSxVHPZCA6M"]
-    this.props.dispatch(createPlaylist())
-      .then(() => {
-        this.props.dispatch(addTracksToPlaylist(tracks,this.props.playlistID))
-      })
-  }
+
 
   closeModal = () => this.setState({isShowingModal: false})
 
@@ -23,7 +15,7 @@ class Playlist extends React.Component {
    if(!this.props.playlistLoading && !this.props.playlistID) {
      return (
        <div className="Playlist">
-         <button onClick={ () => this.create() }>Create Playlist Playlist</button>
+
        </div>
      )
    } else if(this.props.playlistLoading && !this.props.playlistID) {

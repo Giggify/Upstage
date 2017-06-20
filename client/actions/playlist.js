@@ -31,7 +31,6 @@ export function clearPlaylistError () {
 }
 
 export function saveSelectedTracks(tracks) {
-  console.log(tracks);
   return {
     type: 'SAVE_SELECTED_TRACKS',
     tracks
@@ -46,7 +45,6 @@ export function saveSelectedArtists(artists) {
 
 export function toggleArtist(artist, artistTracks, selArtists, selTracks, dispatch) {
   if(selArtists.indexOf(artist) == -1) {
-    console.log("mapping over selected artists");
     mapTracksArray(artistTracks, selTracks, dispatch)
     let updatedArtists = [...selArtists, artist]
     dispatch(saveSelectedArtists(updatedArtists))

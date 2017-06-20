@@ -14,11 +14,13 @@ class SelectedArtistsBox extends React.Component{
     }
     this.styles = {
       chip:{
-        margin:4,
+        margin:4
+
       },
       wrapper: {
         display:'flex',
-        flexWrap:'wrap'
+        flexWrap:'wrap',
+        width: 50
       }
     }
   }
@@ -38,16 +40,24 @@ class SelectedArtistsBox extends React.Component{
        this.setState({open: !this.state.open});
    }
 
+   trimArtistName = (artistName) => {
+     if(artistName.length > 16) {
+       return (artistName.slice(0, 12) + '...')
+     }
+     return artistName
+   }
    handleClose = () => this.setState({open: false});
 
   renderChip(data){
+    //call function to trim data.label
+
     return(
       <Chip
         key={data.key}
         onRequestDelete={()=> this.handleRequestDelete(data.key)}
+        backgroundColor="#FF6900"
         style={this.styles.chip}>
-        <Avatar src='http://www.freepngimg.com/thumb/kanye_west/1-2-kanye-west-png-hd-thumb.png' />
-        {data.label}
+        {this.trimArtistName(data.label)}
       </Chip>
     )
   }
@@ -67,11 +77,11 @@ class SelectedArtistsBox extends React.Component{
   render(){
     return(
       <MuiThemeProvider>
-      <div>
+      <div className="drawer">
 
       <Drawer
-        docked={false}
-        width={200}
+        docked={true}
+        width={150}
         open={this.state.open}
         onRequestChange={(open) => this.setState({open})}
         >
@@ -79,7 +89,7 @@ class SelectedArtistsBox extends React.Component{
           {this.state.chipData.map(this.renderChip, this)}
        </div>
        <RaisedButton
-                   label="Create Playlist"
+                   label="Create"
                    onClick={this.handleToggle}
         />
       </Drawer>

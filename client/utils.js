@@ -13,7 +13,7 @@ export const filterEventsbyDates=(minDate,maxDate,events)=>{
         return minUnix <= eventDateUnix && eventDateUnix<= maxUnix
       }
     }
-    return filteredEvents=unfilteredEvents.filter(fitsDates)
+    return unfilteredEvents.filter(fitsDates)
   } else {
     return undefined
   }

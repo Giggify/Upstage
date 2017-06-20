@@ -48,15 +48,10 @@ class EventsList extends React.Component {
   componentWillReceiveProps({minDate,maxDate,events}) {
     //check if new dates have been received, and return a new list of events
     let filteredEvents=filterEventsbyDates(minDate,maxDate,events)
-    if(filteredEvents===undefined){
-      this.setState({
-        events:events,
-      })
-    } else {
-      this.setState({
-        events:filteredEvents,
-      })
-    }
+    this.setState(
+      filteredEvents === undefined ?
+      {events:events} : {events:filteredEvents}
+    )
   }
 
   handlePlaylistCreation() {

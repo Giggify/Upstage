@@ -27,7 +27,6 @@ class SearchBar extends React.Component{
     this.props.dispatch(fetchLocations(this.state.value))
   }
   handleSelect = (result) => {
-    console.log(result)
     this.setState({
       value:`${result.name} ${result.state} ${result.country}`,
       showResults:false,

@@ -30,7 +30,7 @@ export function clearPlaylistError () {
   }
 }
 
-export function fetchPlaylistId () {
+export function createPlayList () {
   return (dispatch) => {
     dispatch(changeLoadState(true))
     request
@@ -47,9 +47,28 @@ export function fetchPlaylistId () {
           dispatch((playlistError(err.message)))
         } else {
           dispatch(clearPlaylistError())
-          dispatch(changeLoadState(false))
           dispatch(getPlaylistId(res.body.id))
+          dispatch(addTracksToPlaylist(tracks, res.body.id))
+          dispatch(changeLoadState(false))
+
         }
       })
   }
+}
+
+export function addTracksToPlaylist (tracks, playlist_id) {
+    return (dispatch) => {
+        request
+            .post(`/api/v1/spotify/users/playlist/${playlist_id}/tracks`)
+            .send(tracks)
+            .end((err, res)=>{
+              if (err) {
+                dispatch(changeLoadState(false))
+                dispatch((playlistError(err.message)))
+              } else {
+                dispatch(clearPlaylistError())
+                dispatch(changeLoadState(false))
+              }
+            })
+    }
 }

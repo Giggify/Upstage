@@ -4,15 +4,13 @@ import Modal from 'simple-react-modal'
 import ToggleDisplay from 'react-toggle-display'
 import Loading from 'react-loading'
 
-import {fetchPlaylistId} from '../actions/playlist'
+import {createPlayList} from '../actions/playlist'
 
 class Playlist extends React.Component {
 
-
-  createPlaylist() {
-    this.props.dispatch(fetchPlaylistId())
-    console.log("OMG PROPS")
-    console.log(this.props)
+  create() {
+    const tracks = {"uris": ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M"]}
+    this.props.dispatch(createPlayList(tracks))
   }
 
   closeModal = () => this.setState({isShowingModal: false})
@@ -22,7 +20,7 @@ class Playlist extends React.Component {
    if(!this.props.playlistLoading && !this.props.playlistID) {
      return (
        <div className="Playlist">
-         <button onClick={ () => this.createPlaylist() }>Create 1 Playlist </button>
+         <button onClick={ () => this.create() }>Create Playlist </button>
        </div>
      )
    } else if(this.props.playlistLoading && !this.props.playlistID) {
@@ -32,11 +30,9 @@ class Playlist extends React.Component {
        </div>
      )
    } else if(!this.props.playlistLoading && this.props.playlistID) {
-       console.log(this.props.playlistID)
-       console.log(this.props.user)
      return (
        <div className="Playlist">
-         <button className="Create-Playlist"onClick={this.createPlaylist}>Create 2 Playlist</button>
+         <button className="Create-Playlist"onClick={this.create}>Create Playlist</button>
              <Modal
                show={true}
                onClose={() => this.closeModal.bind(this)}

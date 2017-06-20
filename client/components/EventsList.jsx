@@ -89,7 +89,6 @@ class EventsList extends React.Component {
       <div className='Events-list-page'>
         <h1 className="currentlocation">Current Location: {this.props.match.params.name}</h1>
         <Playlist
-          handlePlaylist={this.handlePlaylistCreation.bind(this)}
           user={this.state.user}
           loading={this.state.loadingPlaylist}
           playlist={this.state.playlistID}
@@ -97,7 +96,7 @@ class EventsList extends React.Component {
         />
         <DatePicker />
           {this.state.showInfo && <PopInfo event={this.state.eventInBox}/>}
-        <SelectedArtistsBox handlePlaylist={this.handlePlaylistCreation.bind(this)} artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
+        <SelectedArtistsBox artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
         <div style={styles.root}>
          <MuiThemeProvider>
           <GridList
@@ -108,7 +107,7 @@ class EventsList extends React.Component {
           >
             <Subheader></Subheader>
             {events.map((event, i) => (
-              <ArtistTile event={event} key={i} i={i} checkArtist={this.checkArtistSelected.bind(this)}  handleClick={this.handleClick.bind(this)}
+              <ArtistTile event={event} key={i} i={i} checkArtist={this.checkArtistSelected.bind(this)}
               expandInfo={this.expandInfo.bind(this)}/>// the i={i} is cause react doesn't like you grabbing key from props :(
             ))}
           </GridList>

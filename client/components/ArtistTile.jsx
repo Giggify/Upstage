@@ -46,8 +46,10 @@ class ArtistTile extends React.Component {
   }
 
   handleClick(e, artist, tracksArray) {
-    e.preventDefault()
-    let selArtists= this.props.selectedArtists // we can probably chuch this.props.selected artists straight into the indexof?
+      console.log("handleclick")
+        console.log(artist)
+        console.log(this.props.selectedArtists)
+      let selArtists= this.props.selectedArtists // we can probably chuch this.props.selected artists straight into the indexof?
       if(selArtists.indexOf(artist) == -1) {
         this.mapArrayToState(tracksArray)
           .then(() => {
@@ -56,13 +58,12 @@ class ArtistTile extends React.Component {
           })
         }
       else {
-          let updatedTracks = this.removeTrackIfExists(tracksArray, [...this.props.selectedTracks]),
+          let updatedTracks = this.removeTrackIfExists(tracksArray, [...this.props.selectedTracks])
           let updatedArtists = [...selArtists].filter((name)=> name != artist)
           this.props.dispatch(saveSelectedArtists(updatedArtists))
             .then(() => {
               this.props.dispatch(saveSelectedTracks(updatedTracks))
             })
-        })
       }
     }
 
@@ -100,6 +101,8 @@ class ArtistTile extends React.Component {
 }
 
 const mapState2Props = (state) => {
+    console.log("state")
+    console.log(state)
   return {
     selectedTracks: state.playlist.tracks,
     selectedArtists: state.playlist.artists

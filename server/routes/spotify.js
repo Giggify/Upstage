@@ -63,7 +63,7 @@ router.use(
 
 router.post('/users/playlist'), (req,res) => {
   request
-    .post(`${url}/v1/users/7g8xB3sDX6uMvXG0wlIFCE/playlist`)
+    .post(`${url}/v1/users/${req.user.id}/playlist`)
     .send({
       "name": "New Upstage Playlist",
       "public": true,
@@ -134,6 +134,3 @@ router.get('/me', (req,res) => {
       }
       res.status(200).json(userDetails)
     })
-
-
-module.exports = router

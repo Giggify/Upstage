@@ -4,6 +4,8 @@ import {connect} from 'react-redux'
 import {GridTile} from 'material-ui/GridList'
 import IconButton from 'material-ui/IconButton'
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
+import Info from 'material-ui/svg-icons/action/info';
+import PlaylistAdd from 'material-ui/svg-icons/av/playlist-add';
 
 import {getArtist, getTopTracks} from '../api'
 
@@ -49,15 +51,17 @@ class ArtistTile extends React.Component {
 
   render(){
     let event = this.props.event || []
-    let color = this.props.checkArtist(event.artists[0])
+    let border = this.props.checkArtist(event.artists[0])
     return (
       <GridTile
+        className={border}
         key={this.props.i}
         title={event.artists[0]}
         subtitle={<span><b>{event.date}</b></span>}
-        actionIcon={<IconButton><StarBorder color={color} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)}/></IconButton>}
+        actionIcon={<IconButton><Info color="white" onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)}/></IconButton>}
       >
-        <img src={this.state.artist.images[0].url || "/images/unknownartist.png"} onClick={()=>this.props.expandInfo({event})} />
+        <img src={this.state.artist.images[0].url || "/images/unknownartist.png"} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)} />
+
       </GridTile>
     )
   }

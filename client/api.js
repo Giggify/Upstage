@@ -1,9 +1,5 @@
 import request from 'superagent'
 
-export function createPlayist(artists) {
-
-}
-
 export function getArtist(artistName) {
   return new Promise((resolve, reject) => {
     request
@@ -14,23 +10,23 @@ export function getArtist(artistName) {
   })
 }
 
-export function getArtistTopTracks(artistId) {
+export function getArtistDetails(artistID) {
   return new Promise((resolve, reject) => {
     request
-      .get(`/api/v1/spotify/artists/${artistId}/toptracks`)
+      .get(`/api/v1/spotify/artists/${artistID}`)
       .end((err, res) => {
         err ? reject(err) : resolve(res.body)
       })
   })
 }
 
-export function getTracks(artistId) {
+export function getArtistId(artistName) {
   return new Promise((resolve, reject) => {
     request
-      .get(`/api/v1/spotify/artists/${artistId}/toptracks`)
-      .end((err, res) => {
-        err ? reject(err) : resolve(res.body)
-      })
+    .get(`/api/v1/spotify/search/${artistName}`)
+    .end((err, res) => {
+      err ? reject(err) : resolve(res.body[0].id)
+    })
   })
 }
 
@@ -41,22 +37,6 @@ export function getTopTracks(artistId) {
       .end((err, res) => {
         err ? reject(err) : resolve(res.body)
       })
-  })
-}
-
-export function createTracklistArray(artistNamesArray) {
-  let tracks = []
-  return new Promise((resolve, reject) => {
-    artistNamesArray.map((artistName) => {
-      getArtistId(artistName)
-      .then((artistId) => {
-        getArtistTopTracks(artistId)
-        .then((trackIDs) => {
-          tracks.push(trackIDs)
-        })
-      })
-    })
-    resolve(tracks)
   })
 }
 
@@ -83,7 +63,6 @@ export function addTrackToPlaylist(tracks, playlist_id) {
       .post(`/api/v1/spotify/users/playlist/${playlist_id}/tracks`)
       .send(tracks)
       .end((err, res) => {
-        console.log(res);
         err ? reject(err) : resolve(res.text)
       })
   })
@@ -100,10 +79,10 @@ export function getUserInfo(cookie) {
     }
     else {
       request
-      .get('/api/v1/spotify/users/me')
-      .end((err, res) => {
-        err ? reject(err) : resolve("No cookies")
-      })
+        .get('/api/v1/spotify/me')
+        .end((err, res) => {
+          err ? reject(err) : resolve("No cookies")
+        })
     }
   })
 }

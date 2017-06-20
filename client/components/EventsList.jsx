@@ -58,6 +58,7 @@ class EventsList extends React.Component {
     this.setState({loadingPlaylist: true})
     createPlaylist()
       .then((result) => {
+        console.log(result);
       this.setState({playlistID: result.id})
       let tracklist = this.state.selectedTracks
       let apiTracklist = tracklist.map((track) =>
@@ -96,8 +97,8 @@ class EventsList extends React.Component {
     }
 
   checkArtistSelected(artist){
-    if (this.state.selectedArtists.indexOf(artist) == -1) return "white"
-    else return "orange"
+    if (this.state.selectedArtists.indexOf(artist) == -1) return "noborder"
+    else return "orangeborder"
 
   }
 
@@ -138,7 +139,7 @@ class EventsList extends React.Component {
             <Subheader></Subheader>
             {events.map((event, i) => (
               <ArtistTile event={event} key={i} i={i} checkArtist={this.checkArtistSelected.bind(this)}  handleClick={this.handleClick.bind(this)}
-              expandInfo={this.expandInfo.bind(this)}/> // the i={i} is cause react doesn't like you grabbing key from props :(
+              expandInfo={this.expandInfo.bind(this)}/>// the i={i} is cause react doesn't like you grabbing key from props :(
             ))}
           </GridList>
         </MuiThemeProvider>

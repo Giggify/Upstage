@@ -98,3 +98,68 @@ export const events = {
       "The Wedding Present"
   ]
 }
+
+// /api/v1/spotify/artists/2hazSY4Ef3aB9ATXW7F5w3
+export const getArtistDetails = {
+  external_urls: {
+    spotify: "https://open.spotify.com/artist/2hazSY4Ef3aB9ATXW7F5w3"
+  },
+  followers: {
+    href: null,
+    total: 141470
+  },
+  genres: [
+    "cantautor", "spanish indie pop", "spanish pop", "spanish rock"
+  ],
+  href: "https://api.spotify.com/v1/artists/2hazSY4Ef3aB9ATXW7F5w3",
+  id: "2hazSY4Ef3aB9ATXW7F5w3",
+  images: [
+    {
+      height: 640,
+      url: "https://i.scdn.co/image/7b0cdd2d6e8bd140772a557c1475c9a9e7552397",
+      width: 640
+    }, {
+      height: 320,
+      url: "https://i.scdn.co/image/9da90dd92e985a5f2dcf2bb1b61477fd75a0cec7",
+      width: 320
+    }, {
+      height: 160,
+      url: "https://i.scdn.co/image/19a23237d880c329cf7dc1ef84eccfa463b4a7da",
+      width: 160
+    }
+  ],
+  name: "Izal",
+  popularity: 63,
+  type: "artist",
+  uri: "spotify:artist:2hazSY4Ef3aB9ATXW7F5w3"
+}
+// /api/v1/spotify/artists/2hazSY4Ef3aB9ATXW7F5w3/toptracks
+export const topTracks =
+[{
+  id: "4hTXeWayUVMwoz6v1CviSN"
+}, {
+  id: "3iaj0MtII6VPVhwQa4eeX3"
+}, {
+  id: "1t9xsch2D9URgAFWuE7kc8"
+}, {
+  id: "3ztnp89aCU5OMQBlbIkEI8"
+}, {
+  id: "72wNM7VYxTZ1PawCKzfTZx"
+}, {
+  id: "3Ye0P7D5bGfuDmTCKJuWxy"
+}, {
+  id: "5rwwOujLopGmy2G6YhRHiK"
+}, {
+  id: "6g0eaWPfmhdPqMINtyfIzz"
+}, {
+  id: "7lwXrOskUl8qQN8WKuaRYe"
+}, {id: "4IdfA4syNVW9Xydgoqyy7u"}]
+
+//
+
+export const getUserInfo = {
+  id: "eljordy_uk",
+  image: "https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/25128_379808465613_6781713_n.jpg?oh=aca9f6d1ba18363f87b8fa2876b66e23&oe=59D99D5E"
+}
+
+export const cookie = 'token=eyJhbGciOiJIUzI1'

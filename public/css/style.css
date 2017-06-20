@@ -151,6 +151,12 @@ body{
 .eventlistheader {
   font-family: 'Oleo Script';
 }
+.orangeborder {
+  border: 3px solid #FF6900;
+}
+.noborder {
+  border: none;
+}
 
 .Create-Playlist {
   background-color: #FF6900;
@@ -158,6 +164,9 @@ body{
   border-radius: 2px;
   font-family: 'Oleo Script';
 
+}
+.playlistadd {
+  position:absolute;
 }
 .material-icons {
   font-family: 'Material Icons';

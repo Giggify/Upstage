@@ -1,5 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {TextField} from 'material-ui'
 import injectTapEventPlugin from 'react-tap-event-plugin'
@@ -42,7 +44,7 @@ class SearchBar extends React.Component{
         searchResults=this.props.searchResults
       }
     return (
-    <MuiThemeProvider>
+    <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
       <div className='search-bar'>
         <PopularPlaces />
         <div id='or'>

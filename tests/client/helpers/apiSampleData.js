@@ -133,7 +133,7 @@ export const getArtistDetails = {
   type: "artist",
   uri: "spotify:artist:2hazSY4Ef3aB9ATXW7F5w3"
 }
-
+// /api/v1/spotify/artists/2hazSY4Ef3aB9ATXW7F5w3/toptracks
 export const topTracks =
 [{
   id: "4hTXeWayUVMwoz6v1CviSN"
@@ -154,3 +154,12 @@ export const topTracks =
 }, {
   id: "7lwXrOskUl8qQN8WKuaRYe"
 }, {id: "4IdfA4syNVW9Xydgoqyy7u"}]
+
+//
+
+export const getUserInfo = {
+  id: "eljordy_uk",
+  image: "https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/25128_379808465613_6781713_n.jpg?oh=aca9f6d1ba18363f87b8fa2876b66e23&oe=59D99D5E"
+}
+
+export const cookie = 'token=eyJhbGciOiJIUzI1'

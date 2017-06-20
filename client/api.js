@@ -40,22 +40,6 @@ export function getTopTracks(artistId) {
   })
 }
 
-export function createTracklistArray(artistNamesArray) {
-  let tracks = []
-  return new Promise((resolve, reject) => {
-    artistNamesArray.map((artistName) => {
-      getArtistId(artistName)
-      .then((artistId) => {
-        getTopTracks(artistId)
-        .then((trackIDs) => {
-          tracks.push(trackIDs)
-        })
-      })
-    })
-    resolve(tracks)
-  })
-}
-
 export function createPlaylist() {
   return new Promise((resolve, reject) => {
     request
@@ -79,7 +63,6 @@ export function addTrackToPlaylist(tracks, playlist_id) {
       .post(`/api/v1/spotify/users/playlist/${playlist_id}/tracks`)
       .send(tracks)
       .end((err, res) => {
-        console.log(res);
         err ? reject(err) : resolve(res.text)
       })
   })
@@ -96,10 +79,10 @@ export function getUserInfo(cookie) {
     }
     else {
       request
-      .get('/api/v1/spotify/users/me')
-      .end((err, res) => {
-        err ? reject(err) : resolve("No cookies")
-      })
+        .get('/api/v1/spotify/me')
+        .end((err, res) => {
+          err ? reject(err) : resolve("No cookies")
+        })
     }
   })
 }

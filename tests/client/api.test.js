@@ -43,5 +43,33 @@ test.cb('getArtistId', t => {
 
 test.cb('getTopTracks', t => {
   const scope = nock('http://localhost:80')
-    .get('/api/v1/spotify/artists/')
+    .get('/api/v1/spotify/artists/2hazSY4Ef3aB9ATXW7F5w3/toptracks')
+    .reply(200, helperData.topTracks)
+  api.getTopTracks('2hazSY4Ef3aB9ATXW7F5w3')
+    .then((res) => {
+      scope.done()
+      t.deepEqual(res[1].id, helperData.topTracks[1].id)
+      t.is(res.length, 10)
+      t.end()
+    })
+})
+
+test.skip('createPlaylist', t => {
+  t.pass()
+})
+
+test.skip('addTrackToPlaylist', t => {
+  t.pass()
+})
+
+test.cb('getUserInfo with a fake cookie', t => {
+  const scope = nock('http://localhost:80')
+    .get('/api/v1/spotify/me')
+    .reply(200, helperData.getUserInfo)
+  api.getUserInfo(helperData.cookie)
+    .then((res) => {
+      scope.done()
+      t.deepEqual(res, helperData.getUserInfo)
+      t.end()
+    })
 })

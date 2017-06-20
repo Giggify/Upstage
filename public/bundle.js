@@ -6880,7 +6880,6 @@ exports.getArtist = getArtist;
 exports.getArtistDetails = getArtistDetails;
 exports.getArtistId = getArtistId;
 exports.getTopTracks = getTopTracks;
-exports.createTracklistArray = createTracklistArray;
 exports.createPlaylist = createPlaylist;
 exports.addTrackToPlaylist = addTrackToPlaylist;
 exports.getUserInfo = getUserInfo;
@@ -6923,20 +6922,6 @@ function getTopTracks(artistId) {
   });
 }
 
-function createTracklistArray(artistNamesArray) {
-  var tracks = [];
-  return new Promise(function (resolve, reject) {
-    artistNamesArray.map(function (artistName) {
-      getArtistId(artistName).then(function (artistId) {
-        getTopTracks(artistId).then(function (trackIDs) {
-          tracks.push(trackIDs);
-        });
-      });
-    });
-    resolve(tracks);
-  });
-}
-
 function createPlaylist() {
   return new Promise(function (resolve, reject) {
     _superagent2.default.post('/api/v1/spotify/users/playlist').send({
@@ -6954,7 +6939,6 @@ function addTrackToPlaylist(tracks, playlist_id) {
   return new Promise(function (resolve, reject) {
     console.log(tracks + " is tracks");
     _superagent2.default.post('/api/v1/spotify/users/playlist/' + playlist_id + '/tracks').send(tracks).end(function (err, res) {
-      console.log(res);
       err ? reject(err) : resolve(res.text);
     });
   });
@@ -6967,7 +6951,7 @@ function getUserInfo(cookie) {
         err ? reject(err) : resolve(res.body);
       });
     } else {
-      _superagent2.default.get('/api/v1/spotify/users/me').end(function (err, res) {
+      _superagent2.default.get('/api/v1/spotify/me').end(function (err, res) {
         err ? reject(err) : resolve("No cookies");
       });
     }

@@ -6876,12 +6876,10 @@ module.exports = exports['default'];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createPlayist = createPlayist;
 exports.getArtist = getArtist;
-exports.getArtistTopTracks = getArtistTopTracks;
-exports.getTracks = getTracks;
+exports.getArtistDetails = getArtistDetails;
+exports.getArtistId = getArtistId;
 exports.getTopTracks = getTopTracks;
-exports.createTracklistArray = createTracklistArray;
 exports.createPlaylist = createPlaylist;
 exports.addTrackToPlaylist = addTrackToPlaylist;
 exports.getUserInfo = getUserInfo;
@@ -6892,8 +6890,6 @@ var _superagent2 = _interopRequireDefault(_superagent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function createPlayist(artists) {}
-
 function getArtist(artistName) {
   return new Promise(function (resolve, reject) {
     _superagent2.default.get('/api/v1/spotify/search/' + artistName).end(function (err, res) {
@@ -6902,18 +6898,18 @@ function getArtist(artistName) {
   });
 }
 
-function getArtistTopTracks(artistId) {
+function getArtistDetails(artistID) {
   return new Promise(function (resolve, reject) {
-    _superagent2.default.get('/api/v1/spotify/artists/' + artistId + '/toptracks').end(function (err, res) {
+    _superagent2.default.get('/api/v1/spotify/artists/' + artistID).end(function (err, res) {
       err ? reject(err) : resolve(res.body);
     });
   });
 }
 
-function getTracks(artistId) {
+function getArtistId(artistName) {
   return new Promise(function (resolve, reject) {
-    _superagent2.default.get('/api/v1/spotify/artists/' + artistId + '/toptracks').end(function (err, res) {
-      err ? reject(err) : resolve(res.body);
+    _superagent2.default.get('/api/v1/spotify/search/' + artistName).end(function (err, res) {
+      err ? reject(err) : resolve(res.body[0].id);
     });
   });
 }
@@ -6923,20 +6919,6 @@ function getTopTracks(artistId) {
     _superagent2.default.get('/api/v1/spotify/artists/' + artistId + '/toptracks').end(function (err, res) {
       err ? reject(err) : resolve(res.body);
     });
-  });
-}
-
-function createTracklistArray(artistNamesArray) {
-  var tracks = [];
-  return new Promise(function (resolve, reject) {
-    artistNamesArray.map(function (artistName) {
-      getArtistId(artistName).then(function (artistId) {
-        getArtistTopTracks(artistId).then(function (trackIDs) {
-          tracks.push(trackIDs);
-        });
-      });
-    });
-    resolve(tracks);
   });
 }
 
@@ -6957,7 +6939,6 @@ function addTrackToPlaylist(tracks, playlist_id) {
   return new Promise(function (resolve, reject) {
     console.log(tracks + " is tracks");
     _superagent2.default.post('/api/v1/spotify/users/playlist/' + playlist_id + '/tracks').send(tracks).end(function (err, res) {
-      console.log(res);
       err ? reject(err) : resolve(res.text);
     });
   });
@@ -6970,7 +6951,7 @@ function getUserInfo(cookie) {
         err ? reject(err) : resolve(res.body);
       });
     } else {
-      _superagent2.default.get('/api/v1/spotify/users/me').end(function (err, res) {
+      _superagent2.default.get('/api/v1/spotify/me').end(function (err, res) {
         err ? reject(err) : resolve("No cookies");
       });
     }
@@ -28407,8 +28388,13 @@ var ArtistTile = function (_React$Component) {
               } })
           )
         },
+<<<<<<< HEAD
+        _react2.default.createElement('img', { src: this.state.artist.images[0] ? this.state.artist.images[0].url : "/images/unknownartist.png", onClick: function onClick() {
+            return _this4.props.expandInfo({ event: event });
+=======
         _react2.default.createElement('img', { src: this.state.artist.images[0].url || "/images/unknownartist.png", onClick: function onClick(e) {
             return _this4.props.handleClick(e, event.artists[0], _this4.state.tracksArray);
+>>>>>>> develop
           } })
       );
     }
@@ -28621,6 +28607,7 @@ var EventsList = function (_React$Component) {
 
       this.setState({ loadingPlaylist: true });
       (0, _api.createPlaylist)().then(function (result) {
+        console.log(result);
         _this2.setState({ playlistID: result.id });
         var tracklist = _this2.state.selectedTracks;
         var apiTracklist = tracklist.map(function (track) {
@@ -28635,7 +28622,6 @@ var EventsList = function (_React$Component) {
     key: 'handleClick',
     value: function handleClick(e, artist, tracksArray) {
       e.preventDefault();
-      console.log(this.state.open);
       var selTracks = this.state.selectedTracks;
       var selArtists = this.state.selectedArtists;
       if (selArtists.indexOf(artist) == -1) {
@@ -29269,21 +29255,22 @@ var savedPlaces = [{ value: { id: 31455, name: { country: "New Zealand", name: "
 var PopularPlaces = function (_React$Component) {
   _inherits(PopularPlaces, _React$Component);
 
-  function PopularPlaces() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
+  function PopularPlaces(props) {
     _classCallCheck(this, PopularPlaces);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+    var _this = _possibleConstructorReturn(this, (PopularPlaces.__proto__ || Object.getPrototypeOf(PopularPlaces)).call(this, props));
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = PopularPlaces.__proto__ || Object.getPrototypeOf(PopularPlaces)).call.apply(_ref, [this].concat(args))), _this), _this.handleChange = function (event, value) {
+    _this.handleChange = function (event, value) {
+      _this.setState({ showCity: '' + value.name.name });
+      console.log(value.name);
       _this.props.dispatch((0, _users.saveLocationId)(value.id));
       _this.props.dispatch((0, _users.saveLocationName)(value.name));
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+    };
+
+    _this.state = {
+      showCity: false
+    };
+    return _this;
   }
 
   _createClass(PopularPlaces, [{
@@ -29292,7 +29279,7 @@ var PopularPlaces = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         null,
-        'Choose a popular city',
+        this.state.showCity ? '' + this.state.showCity : "Choose a popular city",
         _react2.default.createElement(
           _MuiThemeProvider2.default,
           null,

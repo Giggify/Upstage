@@ -61,7 +61,6 @@ class ArtistTile extends React.Component {
         actionIcon={<IconButton><Info color="white" onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)}/></IconButton>}
       >
         <img src={this.state.artist.images[0].url || "/images/unknownartist.png"} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)} />
-
       </GridTile>
     )
   }

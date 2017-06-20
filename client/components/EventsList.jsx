@@ -86,6 +86,7 @@ class EventsList extends React.Component {
     this.setState({loadingPlaylist: true})
     createPlaylist()
       .then((result) => {
+        console.log(result);
       this.setState({playlistID: result.id})
       let tracklist = this.state.selectedTracks
       let apiTracklist = tracklist.map((track) =>
@@ -99,7 +100,6 @@ class EventsList extends React.Component {
 
   handleClick(e, artist, tracksArray) {
     e.preventDefault()
-    console.log(this.state.open)
     let selTracks = this.state.selectedTracks
     let selArtists= this.state.selectedArtists
     if(selArtists.indexOf(artist) == -1) {

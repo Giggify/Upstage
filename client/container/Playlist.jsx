@@ -8,15 +8,21 @@ import {fetchPlaylistId} from '../actions/playlist'
 
 class Playlist extends React.Component {
 
- handleClick() {
-   this.props.dispatch(fetchPlaylistId(tracks))
- }
+
+  createPlaylist() {
+    this.props.dispatch(fetchPlaylistId())
+    console.log("OMG PROPS")
+    console.log(this.props)
+  }
+
+  closeModal = () => this.setState({isShowingModal: false})
+
 
  render() {
    if(!this.props.playlistLoading && !this.props.playlistID) {
      return (
        <div className="Playlist">
-         <button onClick={ () => this.handleClick() }>Create Playlist </button>
+         <button onClick={ () => this.createPlaylist() }>Create 1 Playlist </button>
        </div>
      )
    } else if(this.props.playlistLoading && !this.props.playlistID) {
@@ -26,18 +32,20 @@ class Playlist extends React.Component {
        </div>
      )
    } else if(!this.props.playlistLoading && this.props.playlistID) {
+       console.log(this.props.playlistID)
+       console.log(this.props.user)
      return (
        <div className="Playlist">
-         <button className="Create-Playlist"onClick={this.handleClick}>Create Playlist</button>
+         <button className="Create-Playlist"onClick={this.createPlaylist}>Create 2 Playlist</button>
              <Modal
-               show={this.state.isShowingModal}
-               onClose={() => this.handleClose.bind(this)}
+               show={true}
+               onClose={() => this.closeModal.bind(this)}
                style={{width: "100%"}}
                containerStyle={{background: 'none'}}
                closeOnOuterClick={true}
                >
                <div style={{width: '100%'}} className="inner-modal">
-                 <p style={{width: '100%', marginLeft: '25vh', fontSize: '25px'}} onClick={() => this.handleClose()} >&#10007;</p>
+                 <p style={{width: '100%', marginLeft: '25vh', fontSize: '25px'}} onClick={() => this.closeModal()} >&#10007;</p>
                  <iframe src={`https://open.spotify.com/embed/user/${this.props.user}/playlist/${this.props.playlistID}`} width="380" height="450" frameborder="0" allowtransparency="false"></iframe>
                </div>
              </Modal>
@@ -49,9 +57,9 @@ class Playlist extends React.Component {
 
 const mapStateToProps  = (state)  => {
   return {
-    playlistLoading: state.playlistLoading,
+    playlistLoading: state.playlist.playlistLoading,
     error: state.error,
-    playlistID: state.playlistID
+    playlistID: state.playlist.playlistID
   }
 }
 export default connect(mapStateToProps)(Playlist)

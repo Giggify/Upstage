@@ -124,7 +124,7 @@ class EventsList extends React.Component {
       let events = this.state.events || []
     return (
       <div className='Events-list-page'>
-        <h1>Current Location: {this.props.match.params.name}</h1>
+        <h1 className="currentlocation">Current Location: {this.props.match.params.name}</h1>
         <Playlist handlePlaylist={this.handlePlaylistCreation.bind(this)} show={this.state.show} user={this.state.user} loading={this.state.loadingPlaylist} playlist={this.state.playlistID}/>
         <DatePicker />
           {this.state.showInfo && <PopInfo event={this.state.eventInBox}/>}

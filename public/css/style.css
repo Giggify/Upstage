@@ -12,62 +12,18 @@ body {
   height: 100%;
   width: 100%;
 }
-.search-bar{
-  background-color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width:80%;
-  margin-left: 30vh;
-}
-#or{
-  vertical-align: middle;
-}
-#search-text-field{
-  margin-left: 1em;
-  margin-top: -20px;
-}
-.search-bar input,button{
-  font-size:1em;
-  border-radius: 25px;
-  color:gray;
-  border-color: none;
-  border-style:none;
-  padding: 0.1em;
-  margin: 0.1em;
-}
 
-.search-bar button{
-  color:gray;
-  background-color:white;
-  border: 0.1em solid gray;
-}
-
-.search-results{
-  height:50%;
-  /* not working lol need to be modified */
-}
-
-#search-result-item{
-  font-size: 2em;
-  margin: 0.1em
-}
-
-#search-result-item:hover{
-  background-color: #1DB954;
-}
 .header {
-  margin-left: 100px;
-  margin-right: 100px;
-  margin-bottom: 0px;
   position: relative;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   width:100%;
 }
 
 .headerlogo{
-  margin-left: 5%;
+  margin-left: 12%;
+  margin-top: 1vh;
 }
 
 .login {
@@ -78,7 +34,7 @@ body {
   height: 50px;
   margin: auto;
   padding: 5px;
-  font-family: 'Lato';
+  font-family: arial;
   font-size: 20px;
   display: flex;
   margin-bottom: 2vh;
@@ -89,12 +45,12 @@ body {
   border: 4px solid black;
   width: 250px;
   height: 50px;
-  margin-left: 150px;
   padding: 5px;
-  margin-left: 70%;
   font-family: 'Lato';
   font-size: 20px;
   display: flex;
+  margin-top: 1vh;
+  margin-right: 2vh;
 }
 .spotifylogo, .spotifyimage {
   padding-top: 2px;
@@ -147,11 +103,6 @@ body {
   color: #fff;
   text-decoration: none;
 }
-.datepicker {
-  display: flex;
-  margin-left: 35%;
-  margin-right: 40%;
-}
 
 .createplaylistbtn {
   font-size: 1em;
@@ -171,7 +122,7 @@ body {
   font-family: 'Oleo Script';
 }
 .orangeborder {
-  border: 5px solid #FF9933;
+  border: 5px solid #FF6900;
 }
 .noborder {
   border: none;
@@ -221,6 +172,7 @@ body {
   width: 60%;
   margin: auto;
   margin-bottom: 4vh;
+  color: #FF6900;
 }
 
 .songkicklogo{
@@ -236,4 +188,9 @@ body {
 
 .logo-main{
   margin-top: 4vh;
+}
+
+.drawer{
+  background-color: black;
+  color: black;
 }

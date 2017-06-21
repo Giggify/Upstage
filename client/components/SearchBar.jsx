@@ -1,14 +1,34 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {TextField} from 'material-ui'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin();
+
+import{getMuiTheme, MuiThemeProvider} from 'material-ui/styles/'
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import {orange500,green700} from 'material-ui/styles/colors';
 
 import {fetchLocations} from '../actions/locations'
 import {fetchEvents} from '../actions/events'
 import {saveLocationId, saveLocationName} from '../actions/users'
 import PopularPlaces from './SearchBarPopularPlaces'
+
+const styles = {
+  customWidth: {
+    width: 150,
+  },
+};
+
+const muiTheme = getMuiTheme(
+  (darkBaseTheme),
+  {
+  textField: {
+   floatingLabelColor: orange500,
+   hintColor:green700,
+   disabledTextColor:green700,
+   focusColor:green700
+ },
+});
 
 class SearchBar extends React.Component{
   state={
@@ -42,12 +62,10 @@ class SearchBar extends React.Component{
         searchResults=this.props.searchResults
       }
     return (
-    <MuiThemeProvider>
+    <MuiThemeProvider muiTheme={muiTheme}>
       <div className='search-bar'>
         <PopularPlaces />
-        <div id='or'>
-          OR
-        </div>
+        <div className='search-city'>
         <div id='search-text-field'>
           <TextField
           id='text-field-controlled'
@@ -55,9 +73,12 @@ class SearchBar extends React.Component{
           floatingLabelText="Search for a city..."
           value={this.state.value}
           onChange={this.handleUpdateInput}
+          style={styles.customWidth}
           />
         </div>
-      <button id='search-button' onClick={()=>this.handleClick()}> search </button>
+        <img id='search-button' src='https://cdn2.iconfinder.com/data/icons/media-and-navigation-buttons-round/512/Button_15-128.png'
+        onClick={()=>this.handleClick()} />
+      </div>
         <div className='search-results'>
           {searchResults!=[] && this.state.showResults &&
             <div>
@@ -69,8 +90,8 @@ class SearchBar extends React.Component{
               }
             </div>
           }
-        </div>
       </div>
+    </div>
     </MuiThemeProvider>
     )
   }

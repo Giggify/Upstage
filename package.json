@@ -10,6 +10,7 @@
     "start": "node server/index",
     "test-coverage": "nyc ava -v 'tests/**/*.test.js'",
     "test": "ava -v 'tests/**/*.test.js'",
+    "test-spotify":"ava -v 'tests/server/routes.test.js'",
     "route-test": "ava -v 'tests/server/routes.skEvents.test.js'",
     "test-page": "ava -v 'tests/client/components/*.test.js'",
     "watch": "nodemon -e js,jsx -x npm test",

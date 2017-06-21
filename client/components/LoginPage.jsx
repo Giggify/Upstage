@@ -7,7 +7,7 @@ const Header = () => {
         <img src="./images/TITLE.png" width="55%"/>
       </div>
       <div className="login">
-          <img className='spotifylogo' src='https://image.flaticon.com/icons/png/512/7/7709.png'/>
+          <img className='spotifylogo' src='./images/Spotify_Icon_CMYK_Black.png'/>
           <a className='spotifylogin' href="/auth">Login</a>
       </div>
     </div>

@@ -11,7 +11,6 @@ import Footer from './Footer'
 
 
 import {getUserInfo} from '../api'
-import Drawer from './Drawer'
 
 export default class App extends React.Component {
     constructor(props) {

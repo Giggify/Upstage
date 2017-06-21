@@ -123,13 +123,13 @@ router.post('/users/createplaylist', (req,res) => {
         })
         .set('Authorization', `Bearer ${req.user.accessToken}`)
         .set('Accept', 'application/json')
-        .end((err,result) => {
+        .end((err,result2) => {
           if(err) {
             console.log(err);
             res.send(err);
           }
           else {
-            res.status(201).send(req.user.id)
+            res.status(201).send(result.body.id)
           }
         })
     }

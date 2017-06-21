@@ -90,6 +90,7 @@ body {
   font-size: 15pt;
   font-weight: 400;
   text-decoration: none;
+    font-family: Roboto Condensed;
 }
 
 .headerpanel {
@@ -165,9 +166,9 @@ body {
 
 .Footer{
   padding-left: 2%;
-  font-family: Arial;
+  font-family: Roboto Condensed;
   padding-right: 2%;
-  font-size: 2.8vh;
+  font-size: 3vh;
   line-height: 150%;
   width: 60%;
   margin: auto;

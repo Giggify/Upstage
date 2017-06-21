@@ -38,7 +38,6 @@ class ArtistTile extends React.Component {
                 }
               })
               .then(() => {
-                console.log("artistname",artistName)
                 this.setState({tracksArray: tracksArray})
                 this.props.dispatch(saveTopTracks(artistName,tracksArray))
               })

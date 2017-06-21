@@ -57,6 +57,7 @@ class EventsList extends React.Component {
       let events = this.state.events || []
     return (
       <div className='Events-list-page'>
+        {console.log(this.state.events)}
         <h1 className="currentlocation">Current Location: {this.props.match.params.name}</h1>
         <Playlist
           user={this.state.user}

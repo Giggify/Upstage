@@ -8,6 +8,16 @@ import {orange500} from 'material-ui/styles/colors'
 
 import {saveMinDate, saveMaxDate} from '../actions/users'
 
+const muiTheme = getMuiTheme(
+  (darkBaseTheme),
+  {palette: {
+   hintColor:orange500,
+   primary1Color: orange500,
+   primary2Color: orange500,
+   pickerHeaderColor: orange500,
+  }}
+)
+
 const styles = {
     floatingLabelStyle: {color: orange500}
 }
@@ -61,7 +71,7 @@ class DatePickerExampleToggle extends React.Component {
 
   render() {
     return (
-      <MuiThemeProvider muiTheme={getMuiTheme((darkBaseTheme))}>
+      <MuiThemeProvider muiTheme={muiTheme}>
       <div>
         <div className="datepicker">
           <DatePicker

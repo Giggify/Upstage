@@ -106,7 +106,7 @@ export function createPlaylist (tracks) {
         } else {
           dispatch(clearPlaylistError())
           dispatch(changeLoadState(false))
-          dispatch(getPlaylistId(res.body.id))
+          dispatch(getPlaylistId(res.text))
         }
       })
   }

@@ -92,7 +92,7 @@ class ArtistTile extends React.Component {
     let border = this.checkArtist(event.artists[0])
     return (
       <GridTile
-        className={border}
+        className={this.isArtistSelected(event.artists[0]) ? 'orangeborder' : 'noborder'}
         key={this.props.i}
         title={event.artists[0]}
         subtitle={<span><b>{event.date}</b></span>}

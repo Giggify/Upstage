@@ -5,31 +5,43 @@ import ToggleDisplay from 'react-toggle-display'
 import Loading from 'react-loading'
 
 class Playlist extends React.Component {
-
-
+  constructor(props) {
+    super(props)
+    this.state = {
+      playlistID: props.playlistID,
+      playlistLoading: props.playlistLoading,
+      isShowingModal: true
+    }
+  }
+  componentWillReceiveProps({playlistLoading, playlistID}) {
+    if (playlistID != this.state.playlistID) {
+      this.setState({isShowingModal: true})
+    }
+    this.setState({playlistLoading, playlistID})
+  }
 
   closeModal = () => this.setState({isShowingModal: false})
 
 
  render() {
-   if(!this.props.playlistLoading && !this.props.playlistID) {
+   if(!this.state.playlistLoading && !this.state.playlistID) {
      return (
        <div className="Playlist">
 
        </div>
      )
-   } else if(this.props.playlistLoading && !this.props.playlistID) {
+   } else if(this.state.playlistLoading && !this.state.playlistID) {
      return (
        <div className="Playlist">
           <Loading type='bars' color='#ff6900' height='667' width='500'/>
        </div>
      )
-   } else if(!this.props.playlistLoading && this.props.playlistID) {
+   } else if(!this.state.playlistLoading && this.state.playlistID) {
      return (
        <div className="Playlist">
          <button className="Create-Playlist"onClick={this.create}>Create Playlist</button>
              <Modal
-               show={true}
+               show={this.state.isShowingModal}
                onClose={() => this.closeModal.bind(this)}
                style={{width: "100%"}}
                containerStyle={{background: 'none'}}
@@ -47,6 +59,7 @@ class Playlist extends React.Component {
 }
 
 const mapStateToProps  = (state)  => {
+  console.log(state)
   return {
     playlistLoading: state.playlist.playlistLoading,
     error: state.error,

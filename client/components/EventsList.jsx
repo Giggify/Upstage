@@ -5,14 +5,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Subheader from 'material-ui/Subheader';
 import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 import DatePicker from './DatePicker'
-
-
 import {fetchEvents} from '../actions/events'
 import {createPlaylist, addTrackToPlaylist} from '../api'
 import SelectedArtistsBox from './SelectedArtistsBox'
 import ArtistTile from './ArtistTile'
 import Playlist from '../container/Playlist'
-import PopInfo from './PopInfo'
 import {filterEventsbyDates} from '../utils'
 
 const styles = {
@@ -54,27 +51,6 @@ class EventsList extends React.Component {
     )
   }
 
-    removeTrackIfExists(tracksArray, stateTracksArray) {
-      return stateTracksArray.filter((track) => {
-        return tracksArray.indexOf(track) == -1
-      })
-    }
-
-  handleDeleteFromBox(artistIndex){
-    let artistsInBox=[...this.state.selectedArtists]
-    artistsInBox.splice(artistIndex,1)
-    this.setState({selectedArtists: artistsInBox})
-  }
-
-  expandInfo(event){
-    this.setState({eventInBox:event})
-    this.state.showInfo ? this.setState({
-    showInfo:false
-    }) : this.setState({
-    showInfo:true
-    })
-  }
-
     render() {
       let artists = this.props.artists || []
       let events = this.state.events || []
@@ -89,7 +65,7 @@ class EventsList extends React.Component {
         />
         <DatePicker />
           {this.state.showInfo && <PopInfo event={this.state.eventInBox}/>}
-        <SelectedArtistsBox artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
+        <SelectedArtistsBox/>
         <div style={styles.root}>
          <MuiThemeProvider>
           <GridList
@@ -100,8 +76,7 @@ class EventsList extends React.Component {
           >
             <Subheader></Subheader>
             {events.map((event, i) => (
-              <ArtistTile event={event} key={i} i={i}
-              expandInfo={this.expandInfo.bind(this)}/>// the i={i} is cause react doesn't like you grabbing key from props :(
+              <ArtistTile event={event} key={i} i={i} />// the i={i} is cause react doesn't like you grabbing key from props :(
             ))}
           </GridList>
         </MuiThemeProvider>

@@ -8,12 +8,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {toggleArtist, createPlaylist, addTracksToPlaylist} from '../actions/playlist'
 
 class SelectedArtistsBox extends React.Component{
+
   constructor(props){
     super(props)
     this.state = {
-      chipData:[],
-      open: false
-
+      chipData:[]
     }
     this.styles = {
       chip:{
@@ -37,6 +36,12 @@ class SelectedArtistsBox extends React.Component{
   }
 
 
+    handleDeleteFromBox(artistIndex){
+      let artistsInBox=[...this.state.selectedArtists]
+      artistsInBox.splice(artistIndex,1)
+      this.setState({selectedArtists: artistsInBox})
+    }
+
    handleToggle = () => { //REFACTORED!!!!!!
        this.create()
        this.setState({open: !this.state.open});
@@ -48,7 +53,7 @@ class SelectedArtistsBox extends React.Component{
    }
 
    create() {
-     const tracks = this.props.
+     const tracks = this.props.selectedTracks
      this.props.dispatch(createPlaylist())
        .then(() => {
          this.props.dispatch(addTracksToPlaylist(tracks,this.props.playlistID))
@@ -64,8 +69,6 @@ class SelectedArtistsBox extends React.Component{
    handleClose = () => this.setState({open: false});
 
   renderChip(data){
-    //call function to trim data.label
-
     return(
       <Chip
         key={data.key}
@@ -78,6 +81,7 @@ class SelectedArtistsBox extends React.Component{
   }
 
   componentWillReceiveProps(nextprops){
+      console.log(nextprops)
     let artists = nextprops.artists.map((artist,index)=>{
       return(
         {key: index, label: artist}
@@ -93,7 +97,6 @@ class SelectedArtistsBox extends React.Component{
     return(
       <MuiThemeProvider>
       <div className="drawer">
-
       <Drawer
         docked={true}
         width={150}
@@ -115,10 +118,11 @@ class SelectedArtistsBox extends React.Component{
 }
 
 const mapState2Props = (state) => {
+    console.log(state)
   return {
-    selectedTracks: state.playlist.tracks,
-    selectedArtists: state.playlist.artists
+    tracks: state.playlist.tracks,
+    artists: state.playlist.artists
   }
 }
 
-export default connect(mapState2Props)(SelectedArtistBox)
+export default connect(mapState2Props)(SelectedArtistsBox)

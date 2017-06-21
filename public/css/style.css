@@ -1,0 +1,197 @@
+html {
+  margin: 0px;
+  padding: 0px;
+}
+body {
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  background: url('https://s-media-cache-ak0.pinimg.com/originals/48/c4/72/48c472edf8672cf11b59d3a10481340b.jpg');
+  color: #FF6900;
+  padding-top: 0px;
+  margin: 0px;
+  height: 100%;
+  width: 100%;
+}
+
+.header {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width:100%;
+}
+
+.headerlogo{
+  margin-left: 12%;
+  margin-top: 1vh;
+}
+
+.login {
+  border-radius: 8px;
+  background-color: #1DB954;
+  border: 4px solid black;
+  width: 150px;
+  height: 50px;
+  margin: auto;
+  padding: 5px;
+  font-family: arial;
+  font-size: 20px;
+  display: flex;
+  margin-bottom: 2vh;
+}
+.spotifydetails {
+  border-radius: 8px;
+  background-color: #1DB954;
+  border: 4px solid black;
+  width: 250px;
+  height: 50px;
+  padding: 5px;
+  font-family: 'Lato';
+  font-size: 20px;
+  display: flex;
+  margin-top: 1vh;
+  margin-right: 2vh;
+}
+.spotifylogo, .spotifyimage {
+  padding-top: 2px;
+  display: block;
+  height: 44px;
+  width: 44px;
+}
+.spotifylogout {
+  padding-top: 2px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  display: block;
+  height: 44px;
+  width: 44px;
+}
+.spotifyimage {
+  border-radius:  30px;
+}
+.spotifylogin {
+  display: block;
+  padding-top: 9px;
+  padding-left: 20px;
+  /*padding-bottom: 9px;*/
+  float: right;
+  color: #000;
+  font-size: 20pt;
+  font-weight: 400;
+  text-decoration: none;
+}
+.spotifyusername {
+  display: block;
+  padding-top: 15px;
+  padding-left: 20px;
+  /*padding-bottom: 9px;*/
+  float: right;
+  color: #000;
+  font-size: 15pt;
+  font-weight: 400;
+  text-decoration: none;
+    font-family: Roboto Condensed;
+}
+
+.headerpanel {
+  display: flex;
+  direction: row;
+}
+.currentlocation {
+  padding-top: 6%;
+}
+.login a:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.createplaylistbtn {
+  font-size: 1em;
+  background-color: #FF6900;
+  color: #111222;
+}
+.upstage {
+  font-family: 'Bungee Outline', cursive;
+  font-size: 90px;
+}
+.upstagesmall {
+  font-family: 'Bungee Outline', cursive;
+  font-size: 30px;
+}
+
+.eventlistheader {
+  font-family: 'Oleo Script';
+}
+.orangeborder {
+  border: 5px solid #FF6900;
+}
+.noborder {
+  border: none;
+}
+
+.Create-Playlist {
+  background-color: #FF6900;
+  color: black;
+  border-radius: 2px;
+  font-family: 'Oleo Script';
+
+}
+.playlistadd {
+  position:absolute;
+}
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+.Footer{
+  padding-left: 2%;
+  font-family: Roboto Condensed;
+  padding-right: 2%;
+  font-size: 3vh;
+  line-height: 150%;
+  width: 60%;
+  margin: auto;
+  margin-bottom: 4vh;
+  color: #FF6900;
+}
+
+.songkicklogo{
+  width: 15%;
+  margin: auto;
+  padding-right: 3vh;
+}
+
+.spotifylogo2{
+  width: 15%;
+  margin: auto;
+}
+
+.logo-main{
+  margin-top: 4vh;
+}
+
+.drawer{
+  background-color: black;
+  color: black;
+}

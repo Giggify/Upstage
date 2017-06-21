@@ -13,16 +13,33 @@ const muiTheme = getMuiTheme(
   (darkBaseTheme)
 );
 
-const Homepage = (props)=>{
+class Homepage extends React.Component{
+  constructor(props){
+    super(props)
+    this.state={
+      noLocation:false
+    }
+  }
 
-  const handleClick=()=>{
-    let id=props.metro.locationID
-    let {city,state,country}=props.metro
+  handleClick=()=>{
+    if (this.props.metro.locationID === undefined) {
+    this.setState=({
+      noLocation:true
+    })
+    alert("Please choose a location")
+  } else {
+    this.setState={
+      noLocation:false
+    }
+    let id=this.props.metro.locationID
+    let {city,state,country}=this.props.metro
     let metro
     state === ' ' ? metro=`${city}-${country}` : metro=`${city}-${state}-${country}`
     location.href=`#events/${id}/${metro}`
   }
 
+  }
+  render(){
   return(
     <div className='home-page'>
       <SearchBar />
@@ -36,13 +53,14 @@ const Homepage = (props)=>{
         <MuiThemeProvider muiTheme={muiTheme}>
           <RaisedButton
             label="GO"
-            style={{width:'10em', color:'green700'}}
-            onClick={()=>{handleClick()}}
+            backgroundColor={green700}
+            style={{width:'10em'}}
+            onClick={()=>{this.handleClick()}}
           />
         </MuiThemeProvider>
       </div>
     </div>
-  )
+  )}
 }
 
 const mapState2Props = (state)=>{

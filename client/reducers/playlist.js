@@ -34,7 +34,7 @@ function playlist(state = {
         case 'SAVE_TOP_TRACKS':
             return {
                 ...state,
-                topTracks: action.topTracks
+              topTracks: action.newObj //we need to change this one so it adds tracks on the end not overwrites the whole thing
             }
         default:
             return state

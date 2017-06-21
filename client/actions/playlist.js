@@ -43,10 +43,11 @@ export function saveSelectedArtists(artists) {
   }
 }
 
-export function saveTopTracks(topTracks) {
+export function saveTopTracks(artistName, topTracks) {
+  let newObj = {[artistName]: topTracks}
   return {
     type: 'SAVE_TOP_TRACKS',
-    topTracks
+    newObj
   }
 }
 

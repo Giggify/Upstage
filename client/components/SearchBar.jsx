@@ -9,6 +9,8 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 
 import {orange500,green700} from 'material-ui/styles/colors';
 import PopularPlaces from './SearchBarPopularPlaces'
+import {fetchLocations} from '../actions/locations'
+import {saveLocationId, saveLocationName} from '../actions/users'
 
 const styles = {
   customWidth: {

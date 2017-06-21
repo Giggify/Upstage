@@ -32,32 +32,28 @@ class SelectedArtistsBox extends React.Component{
     const chipToDelete = this.chipData.map((chip)=>chip.key).indexOf(key)
     this.chipData.splice(chipToDelete,1)
     this.setState({chipData: this.chipData})
-    this.props.deleteArtist(key)
+    this.handleArtistClick(key)
   }
-
-
-    handleDeleteFromBox(artistIndex){
-      let artistsInBox=[...this.state.selectedArtists]
-      artistsInBox.splice(artistIndex,1)
-      this.setState({selectedArtists: artistsInBox})
-    }
 
    handleCreation = () => { //REFACTORED!!!!!!
        this.create()
    }
 
    handleArtistClick(artist) {
-     console.log(props);
+     console.log(filterTopTracks(artist));
+     console.log("^ this is the array");
      this.checkArtist(artist)
-     toggleArtist(artist, this.props.topTracks, this.props.selectedArtists, this.props.selectedTracks, this.props.dispatch)
+     toggleArtist(artist, filterTopTracks(artist), this.props.selectedArtists, this.props.selectedTracks, this.props.dispatch)
+   }
+
+   filterTopTracks(artist) {
+     let topTracksList = [...props.topTracks]
+     return topTracksList.filter((track) => track[artist] == artist)
    }
 
    create() {
      const tracks = this.props.selectedTracks
-     this.props.dispatch(createPlaylist())
-       .then(() => {
-         this.props.dispatch(addTracksToPlaylist(tracks,this.props.playlistID))
-       })
+     this.props.dispatch(createPlaylist(this.props.selectedTracks))
    }
 
    trimArtistName = (artistName) => {
@@ -117,7 +113,7 @@ class SelectedArtistsBox extends React.Component{
 }
 
 const mapState2Props = (state) => {
-    console.log(state.playlist)
+    // console.log(state.playlist)
   return {
     tracks: state.playlist.tracks,
     artists: state.playlist.artists,

@@ -53,6 +53,10 @@ export function saveTopTracks(artistName, topTracks) {
 
 export function toggleArtist(artist, artistTracks, selArtists, selTracks, dispatch) {
   if(selArtists.indexOf(artist) == -1) {
+    // console.log("start of toggleArtist");
+    // console.log(artist);
+    // console.log(artistTracks);
+    // console.log(selArtists);
     mapTracksArray(artistTracks, selTracks, dispatch)
     let updatedArtists = [...selArtists, artist]
     dispatch(saveSelectedArtists(updatedArtists))
@@ -66,7 +70,7 @@ export function toggleArtist(artist, artistTracks, selArtists, selTracks, dispat
 }
 
 
-export function createPlaylist () {
+export function createPlaylist (tracks) {
   return (dispatch) => {
     dispatch(changeLoadState(true))
     request
@@ -84,12 +88,14 @@ export function createPlaylist () {
         } else {
           dispatch(clearPlaylistError())
           dispatch(getPlaylistId(res.body.id))
+          dispatch(addTracksToPlaylist(tracks, res.body.id))
         }
       })
   }
 }
 
 export function addTracksToPlaylist (tracks, playlist_id) {
+  console.log('test');
     let formattedTracks = format(tracks)
     return (dispatch) => {
         request
@@ -113,6 +119,9 @@ export function format(tracks) { //I dont think this needs export? Or anything b
 }
 
 export function mapTracksArray(tracksArray, selTracks, dispatch) {
+  console.log(selTracks);
+  // console.log(tracksArray);
+  console.log("selTracks, tracksArray");
   tracksArray.forEach((track) => selTracks.push(track))
   dispatch(saveSelectedTracks(selTracks))
 }

@@ -17,7 +17,7 @@ class ArtistTile extends React.Component {
       artist: {
         images: [{url: '/images/unknownartist.png'}]
       },
-      tracks: [], //Zac wonders what is this doing?
+      tracksArray: []
     }
   }
   componentWillMount(){
@@ -38,7 +38,8 @@ class ArtistTile extends React.Component {
                 }
               })
               .then(() => {
-                console.log("artistname",artistName);
+                console.log("artistname",artistName)
+                this.setState({tracksArray: tracksArray})
                 this.props.dispatch(saveTopTracks(artistName,tracksArray))
               })
         }
@@ -52,7 +53,7 @@ class ArtistTile extends React.Component {
 
   handleArtistClick(artist) {
     this.checkArtist(artist)
-    toggleArtist(artist,this.state.tracksArray, this.props.selectedArtists, this.props.selectedTracks, this.props.dispatch)
+    toggleArtist(artist,this.props.topTracks, this.props.selectedArtists, this.props.selectedTracks, this.props.dispatch)
   }
 
   handleInfoClick=(event)=>{

@@ -14,11 +14,15 @@ class ArtistTile extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      selectedArtists: props.selectedArtists,
       artist: {
         images: [{url: '/images/unknownartist.png'}]
       },
       tracksArray: []
     }
+  }
+  componentWillReceiveProps(nextProps) {
+    this.setState({selectedArtists: nextProps.selectedArtists})
   }
   componentWillMount(){
     let artistName = this.props.event.artists[0]
@@ -34,14 +38,30 @@ class ArtistTile extends React.Component {
   }
 
   checkArtist(artist) {
-    this.props.selectedArtists.forEach(selArtist => {
-      if (selArtist.name == artist) return true
+    this.state.selectedArtists.find(selArtist => {
+      if (selArtist.name == artist) return "orangeborder"
     })
-    return false
-    else return "orangeborder"
+    return 'noborder'
+  }
+
+  isArtistSelected(artist) {
+    return this.state.selectedArtists.find(selArtist => {
+      return selArtist.name == artist
+    })
   }
 
   handleArtistClick(artist) {
+    let boolean = this.isArtistSelected(artist)
+    if (boolean) {
+      console.log("I am to be deleted", artist);
+      this.deleteArtistAndTracks(artist)
+    } else {
+      console.log("I am to be added", artist);
+      this.selectArtistAndTracks(artist)
+    }
+  }
+
+  selectArtistAndTracks(artist) {
     // this.checkArtist(artist)
     getTopTracks(this.state.artist.id)
       .then((tracks) => {
@@ -52,10 +72,16 @@ class ArtistTile extends React.Component {
         }
       })
       .then(tracksArray => {
-        console.log({tracksArray});
+        console.log("adding artist and tracks");
         this.props.dispatch(addArtist(artist, tracksArray))
       })
   }
+
+  deleteArtistAndTracks(artist) {
+    console.log("delete ", artist);
+    this.props.dispatch(deleteArtist(artist))
+  }
+
 
   handleInfoClick=(event)=>{
     window.open(event.concertUrl)
@@ -80,8 +106,8 @@ class ArtistTile extends React.Component {
 
 const mapState2Props = (state) => {
   return {
-    selectedTracks: state.playlist.tracks,
     selectedArtists: state.artists,
+    selectedTracks: state.playlist.tracks,
     topTracks: state.playlist.topTracks
   }
 }

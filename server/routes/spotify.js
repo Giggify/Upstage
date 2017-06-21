@@ -112,6 +112,7 @@ router.post('/users/createplaylist', (req,res) => {
   .set('Accept', 'application/json')
   .end((err,result) => {
     if(err) {
+      console.log(err);
       res.send(err)
     }
     else {
@@ -124,6 +125,7 @@ router.post('/users/createplaylist', (req,res) => {
         .set('Accept', 'application/json')
         .end((err,result) => {
           if(err) {
+            console.log(err);
             res.send(err);
           }
           else {

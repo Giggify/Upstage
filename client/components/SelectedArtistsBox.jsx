@@ -5,7 +5,7 @@ import Drawer from 'material-ui/Drawer';
 import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import {toggleArtist, createPlaylist, addTracksToPlaylist} from '../actions/playlist'
+import {toggleArtist, createPlaylist, addTracksToPlaylist, deleteArtist} from '../actions/playlist'
 
 import {getTopTracks} from '../api'
 
@@ -15,7 +15,8 @@ class SelectedArtistsBox extends React.Component{
   constructor(props){
     super(props)
     this.state = {
-      chipData:[]
+      artistNames: [],
+      selectedArtists: props.artists
     }
     this.styles = {
       chip:{
@@ -30,66 +31,82 @@ class SelectedArtistsBox extends React.Component{
     }
   }
 
-  handleRequestDelete = (key) => {
-    this.chipData = this.props.selectedArtists
-    const chipToDelete = this.chipData.map((chip)=>chip.key).indexOf(key)
-    this.chipData.splice(chipToDelete,1)
-    this.setState({chipData: this.chipData})
-    this.handleArtistClick(key)
+
+  handleRequestDelete (name) {
+    this.props.dispatch(deleteArtist(name))
   }
 
-   handleCreation = () => { //REFACTORED!!!!!!
-     console.log(this.state);
-       this.create()
+  // handleRequestDelete = (key) => {
+  //   this.chipData = this.props.realArtists
+  //   const chipToDelete = this.chipData.map((chip)=>chip.key).indexOf(key)
+  //   this.chipData.splice(chipToDelete,1)
+  //   this.setState({chipData: this.chipData})
+  //   this.handleArtistClick(key)
+  // }
+
+  //  handleCreation = () => { //REFACTORED!!!!!!
+  //    console.log(this.state);
+  //      this.create()
+  //  }
+
+
+   //
+  //  filterTopTracks(artist) {
+  //    let topTracksList = [...props.topTracks]
+  //    return topTracksList.filter((track) => track[artist] == artist)
+  //  }
+
+   createPlaylist() {
+    //  console.log(this.state.selectedArti);
+     this.props.dispatch(createPlaylist(this.assemblePlaylist(this.state.selectedArtists)))
    }
 
-   handleArtistClick(artist) {
-     console.log(filterTopTracks(artist));
-     console.log("^ this is the array");
-     this.checkArtist(artist)
-     toggleArtist(artist, filterTopTracks(artist), this.props.selectedArtists, this.props.selectedTracks, this.props.dispatch)
+   assemblePlaylist(artists) {
+     let playlist = []
+     artists.forEach(artist => playlist = playlist.concat(artist.tracks))
+     return playlist
    }
 
-   filterTopTracks(artist) {
-     let topTracksList = [...props.topTracks]
-     return topTracksList.filter((track) => track[artist] == artist)
-   }
-
-   create() {
-     console.log(this.state.artist)
-     this.props.dispatch(createPlaylist(this.props.selectedTracks))
-   }
-
-   trimArtistName = (artistName) => {
+   trimArtistName (artistName) {
      if(artistName.length > 16) {
        return (artistName.slice(0, 12) + '...')
      }
      return artistName
    }
-   handleClose = () => this.setState({open: false});
 
-  renderChip(data){
+   handleClose () {
+     return this.setState({open: false})
+   }
+
+  renderChip(artist){
     return(
       <Chip
-        key={data.key}
-        onRequestDelete={()=> this.handleRequestDelete(data.key)}
+        key={artist.key}
+        onRequestDelete={()=> this.handleRequestDelete(artist.name)}
         backgroundColor="#FF6900"
         style={this.styles.chip}>
-        {this.trimArtistName(data.label)}
+        {this.trimArtistName(artist.name)}
       </Chip>
     )
   }
+  //
+  // componentWillReceiveProps(nextprops){
+  //   let artists = nextprops.artists.map((artist,index)=>{
+  //     return(
+  //       {key: index, label: artist}
+  //     )
+  //   })
+  //   this.setState({
+  //     chipData:artists,
+  //     open: true
+  //   })
+  // }
 
-  componentWillReceiveProps(nextprops){
-    let artists = nextprops.artists.map((artist,index)=>{
-      return(
-        {key: index, label: artist}
-      )
+  componentWillReceiveProps(nextProps) {
+    let artistNames = nextProps.artists.map((artist, key) => {
+      return {key, name: artist.name}
     })
-    this.setState({
-      chipData:artists,
-      open: true
-    })
+    this.setState({selectedArtists: nextProps.artists, artistNames, open:true})
   }
 
   render(){
@@ -103,27 +120,23 @@ class SelectedArtistsBox extends React.Component{
         onRequestChange={(open) => this.setState({open})}
         >
        <div style={this.styles.wrapper}>
-          {this.state.chipData.map(this.renderChip, this)}
+          {this.state.artistNames.map(this.renderChip, this)}
        </div>
        <RaisedButton
-                   label="Create"
-                   onClick={this.handleCreation}
+         label="Create"
+         onClick={(e) => this.createPlaylist()}
         />
       </Drawer>
       </div>
     </MuiThemeProvider>
     )
   }
+
 }
 
 const mapState2Props = (state) => {
-    console.log(state.artists)
   return {
-    realArtists: state.artists,
-    tracks: state.playlist.tracks,
-    artists: state.playlist.artists,
-    topTracks: state.playlist.topTracks,
-    selectedTracks: state.playlist.selectedTracks
+    artists: state.artists
   }
 }
 

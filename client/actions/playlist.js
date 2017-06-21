@@ -85,6 +85,7 @@ export function addArtist(name, tracks) {
 }
 
 export function deleteArtist (artistName) {
+  console.log({artistName});
   return {
     type: 'DELETE_ARTIST',
     artistName
@@ -98,6 +99,7 @@ export function createPlaylist (tracks) {
       .post(`/api/v1/spotify/users/createplaylist`)
       .send(format(tracks))
       .end((err, res)=>{
+        console.log({err, res});
         if (err) {
           dispatch(changeLoadState(false))
           dispatch((playlistError(err.message)))

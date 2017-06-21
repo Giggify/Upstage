@@ -3,9 +3,6 @@ const express = require('express')
 const passport = require('./passport')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
-const auth = require('./lib/auth')
-const api = require('./routes/index')
-const usersDb = './db/users'
 
 const skEventSearch = require('./routes/skEvents')
 const skGetAreaID = require('./routes/skMetro')

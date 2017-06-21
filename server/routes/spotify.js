@@ -78,7 +78,6 @@ router.post('/users/playlist', (req,res) => {
 })
 
 router.post('/users/createplaylist', (req,res) => {
-  console.log(req.body);
   request
   .post(`${url}/v1/users/${req.user.id}/playlists`)
   .send({
@@ -91,7 +90,6 @@ router.post('/users/createplaylist', (req,res) => {
   .set('Accept', 'application/json')
   .end((err,result) => {
     if(err) {
-      console.log(err);
       res.send(err)
     }
     else {
@@ -104,7 +102,6 @@ router.post('/users/createplaylist', (req,res) => {
         .set('Accept', 'application/json')
         .end((err,result2) => {
           if(err) {
-            console.log(err);
             res.send(err);
           }
           else {

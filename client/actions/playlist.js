@@ -31,7 +31,6 @@ export function clearPlaylistError () {
 }
 
 export function saveSelectedTracks(tracks) {
-  console.log(tracks);
   return {
     type: 'SAVE_SELECTED_TRACKS',
     tracks
@@ -59,25 +58,9 @@ export function saveSelection(updatedArtists, updatedTracks) {
   }
 }
 
-// export function toggleArtist(artist, artistTracks, selArtists, selTracks, dispatch) {
-//
-//
-//   if(selArtists.indexOf(artist) == -1) {
-//     mapTracksArray(artistTracks, selTracks, dispatch)
-//     let updatedArtists = [...selArtists, artist]
-//     dispatch(saveSelectedArtists(updatedArtists))
-//   }
-//   else {
-//     let updatedTracks = removeTrackIfExists(artistTracks,selTracks)
-//     let updatedArtists = selArtists.filter((name)=> name != artist)
-//     // dispatch(saveSelectedArtists(updatedArtists))
-//     // dispatch(saveSelectedTracks(updatedTracks))
-//     dispatch(saveSelection(updatedArtists, updatedTracks))
-//   }
-// }
+
 
 export function addArtist(name, tracks) {
-  console.log({name, tracks});
   return {
     type: 'SAVE_ARTIST',
     artist:{name, tracks}
@@ -85,7 +68,6 @@ export function addArtist(name, tracks) {
 }
 
 export function deleteArtist (artistName) {
-  console.log({artistName});
   return {
     type: 'DELETE_ARTIST',
     artistName
@@ -99,7 +81,6 @@ export function createPlaylist (tracks) {
       .post(`/api/v1/spotify/users/createplaylist`)
       .send(format(tracks))
       .end((err, res)=>{
-        console.log({err, res});
         if (err) {
           dispatch(changeLoadState(false))
           dispatch((playlistError(err.message)))

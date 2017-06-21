@@ -5,7 +5,6 @@ import Header from './Header'
 import LoginPage from './LoginPage'
 import ErrorLogin from './ErrorLogin'
 import Homepage from '../container/Homepage'
-import NavBar from './NavBar'
 import EventsList from './EventsList'
 import Footer from './Footer'
 

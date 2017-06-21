@@ -1,84 +1,56 @@
-body{
+html {
+  margin: 0px;
+  padding: 0px;
+}
+body {
   text-align: center;
   font-family: 'Roboto', sans-serif;
   background: url('https://s-media-cache-ak0.pinimg.com/originals/48/c4/72/48c472edf8672cf11b59d3a10481340b.jpg');
   color: #FF6900;
-}
-.search-bar{
-  background-color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width:80%;
-  margin-left: 30vh;
-}
-#or{
-  vertical-align: middle;
-}
-#search-text-field{
-  margin-left: 1em;
-  margin-top: -20px;
-}
-.search-bar input,button{
-  font-size:1em;
-  border-radius: 25px;
-  color:gray;
-  border-color: none;
-  border-style:none;
-  padding: 0.1em;
-  margin: 0.1em;
+  padding-top: 0px;
+  margin: 0px;
+  height: 100%;
+  width: 100%;
 }
 
-.search-bar button{
-  color:gray;
-  background-color:white;
-  border: 0.1em solid gray;
-}
-
-.search-results{
-  height:50%;
-  /* not working lol need to be modified */
-}
-
-#search-result-item{
-  font-size: 2em;
-  margin: 0.1em
-}
-
-#search-result-item:hover{
-  background-color: #BADA55;
-}
 .header {
-  margin-left: 100px;
-  margin-right: 100px;
-  margin-bottom: 0px;
   position: relative;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  width:100%;
 }
+
+.headerlogo{
+  margin-left: 12%;
+  margin-top: 1vh;
+}
+
 .login {
   border-radius: 8px;
-  background-color: #6AE368;
+  background-color: #1DB954;
   border: 4px solid black;
   width: 150px;
   height: 50px;
   margin: auto;
   padding: 5px;
-  font-family: 'Lato';
+  font-family: arial;
   font-size: 20px;
   display: flex;
+  margin-bottom: 2vh;
 }
 .spotifydetails {
   border-radius: 8px;
-  background-color: #6AE368;
+  background-color: #1DB954;
   border: 4px solid black;
   width: 250px;
   height: 50px;
-  margin-left: 150px;
   padding: 5px;
   font-family: 'Lato';
   font-size: 20px;
   display: flex;
+  margin-top: 1vh;
+  margin-right: 2vh;
 }
 .spotifylogo, .spotifyimage {
   padding-top: 2px;
@@ -118,20 +90,19 @@ body{
   font-size: 15pt;
   font-weight: 400;
   text-decoration: none;
+    font-family: Roboto Condensed;
 }
 
 .headerpanel {
   display: flex;
   direction: row;
 }
+.currentlocation {
+  padding-top: 6%;
+}
 .login a:hover {
   color: #fff;
   text-decoration: none;
-}
-.datepicker {
-  display: flex;
-  margin-left: 35%;
-  margin-right: 40%;
 }
 
 .createplaylistbtn {
@@ -152,7 +123,7 @@ body{
   font-family: 'Oleo Script';
 }
 .orangeborder {
-  border: 3px solid #FF6900;
+  border: 5px solid #FF6900;
 }
 .noborder {
   border: none;
@@ -191,4 +162,36 @@ body{
 
   /* Support for IE. */
   font-feature-settings: 'liga';
+}
+
+.Footer{
+  padding-left: 2%;
+  font-family: Roboto Condensed;
+  padding-right: 2%;
+  font-size: 3vh;
+  line-height: 150%;
+  width: 60%;
+  margin: auto;
+  margin-bottom: 4vh;
+  color: #FF6900;
+}
+
+.songkicklogo{
+  width: 15%;
+  margin: auto;
+  padding-right: 3vh;
+}
+
+.spotifylogo2{
+  width: 15%;
+  margin: auto;
+}
+
+.logo-main{
+  margin-top: 4vh;
+}
+
+.drawer{
+  background-color: black;
+  color: black;
 }

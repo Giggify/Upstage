@@ -61,36 +61,6 @@ router.use(
 
 // These routes are protected
 
-router.post('/users/playlist'), (req,res) => {
-  request
-    .post(`${url}/v1/users/7g8xB3sDX6uMvXG0wlIFCE/playlist`)
-    .send({
-      "name": "New Upstage Playlist",
-      "public": true,
-      "collaborative": false,
-      "description": "Top tracks from artists performing near you"
-    })
-    .set('Authorization', req.user.accessToken)
-    .set('Accept', 'application/json')
-    .end((err,result) => {
-      if(err) {
-        alert('Oops! Playlist creation failed.')
-      }
-      else {
-        res.send(result.body)
-      }
-    })
-}
-
-router.use(
-  verifyJwt({
-    getToken: auth.getToken,
-    secret: auth.getSecret
-  }),
-  auth.handleError
-)
-
-// These routes are protected
 router.post('/users/playlist', (req,res) => {
   request
   .post(`${url}/v1/users/${req.user.id}/playlists`)
@@ -99,14 +69,52 @@ router.post('/users/playlist', (req,res) => {
   .set('Accept', 'application/json')
   .end((err,result) => {
     if(err) {
-      console.log(err)
+      res.send(err)
     }
     else {
-      console.log(result.body.id)
       res.status(201).send(result.body)
     }
   })
 })
+
+router.post('/users/createplaylist', (req,res) => {
+  console.log(req.body);
+  request
+  .post(`${url}/v1/users/${req.user.id}/playlists`)
+  .send({
+    "name": "Upstage Playlist",
+    "public": true,
+    "collaborative": false,
+    "description": "Top tracks from artists performing near you"
+  })
+  .set('Authorization',  `Bearer ${req.user.accessToken}`)
+  .set('Accept', 'application/json')
+  .end((err,result) => {
+    if(err) {
+      console.log(err);
+      res.send(err)
+    }
+    else {
+      request
+        .post(`${url}/v1/users/${req.user.id}/playlists/${result.body.id}/tracks`)
+        .send({
+          "uris": req.body
+        })
+        .set('Authorization', `Bearer ${req.user.accessToken}`)
+        .set('Accept', 'application/json')
+        .end((err,result2) => {
+          if(err) {
+            console.log(err);
+            res.send(err);
+          }
+          else {
+            res.status(201).send(result.body.id)
+          }
+        })
+    }
+  })
+})
+
 
 
 router.post('/users/playlist/:playlist_id/tracks', (req,res) => {
@@ -119,7 +127,7 @@ router.post('/users/playlist/:playlist_id/tracks', (req,res) => {
     .set('Accept', 'application/json')
     .end((err,result) => {
       if(err) {
-        console.log(err);
+        res.send(err);
       }
       else {
         res.status(201).send(req.user.id)
@@ -135,5 +143,4 @@ router.get('/me', (req,res) => {
       res.status(200).json(userDetails)
     })
 
-
-module.exports = router
+  module.exports = router

@@ -3,8 +3,10 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MapsPlace from 'material-ui/svg-icons/maps/place';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {connect} from 'react-redux'
+
+import{getMuiTheme, MuiThemeProvider} from 'material-ui/styles/'
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 
 import {saveLocationId, saveLocationName} from '../actions/users'
 
@@ -37,15 +39,14 @@ class PopularPlaces extends React.Component{
 
   handleChange=(event,value)=>{
     this.setState({showCity:`${value.name.name}`})
-    console.log(value.name)
     this.props.dispatch(saveLocationId(value.id))
     this.props.dispatch(saveLocationName(value.name))
   }
   render(){
     return(
-      <div>
-        {this.state.showCity? `${this.state.showCity}` : `${"Choose a popular city"}`  }
-      <MuiThemeProvider>
+      <div id='popular-city'>
+        <p>{this.state.showCity? `${this.state.showCity}` : `${"Choose a popular city"}`  }</p>
+      <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
       <IconMenu
         iconButtonElement={<IconButton><MapsPlace /></IconButton>}
         anchorOrigin={{horizontal: 'left', vertical: 'top'}}

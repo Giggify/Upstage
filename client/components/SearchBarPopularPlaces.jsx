@@ -39,7 +39,6 @@ class PopularPlaces extends React.Component{
 
   handleChange=(event,value)=>{
     this.setState({showCity:`${value.name.name}`})
-    console.log(value.name)
     this.props.dispatch(saveLocationId(value.id))
     this.props.dispatch(saveLocationName(value.name))
   }

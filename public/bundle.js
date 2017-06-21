@@ -29091,7 +29091,6 @@ var PopularPlaces = function (_React$Component) {
 
     _this.handleChange = function (event, value) {
       _this.setState({ showCity: '' + value.name.name });
-      console.log(value.name);
       _this.props.dispatch((0, _users.saveLocationId)(value.id));
       _this.props.dispatch((0, _users.saveLocationName)(value.name));
     };
@@ -29198,6 +29197,13 @@ var SelectedArtistsBox = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (SelectedArtistsBox.__proto__ || Object.getPrototypeOf(SelectedArtistsBox)).call(this, props));
 
+    _this.trimArtistName = function (artistName) {
+      if (artistName.length > 16) {
+        return artistName.slice(0, 12) + '...';
+      }
+      return artistName;
+    };
+
     _this.handleRequestDelete = function (key) {
       _this.chipData = _this.state.chipData;
       var chipToDelete = _this.chipData.map(function (chip) {
@@ -29219,7 +29225,8 @@ var SelectedArtistsBox = function (_React$Component) {
     };
 
     _this.state = {
-      chipData: []
+      chipData: [],
+      open: false
     };
     _this.styles = {
       chip: {

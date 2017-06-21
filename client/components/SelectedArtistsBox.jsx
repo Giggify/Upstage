@@ -30,6 +30,13 @@ class SelectedArtistsBox extends React.Component{
     }
   }
 
+  trimArtistName = (artistName) => {
+     if(artistName.length > 16) {
+       return (artistName.slice(0, 12) + '...')
+     }
+     return artistName
+   }
+
   handleRequestDelete = (key) => {
     this.chipData = this.state.chipData
     const chipToDelete = this.chipData.map((chip)=>chip.key).indexOf(key)
@@ -53,7 +60,7 @@ class SelectedArtistsBox extends React.Component{
         onRequestDelete={()=> this.handleRequestDelete(data.key)}
         backgroundColor="#FF6900"
         style={this.styles.chip}>
-        {data.label}
+         {this.trimArtistName(data.label)}
       </Chip>
     )
   }

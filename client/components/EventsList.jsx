@@ -122,12 +122,14 @@ class EventsList extends React.Component {
     return (
       <div className='Events-list-page'>
         <h1 className="currentlocation">Current Location: {this.props.match.params.name}</h1>
-        { this.state.loadingPlaylist ?
-          <Playlist handlePlaylist={this.handlePlaylistCreation.bind(this)} show={this.state.show} user={this.state.user} loading={this.state.loadingPlaylist} playlist={this.state.playlistID}/> : null
-        }
-        {console.log(this.state.loadingPlaylist)}
+        <Playlist
+          user={this.state.user}
+          loading={this.state.loadingPlaylist}
+          playlist={this.state.playlistID}
+          tracks={this.state.selectedTracks}
+        />
       <DatePicker />
-        <SelectedArtistsBox handlePlaylist={this.handlePlaylistCreation.bind(this)} artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
+      <SelectedArtistsBox/>
         <div style={styles.root}>
          <MuiThemeProvider>
           <GridList

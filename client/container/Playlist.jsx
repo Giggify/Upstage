@@ -5,25 +5,66 @@ import ToggleDisplay from 'react-toggle-display'
 import Loading from 'react-loading'
 
 class Playlist extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      playlistID: props.playlistID,
+      playlistLoading: props.playlistLoading,
+      isShowingModal: true
+    }
+  }
+  componentWillReceiveProps({playlistLoading, playlistID}) {
+    if (playlistID != this.state.playlistID) {
+      this.setState({isShowingModal: true})
+    }
+    this.setState({playlistLoading, playlistID})
+  }
 
- constructor(props) {
-   super(props)
-     this.state = {
-       show: props.show,
-       loading: props.loading
-   }
- }
+  closeModal = () => this.setState({isShowingModal: false})
 
 
  render() {
-   return(
-     this.props.loading ? <div className="Playlist">
-         <p>Creating Playlist....It might take a while :P</p>
-     </div> : <div className="Playlist">
-       <iframe src={`https://open.spotify.com/embed/user/${this.props.user}/playlist/${this.props.playlist}`} width="300" height="380" frameBorder="0" allowTransparency="true"></iframe>
-     </div>
-   )
-  }
+   if(!this.state.playlistLoading && !this.state.playlistID) {
+     return (
+       <div className="Playlist">
+
+       </div>
+     )
+   } else if(this.state.playlistLoading && !this.state.playlistID) {
+     return (
+       <div className="Playlist">
+          <Loading type='bars' color='#ff6900' height='667' width='500'/>
+       </div>
+     )
+   } else if(!this.state.playlistLoading && this.state.playlistID) {
+     return (
+       <div className="Playlist">
+         <button className="Create-Playlist"onClick={this.create}>Create Playlist</button>
+             <Modal
+               show={this.state.isShowingModal}
+               onClose={() => this.closeModal.bind(this)}
+               style={{width: "100%"}}
+               containerStyle={{background: 'none'}}
+               closeOnOuterClick={true}
+               >
+               <div style={{width: '100%'}} className="inner-modal">
+                 <p style={{width: '100%', marginLeft: '25vh', fontSize: '25px'}} onClick={() => this.closeModal()} >&#10007;</p>
+                 <iframe src={`https://open.spotify.com/embed/user/${this.props.user}/playlist/${this.props.playlistID}`} width="380" height="450" frameborder="0" allowtransparency="false"></iframe>
+               </div>
+             </Modal>
+       </div>
+     )
+   }
+ }
 }
 
-export default Playlist
+const mapStateToProps  = (state)  => {
+  console.log(state)
+  return {
+    playlistLoading: state.playlist.playlistLoading,
+    error: state.error,
+    playlistID: state.playlist.playlistID,
+    user: state.users.user
+  }
+}
+export default connect(mapStateToProps)(Playlist)

@@ -8,14 +8,17 @@ import {green700} from 'material-ui/styles/colors';
 
 import Drawer from 'material-ui/Drawer';
 import RaisedButton from 'material-ui/RaisedButton';
+import {toggleArtist, createPlaylist, addTracksToPlaylist, deleteArtist} from '../actions/playlist'
+import {getTopTracks} from '../api'
+import {connect} from 'react-redux'
 
 class SelectedArtistsBox extends React.Component{
 
   constructor(props){
     super(props)
     this.state = {
-      chipData:[],
-      open:false
+      artistNames: [],
+      selectedArtists: props.artists
     }
     this.styles = {
       chip:{
@@ -30,51 +33,82 @@ class SelectedArtistsBox extends React.Component{
     }
   }
 
-  trimArtistName = (artistName) => {
+
+  handleRequestDelete (name) {
+    this.props.dispatch(deleteArtist(name))
+  }
+
+  // handleRequestDelete = (key) => {
+  //   this.chipData = this.props.realArtists
+  //   const chipToDelete = this.chipData.map((chip)=>chip.key).indexOf(key)
+  //   this.chipData.splice(chipToDelete,1)
+  //   this.setState({chipData: this.chipData})
+  //   this.handleArtistClick(key)
+  // }
+
+  //  handleCreation = () => { //REFACTORED!!!!!!
+  //    console.log(this.state);
+  //      this.create()
+  //  }
+
+
+   //
+  //  filterTopTracks(artist) {
+  //    let topTracksList = [...props.topTracks]
+  //    return topTracksList.filter((track) => track[artist] == artist)
+  //  }
+
+   createPlaylist() {
+    //  console.log(this.state.selectedArti);
+     this.props.dispatch(createPlaylist(this.assemblePlaylist(this.state.selectedArtists)))
+   }
+
+   assemblePlaylist(artists) {
+     let playlist = []
+     artists.forEach(artist => playlist = playlist.concat(artist.tracks))
+     return playlist
+   }
+
+   trimArtistName (artistName) {
      if(artistName.length > 16) {
        return (artistName.slice(0, 12) + '...')
      }
      return artistName
    }
 
-  handleRequestDelete = (key) => {
-    this.chipData = this.state.chipData
-    const chipToDelete = this.chipData.map((chip)=>chip.key).indexOf(key)
-    this.chipData.splice(chipToDelete,1)
-    this.setState({chipData: this.chipData})
-    this.props.deleteArtist(key)
-  }
+   handleClose () {
+     return this.setState({open: false})
+   }
 
-  handleToggle = () => {
-       console.log(this.props)
-       this.props.handlePlaylist()
-       this.setState({open: !this.state.open});
-  }
-
-   handleClose = () => this.setState({open: false});
-
-  renderChip(data){
+  renderChip(artist){
     return(
       <Chip
-        key={data.key}
-        onRequestDelete={()=> this.handleRequestDelete(data.key)}
+        key={artist.key}
+        onRequestDelete={()=> this.handleRequestDelete(artist.name)}
         backgroundColor="#FF6900"
         style={this.styles.chip}>
-         {this.trimArtistName(data.label)}
+        {this.trimArtistName(artist.name)}
       </Chip>
     )
   }
+  //
+  // componentWillReceiveProps(nextprops){
+  //   let artists = nextprops.artists.map((artist,index)=>{
+  //     return(
+  //       {key: index, label: artist}
+  //     )
+  //   })
+  //   this.setState({
+  //     chipData:artists,
+  //     open: true
+  //   })
+  // }
 
-  componentWillReceiveProps(nextprops){
-    let artists = nextprops.artists.map((artist,index)=>{
-      return(
-        {key: index, label: artist}
-      )
+  componentWillReceiveProps(nextProps) {
+    let artistNames = nextProps.artists.map((artist, key) => {
+      return {key, name: artist.name}
     })
-    this.setState({
-      chipData:artists,
-      open: true
-    })
+    this.setState({selectedArtists: nextProps.artists, artistNames, open:true})
   }
 
   render(){
@@ -88,13 +122,13 @@ class SelectedArtistsBox extends React.Component{
           onRequestChange={(open) => this.setState({open})}
           >
        <div style={this.styles.wrapper}>
-          {this.state.chipData.map(this.renderChip, this)}
+          {this.state.artistNames.map(this.renderChip, this)}
        </div>
        <div id='create-button'>
        <RaisedButton
-                   label="Create"
-                   onClick={this.handleToggle}
-                   backgroundColor={green700}
+         label="Create"
+         backgroundColor={green700}
+         onClick={(e) => this.createPlaylist()}
         />
       </div>
       </Drawer>
@@ -102,5 +136,13 @@ class SelectedArtistsBox extends React.Component{
     </MuiThemeProvider>
     )
   }
+
 }
-export default SelectedArtistsBox
+
+const mapState2Props = (state) => {
+  return {
+    artists: state.artists
+  }
+}
+
+export default connect(mapState2Props)(SelectedArtistsBox)

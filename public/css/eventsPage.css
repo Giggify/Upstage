@@ -18,3 +18,10 @@
 #create-button{
   margin-top: 2em;
 }
+
+.Loading{
+  position: absolute;
+  margin-left: 36vw;
+  z-index: 2;
+
+}

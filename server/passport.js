@@ -18,7 +18,6 @@ module.exports = function(app) {
            users.getById(profile.id, connection) //find or create
            .then(function(user){
                 if (user) {
-
                     users.updateUserTokens(profile.id, accessToken, refreshToken, connection)
                         .then(function(res) {
                             user.accessToken = accessToken

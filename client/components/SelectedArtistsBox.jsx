@@ -5,11 +5,9 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import {connect} from 'react-redux'
+
 import Drawer from 'material-ui/Drawer';
 import RaisedButton from 'material-ui/RaisedButton';
-
-import {toggleArtist, createPlaylist, addTracksToPlaylist} from '../actions/playlist'
 
 class SelectedArtistsBox extends React.Component{
 
@@ -32,40 +30,19 @@ class SelectedArtistsBox extends React.Component{
   }
 
   handleRequestDelete = (key) => {
-    this.chipData = this.props.selectedArtists
+    this.chipData = this.state.chipData
     const chipToDelete = this.chipData.map((chip)=>chip.key).indexOf(key)
     this.chipData.splice(chipToDelete,1)
     this.setState({chipData: this.chipData})
-    this.handleArtistClick(key)
+    this.props.deleteArtist(key)
   }
 
-   handleCreation = () => { //REFACTORED!!!!!!
-       this.create()
-   }
+  handleToggle = () => {
+       console.log(this.props)
+       this.props.handlePlaylist()
+       this.setState({open: !this.state.open});
+  }
 
-   handleArtistClick(artist) {
-     console.log(filterTopTracks(artist));
-     console.log("^ this is the array");
-     this.checkArtist(artist)
-     toggleArtist(artist, filterTopTracks(artist), this.props.selectedArtists, this.props.selectedTracks, this.props.dispatch)
-   }
-
-   filterTopTracks(artist) {
-     let topTracksList = [...props.topTracks]
-     return topTracksList.filter((track) => track[artist] == artist)
-   }
-
-   create() {
-     const tracks = this.props.selectedTracks
-     this.props.dispatch(createPlaylist(this.props.selectedTracks))
-   }
-
-   trimArtistName = (artistName) => {
-     if(artistName.length > 16) {
-       return (artistName.slice(0, 12) + '...')
-     }
-     return artistName
-   }
    handleClose = () => this.setState({open: false});
 
   renderChip(data){
@@ -107,7 +84,7 @@ class SelectedArtistsBox extends React.Component{
        </div>
        <RaisedButton
                    label="Create"
-                   onClick={this.handleCreation}
+                   onClick={this.handleToggle}
         />
       </Drawer>
       </div>
@@ -115,13 +92,4 @@ class SelectedArtistsBox extends React.Component{
     )
   }
 }
-
-const mapState2Props = (state)=>{
-  return {
-    tracks: state.playlist.tracks,
-    artists: state.playlist.artists,
-    topTracks: state.playlist.topTracks
-  }
-}
-
-export default connect(mapState2Props)(SelectedArtistsBox)
+export default SelectedArtistsBox

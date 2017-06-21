@@ -52,21 +52,79 @@ class EventsList extends React.Component {
     )
   }
 
+  handlePlaylistCreation() {
+    this.setState({loadingPlaylist: true})
+    createPlaylist()
+      .then((result) => {
+        console.log(result);
+      this.setState({playlistID: result.id})
+      let tracklist = this.state.selectedTracks
+      let apiTracklist = tracklist.map((track) =>
+      `spotify:track:${track}`)
+      addTrackToPlaylist(apiTracklist,this.state.playlistID)
+      .then((userid)=> {
+      this.setState({show: !this.state.show, loadingPlaylist: false, user: userid});
+      })
+    })
+  }
+
+  handleClick(e, artist, tracksArray) {
+    e.preventDefault()
+    let selArtists= this.state.selectedArtists
+      if(selArtists.indexOf(artist) == -1) {
+        this.mapArrayToState(tracksArray)
+        this.setState({selectedArtists: [...selArtists,artist]})
+      }
+      else {
+        this.setState({
+          selectedTracks: this.removeTrackIfExists(tracksArray, [...this.state.selectedTracks]),
+          selectedArtists: [...selArtists].filter((name)=> name != artist)
+        })
+      }
+    }
+
+    mapArrayToState(tracksArray) {
+      let selTracks = [...this.state.selectedTracks]
+      tracksArray.forEach((track) => selTracks.push(track))
+      this.setState({selectedTracks: selTracks})
+    }
+
+    removeTrackIfExists(tracksArray, stateTracksArray) {
+      return stateTracksArray.filter((track) => {
+        return tracksArray.indexOf(track) == -1
+      })
+    }
+
+  checkArtistSelected(artist){
+    if (this.state.selectedArtists.indexOf(artist) == -1) return "noborder"
+    else return "orangeborder"
+
+  }
+
+  handleDeleteFromBox(artistIndex){
+    let artistsInBox=[...this.state.selectedArtists]
+    artistsInBox.splice(artistIndex,1)
+    this.setState({selectedArtists: artistsInBox})
+  }
+
+  expandInfo(event){
+    this.setState({eventInBox:event})
+    this.state.showInfo ? this.setState({
+    showInfo:false
+    }) : this.setState({
+    showInfo:true
+    })
+  }
+
     render() {
       let artists = this.props.artists || []
       let events = this.state.events || []
     return (
       <div className='Events-list-page'>
-        {console.log(this.state.events)}
         <h1 className="currentlocation">Current Location: {this.props.match.params.name}</h1>
-        <Playlist
-          user={this.state.user}
-          loading={this.state.loadingPlaylist}
-          playlist={this.state.playlistID}
-          tracks={this.state.selectedTracks}
-        />
+         <Playlist handlePlaylist={this.handlePlaylistCreation.bind(this)} show={this.state.show} user={this.state.user} loading={this.state.loadingPlaylist} playlist={this.state.playlistID}/>
         <DatePicker />
-        <SelectedArtistsBox/>
+        <SelectedArtistsBox handlePlaylist={this.handlePlaylistCreation.bind(this)} artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
         <div style={styles.root}>
          <MuiThemeProvider>
           <GridList
@@ -77,7 +135,8 @@ class EventsList extends React.Component {
           >
             <Subheader></Subheader>
             {events.map((event, i) => (
-              <ArtistTile event={event} key={i} i={i} />// the i={i} is cause react doesn't like you grabbing key from props :(
+              <ArtistTile event={event} key={i} i={i} checkArtist={this.checkArtistSelected.bind(this)}  handleClick={this.handleClick.bind(this)}
+              expandInfo={this.expandInfo.bind(this)}/>// the i={i} is cause react doesn't like you grabbing key from props :(
             ))}
           </GridList>
         </MuiThemeProvider>

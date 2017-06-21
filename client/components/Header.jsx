@@ -1,7 +1,5 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {getUserInfo} from '../api'
-import {saveUserDetails} from '../actions/users'
 
 class Header extends React.Component {
   constructor(props) {
@@ -19,7 +17,7 @@ class Header extends React.Component {
     else {
       getUserInfo(cookie)
       .then((result) => {
-        this.props.dispatch(saveUserDetails(result.id,result.image)) //spotify calls it id but it is the username so we change it to user.
+        this.setState({user: result.id, image: result.image})
       })
     }
   }
@@ -28,8 +26,8 @@ class Header extends React.Component {
       <div className='header'>
         <img className="headerlogo" src="./images/TITLE.png" width="20%" height="3%"/>
         <div className="spotifydetails">
-          <img className='spotifyimage' src={this.props.image}/>
-          <a className='spotifyusername' href="/auth/logout">{this.props.user} </a>
+          <img className='spotifyimage' src={this.state.image}/>
+          <a className='spotifyusername' href="/auth/logout">{this.state.user} </a>
           <a href="/auth/logout"><img src="./images/logout.png" className='spotifylogout'/></a>
         </div>
       </div>
@@ -37,10 +35,4 @@ class Header extends React.Component {
   }
 }
 
-const mapStateToProps  = (state)  => {
-  return {
-    image: state.users.image,
-    user: state.users.user
-  }
-}
-export default connect(mapStateToProps)(Header)
+export default Header

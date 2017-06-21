@@ -14,7 +14,8 @@ class SelectedArtistsBox extends React.Component{
   constructor(props){
     super(props)
     this.state = {
-      chipData:[]
+      chipData:[],
+      open:false
     }
     this.styles = {
       chip:{
@@ -52,7 +53,7 @@ class SelectedArtistsBox extends React.Component{
         onRequestDelete={()=> this.handleRequestDelete(data.key)}
         backgroundColor="#FF6900"
         style={this.styles.chip}>
-        {this.trimArtistName(data.label)}
+        {data.label}
       </Chip>
     )
   }

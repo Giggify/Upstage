@@ -13,7 +13,7 @@ class Header extends React.Component {
   componentWillMount() {
     var cookie = document.cookie
     if (cookie.length < 1) {
-      window.location.assign('http://localhost:3000/#/login') 
+      window.location.assign('http://localhost:3000/#/login')
     }
     else {
       getUserInfo(cookie || null)
@@ -25,7 +25,7 @@ class Header extends React.Component {
   render() {
     return (
       <div className='header'>
-        <img src="./css/TITLE.png" width="8%" height="3%"/>
+        <img className="headerlogo" src="./images/TITLE.png" width="15%" height="3%"/>
         <div className="spotifydetails">
           <img className='spotifyimage' src={this.state.image}/>
           <a className='spotifyusername' href="/auth/logout">{this.state.user} </a>

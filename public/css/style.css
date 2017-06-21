@@ -8,7 +8,7 @@ body {
   background: url('https://s-media-cache-ak0.pinimg.com/originals/48/c4/72/48c472edf8672cf11b59d3a10481340b.jpg');
   color: #FF6900;
   padding-top: 0px;
-  margin-top: 0px;
+  margin: 0px;
   height: 100%;
   width: 100%;
 }
@@ -54,7 +54,7 @@ body {
 }
 
 #search-result-item:hover{
-  background-color: #32CD32;
+  background-color: #1DB954;
 }
 .header {
   margin-left: 100px;
@@ -63,22 +63,30 @@ body {
   position: relative;
   display: flex;
   flex-direction: row;
+  width:100%;
 }
+
+.headerlogo{
+  margin-left: 5%;
+}
+
 .login {
   border-radius: 8px;
-  background-color: #32CD32;
+  background-color: #1DB954;
   border: 4px solid black;
   width: 150px;
   height: 50px;
   margin: auto;
   padding: 5px;
+  margin-top: -9vh;
   font-family: 'Lato';
   font-size: 20px;
   display: flex;
+  margin-bottom: 2vh;
 }
 .spotifydetails {
   border-radius: 8px;
-  background-color: #32CD32;
+  background-color: #1DB954;
   border: 4px solid black;
   width: 250px;
   height: 50px;
@@ -127,12 +135,6 @@ body {
   font-size: 15pt;
   font-weight: 400;
   text-decoration: none;
-}
-.header {
-  background-color: rgba(45, 45, 45, 1);
-  margin: 0px;
-  padding: 10px;
-  width: 100%;
 }
 
 .headerpanel {
@@ -209,4 +211,29 @@ body {
 
   /* Support for IE. */
   font-feature-settings: 'liga';
+}
+
+.Footer{
+  padding-left: 2%;
+  font-family: Arial;
+  padding-right: 2%;
+  font-size: 2.8vh;
+  line-height: 150%;
+  width: 60%;
+  margin: auto;
+  margin-bottom: 4vh;
+}
+
+.songkicklogo{
+  width: 15%;
+  margin: auto;
+  padding-right: 3vh;
+}
+
+.spotifylogo2{
+  width: 15%;
+  margin: auto;
+}
+
+.logo-main{
 }

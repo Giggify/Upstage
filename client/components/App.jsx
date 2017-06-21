@@ -7,6 +7,8 @@ import ErrorLogin from './ErrorLogin'
 import Homepage from '../container/Homepage'
 import NavBar from './NavBar'
 import EventsList from './EventsList'
+import Footer from './Footer'
+
 
 import {getUserInfo} from '../api'
 import Drawer from './Drawer'
@@ -24,6 +26,7 @@ export default class App extends React.Component {
       <Router>
         <div className="app-container">
           <Route exact path='/' component={LoginPage} />
+          <Route exact path='/' component={Footer} />
           <Route exact path='/login' component={LoginPage} />
           <Route exact path='/login' component={ErrorLogin} />
           <Route exact path='/search' component={Header} />

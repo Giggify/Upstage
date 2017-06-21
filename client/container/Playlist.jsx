@@ -31,14 +31,13 @@ class Playlist extends React.Component {
      )
    } else if(this.state.playlistLoading && !this.state.playlistID) {
      return (
-       <div className="Playlist">
-          <Loading type='bars' color='#ff6900' height='667' width='500'/>
+       <div className="Loading">
+          <Loading type='bars' color='#ff6900' height='500' width='400'/>
        </div>
      )
    } else if(!this.state.playlistLoading && this.state.playlistID) {
      return (
        <div className="Playlist">
-         <button className="Create-Playlist"onClick={this.create}>Create Playlist</button>
              <Modal
                show={this.state.isShowingModal}
                onClose={() => this.closeModal.bind(this)}
@@ -47,7 +46,7 @@ class Playlist extends React.Component {
                closeOnOuterClick={true}
                >
                <div style={{width: '100%'}} className="inner-modal">
-                 <p style={{width: '100%', marginLeft: '25vh', fontSize: '25px'}} onClick={() => this.closeModal()} >&#10007;</p>
+                 <p style={{width: '100%', marginLeft: '25vh', fontSize: '25px', color:'#ff6900'}} onClick={() => this.closeModal()} >&#10007;</p>
                  <iframe src={`https://open.spotify.com/embed/user/${this.props.user}/playlist/${this.props.playlistID}`} width="380" height="450" frameborder="0" allowtransparency="false"></iframe>
                </div>
              </Modal>

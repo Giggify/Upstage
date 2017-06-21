@@ -11,17 +11,17 @@ module.exports = function(app) {
   passport.use(new SpotifyStrategy({
       clientID: process.env.SPOTIFY_ID,
       clientSecret: process.env.SPOTIFY_SECRET,
-      callbackURL: 'http://localhost:3000/auth/callback',
+      callbackURL: process.env.SPOTIFY_CALLBACK,
     },
 
     function(accessToken, refreshToken, profile, done) {
            users.getById(profile.id, connection) //find or create
            .then(function(user){
                 if (user) {
-                    console.log("received Access Token")
-                    console.log(accessToken)
                     users.updateUserTokens(profile.id, accessToken, refreshToken, connection)
                         .then(function(res) {
+                            user.accessToken = accessToken
+                            user.refreshToken = refreshToken
                             return done(null, user)
                         })
                 } else {

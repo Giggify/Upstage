@@ -25,3 +25,11 @@ export function saveMaxDate(date){
     date:date
   }
 }
+
+export function saveUserDetails(user,image) {
+  return {
+    type:'SAVE_USER_DETAILS',
+    user: user,
+    image:image
+  }
+}

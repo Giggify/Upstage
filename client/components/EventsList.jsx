@@ -5,14 +5,12 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Subheader from 'material-ui/Subheader';
 import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 import DatePicker from './DatePicker'
-import Drawer from './Drawer'
+import Playlist from '../container/Playlist'
 
 import {fetchEvents} from '../actions/events'
 import {createPlaylist, addTrackToPlaylist} from '../api'
 import SelectedArtistsBox from './SelectedArtistsBox'
 import ArtistTile from './ArtistTile'
-import Playlist from '../container/Playlist'
-import PopInfo from './PopInfo'
 import {filterEventsbyDates} from '../utils'
 
 const styles = {
@@ -36,7 +34,7 @@ class EventsList extends React.Component {
       selectedTracks: [],
       playlistID: '',
       show: false,
-      loadingPlaylist: true,
+      loadingPlaylist: false,
       minDate:minDate,
       maxDate:maxDate,
       showInfo:false
@@ -119,16 +117,19 @@ class EventsList extends React.Component {
   }
 
     render() {
-      console.log(this.state.selectedTracks);
       let artists = this.props.artists || []
       let events = this.state.events || []
     return (
       <div className='Events-list-page'>
         <h1 className="currentlocation">Current Location: {this.props.match.params.name}</h1>
-        <Playlist handlePlaylist={this.handlePlaylistCreation.bind(this)} show={this.state.show} user={this.state.user} loading={this.state.loadingPlaylist} playlist={this.state.playlistID}/>
-        <DatePicker />
-          {this.state.showInfo && <PopInfo event={this.state.eventInBox}/>}
-        <SelectedArtistsBox handlePlaylist={this.handlePlaylistCreation.bind(this)} artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
+        <Playlist
+          user={this.state.user}
+          loading={this.state.loadingPlaylist}
+          playlist={this.state.playlistID}
+          tracks={this.state.selectedTracks}
+        />
+      <DatePicker />
+      <SelectedArtistsBox/>
         <div style={styles.root}>
          <MuiThemeProvider>
           <GridList
@@ -156,7 +157,6 @@ const mapState2Props = (state) => {
     events: state.events.events,
     minDate: state.users.minDate,
     maxDate: state.users.maxDate
-
   }
 }
 

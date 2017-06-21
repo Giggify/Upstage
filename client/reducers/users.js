@@ -24,6 +24,12 @@ function users (state = {}, action) {
         ...state,
         maxDate:action.date
       }
+    case 'SAVE_USER_DETAILS':
+      return{
+        ...state,
+        user: action.user,
+        image: action.image
+      }
     default:
       return state
   }

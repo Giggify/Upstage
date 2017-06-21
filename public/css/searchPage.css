@@ -16,8 +16,32 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
+      margin-left: 2em;
 }
 #search-button{
-  margin-top: -4vh;
-  margin-left: -14vh;
+  margin-left: 2em;
+}
+#search-button{
+  margin-top: -1em;
+  margin-left: -3em;
+}
+.search-results{
+  margin-top: -3em;
+  margin-left: -2em;
+}
+.select-dates{
+  margin-top: 3.5em;
+  color: #757575;
+  text-align: center;
+  margin-left: -8.5em;
+}
+#home-page-date{
+  margin-left: 6.5em;
+}
+.homepage .datepicker{
+  margin-left: -11em;
+}
+#go-button{
+  margin-left: -2em;
+  margin-top: 1em;
 }

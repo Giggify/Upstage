@@ -34,7 +34,7 @@ class EventsList extends React.Component {
       selectedTracks: [],
       playlistID: '',
       show: false,
-      loadingPlaylist: true,
+      loadingPlaylist: false,
       minDate:minDate,
       maxDate:maxDate,
       showInfo:false
@@ -123,7 +123,7 @@ class EventsList extends React.Component {
       <div className='Events-list-page'>
         <h1 className="currentlocation">Current Location: {this.props.match.params.name}</h1>
         { this.state.loadingPlaylist ?
-          <Playlist handlePlaylist={this.handlePlaylistCreation.bind(this)} show={this.state.show} user={this.state.user} loading={this.state.loadingPlaylist} playlist={this.state.playlistID}/> : <div>Loading yoooooo.....</div>
+          <Playlist handlePlaylist={this.handlePlaylistCreation.bind(this)} show={this.state.show} user={this.state.user} loading={this.state.loadingPlaylist} playlist={this.state.playlistID}/> : null
         }
         {console.log(this.state.loadingPlaylist)}
       <DatePicker />

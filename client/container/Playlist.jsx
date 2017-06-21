@@ -18,7 +18,7 @@ class Playlist extends React.Component {
  render() {
    return(
      this.props.loading ? <div className="Playlist">
-         <p>Creating Playlist: This is where we put that orange spinny wheel!</p>
+         <p>Creating Playlist....It might take a while :P</p>
      </div> : <div className="Playlist">
        <iframe src={`https://open.spotify.com/embed/user/${this.props.user}/playlist/${this.props.playlist}`} width="300" height="380" frameBorder="0" allowTransparency="true"></iframe>
      </div>

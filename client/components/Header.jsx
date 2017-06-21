@@ -26,7 +26,7 @@ class Header extends React.Component {
   render() {
     return (
       <div className='header'>
-        <img className="headerlogo" src="./images/TITLE.png" width="15%" height="3%"/>
+        <img className="headerlogo" src="./images/TITLE.png" width="20%" height="3%"/>
         <div className="spotifydetails">
           <img className='spotifyimage' src={this.props.image}/>
           <a className='spotifyusername' href="/auth/logout">{this.props.user} </a>

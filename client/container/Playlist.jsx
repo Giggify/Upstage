@@ -1,7 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Modal from 'simple-react-modal'
-import ToggleDisplay from 'react-toggle-display'
 import Loading from 'react-loading'
 
 class Playlist extends React.Component {

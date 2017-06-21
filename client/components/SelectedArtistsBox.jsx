@@ -1,43 +1,71 @@
 import React from 'react'
 import {Chip, Avatar} from 'material-ui'
-import Drawer from 'material-ui/Drawer';
-import RaisedButton from 'material-ui/RaisedButton';
+
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+import {connect} from 'react-redux'
+import Drawer from 'material-ui/Drawer';
+import RaisedButton from 'material-ui/RaisedButton';
+
+import {toggleArtist, createPlaylist, addTracksToPlaylist} from '../actions/playlist'
+
 class SelectedArtistsBox extends React.Component{
+
   constructor(props){
     super(props)
     this.state = {
-      chipData:[],
-      open: false
-
+      chipData:[]
     }
     this.styles = {
       chip:{
-        margin:4,
+        margin:4
+
       },
       wrapper: {
         display:'flex',
-        flexWrap:'wrap'
+        flexWrap:'wrap',
+        width: 50
       }
     }
   }
 
   handleRequestDelete = (key) => {
-    this.chipData = this.state.chipData
+    this.chipData = this.props.selectedArtists
     const chipToDelete = this.chipData.map((chip)=>chip.key).indexOf(key)
     this.chipData.splice(chipToDelete,1)
     this.setState({chipData: this.chipData})
-    this.props.deleteArtist(key)
+    this.handleArtistClick(key)
   }
 
-
-   handleToggle = () => {
-       console.log(this.props)
-       this.props.handlePlaylist()
-       this.setState({open: !this.state.open});
+   handleCreation = () => { //REFACTORED!!!!!!
+       this.create()
    }
 
+   handleArtistClick(artist) {
+     console.log(filterTopTracks(artist));
+     console.log("^ this is the array");
+     this.checkArtist(artist)
+     toggleArtist(artist, filterTopTracks(artist), this.props.selectedArtists, this.props.selectedTracks, this.props.dispatch)
+   }
+
+   filterTopTracks(artist) {
+     let topTracksList = [...props.topTracks]
+     return topTracksList.filter((track) => track[artist] == artist)
+   }
+
+   create() {
+     const tracks = this.props.selectedTracks
+     this.props.dispatch(createPlaylist(this.props.selectedTracks))
+   }
+
+   trimArtistName = (artistName) => {
+     if(artistName.length > 16) {
+       return (artistName.slice(0, 12) + '...')
+     }
+     return artistName
+   }
    handleClose = () => this.setState({open: false});
 
   renderChip(data){
@@ -45,9 +73,9 @@ class SelectedArtistsBox extends React.Component{
       <Chip
         key={data.key}
         onRequestDelete={()=> this.handleRequestDelete(data.key)}
+        backgroundColor="#FF6900"
         style={this.styles.chip}>
-        <Avatar src='http://www.freepngimg.com/thumb/kanye_west/1-2-kanye-west-png-hd-thumb.png' />
-        {data.label}
+        {this.trimArtistName(data.label)}
       </Chip>
     )
   }
@@ -66,21 +94,20 @@ class SelectedArtistsBox extends React.Component{
 
   render(){
     return(
-      <MuiThemeProvider>
-      <div>
-
-      <Drawer
-        docked={false}
-        width={200}
-        open={this.state.open}
-        onRequestChange={(open) => this.setState({open})}
-        >
+      <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+      <div className="drawer">
+        <Drawer
+          docked={true}
+          width={150}
+          open={this.state.open}
+          onRequestChange={(open) => this.setState({open})}
+          >
        <div style={this.styles.wrapper}>
           {this.state.chipData.map(this.renderChip, this)}
        </div>
        <RaisedButton
-                   label="Create Playlist"
-                   onClick={this.handleToggle}
+                   label="Create"
+                   onClick={this.handleCreation}
         />
       </Drawer>
       </div>
@@ -89,4 +116,12 @@ class SelectedArtistsBox extends React.Component{
   }
 }
 
-export default SelectedArtistsBox
+const mapState2Props = (state)=>{
+  return {
+    tracks: state.playlist.tracks,
+    artists: state.playlist.artists,
+    topTracks: state.playlist.topTracks
+  }
+}
+
+export default connect(mapState2Props)(SelectedArtistsBox)

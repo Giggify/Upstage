@@ -8,20 +8,21 @@ import Info from 'material-ui/svg-icons/action/info';
 import PlaylistAdd from 'material-ui/svg-icons/av/playlist-add';
 
 import {getArtist, getTopTracks} from '../api'
+import {toggleArtist, saveTopTracks} from '../actions/playlist'
 
 class ArtistTile extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      tracksArray: [],
       artist: {
         images: [{url: '/images/unknownartist.png'}]
       },
-      tracks: []
+      tracksArray: []
     }
   }
   componentWillMount(){
-    getArtist(this.props.event.artists[0])
+    let artistName = this.props.event.artists[0]
+    getArtist(artistName)
       .then((artist) => {
         if (artist) this.setState({artist})
       })
@@ -37,10 +38,21 @@ class ArtistTile extends React.Component {
                 }
               })
               .then(() => {
-                this.setState({tracksArray})
+                this.setState({tracksArray: tracksArray})
+                this.props.dispatch(saveTopTracks(artistName,tracksArray))
               })
         }
       })
+  }
+
+  checkArtist(artist) {
+    if (this.props.selectedArtists.indexOf(artist) == -1) return "noborder"
+    else return "orangeborder"
+  }
+
+  handleArtistClick(artist) {
+    this.checkArtist(artist)
+    toggleArtist(artist,this.props.topTracks, this.props.selectedArtists, this.props.selectedTracks, this.props.dispatch)
   }
 
   handleInfoClick=(event)=>{
@@ -49,7 +61,7 @@ class ArtistTile extends React.Component {
 
   render(){
     let event = this.props.event || []
-    let border = this.props.checkArtist(event.artists[0])
+    let border = this.checkArtist(event.artists[0])
     return (
       <GridTile
         className={border}
@@ -58,10 +70,18 @@ class ArtistTile extends React.Component {
         subtitle={<span><b>{event.date}</b></span>}
         actionIcon={<IconButton><Info color="white" onClick={(e)=>this.handleInfoClick(event)}/></IconButton>}
       >
-        <img src={this.state.artist.images[0].url || "/images/unknownartist.png"} onClick={(e)=>this.props.handleClick(e,event.artists[0],this.state.tracksArray)} />
+        <img src={this.state.artist.images[0].url} onClick={(e)=>this.handleArtistClick(event.artists[0])} />
       </GridTile>
     )
   }
 }
 
-export default ArtistTile
+const mapState2Props = (state) => {
+  return {
+    selectedTracks: state.playlist.tracks,
+    selectedArtists: state.playlist.artists,
+    topTracks: state.playlist.topTracks
+  }
+}
+
+export default connect(mapState2Props)(ArtistTile)

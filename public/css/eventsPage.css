@@ -1,0 +1,17 @@
+.Events-list-page {
+  color:white;
+  margin-top: 2em;
+}
+.Events-list-page h1{
+  font-size: 2em;
+  padding: 0;
+    font-family: Roboto Condensed;
+}
+.Events-list-page .datepicker{
+  display: flex;
+  margin-left: 28em;
+  margin-bottom: 2em;
+  justify-content: space-around;
+  width: 30%;
+  margin-top: -1em;
+}

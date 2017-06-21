@@ -58,7 +58,6 @@ export function createPlaylist() {
 
 export function addTrackToPlaylist(tracks, playlist_id) {
   return new Promise((resolve, reject) => {
-    console.log(tracks+" is tracks");
     request
       .post(`/api/v1/spotify/users/playlist/${playlist_id}/tracks`)
       .send(tracks)
@@ -70,19 +69,10 @@ export function addTrackToPlaylist(tracks, playlist_id) {
 
 export function getUserInfo(cookie) {
   return new Promise((resolve, reject) => {
-    if (cookie.length > 0) {
       request
       .get('/api/v1/spotify/me')
       .end((err, res) => {
         err ? reject(err) : resolve(res.body)
       })
-    }
-    else {
-      request
-        .get('/api/v1/spotify/me')
-        .end((err, res) => {
-          err ? reject(err) : resolve("No cookies")
-        })
-    }
   })
 }

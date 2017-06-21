@@ -147,5 +147,3 @@ let scope = nock('https://api.spotify.com')
         t.end()
       })
     })
-
-  test.todo('/me gets user id and image')

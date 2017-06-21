@@ -25,7 +25,6 @@ router.get('/auth/callback', session, auth.issueJwt)
 
 router.get('/auth/logout', (req, res) => {
   res.clearCookie('token', { path: '/' })
-  res.json({ message: 'User logged out.' })
   res.redirect('/')
 })
 

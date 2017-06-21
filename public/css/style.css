@@ -6,7 +6,7 @@ body {
   text-align: center;
   font-family: 'Roboto', sans-serif;
   background: url('https://s-media-cache-ak0.pinimg.com/originals/48/c4/72/48c472edf8672cf11b59d3a10481340b.jpg');
-  color: #FF6900;
+  color: #FF9800;
   padding-top: 0px;
   margin-top: 0px;
   height: 100%;
@@ -102,11 +102,6 @@ body {
 .login a:hover {
   color: #fff;
   text-decoration: none;
-}
-.datepicker {
-  display: flex;
-  margin-left: 35%;
-  margin-right: 40%;
 }
 
 .createplaylistbtn {

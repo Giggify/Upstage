@@ -78,7 +78,6 @@ body {
   height: 50px;
   margin: auto;
   padding: 5px;
-  margin-top: -9vh;
   font-family: 'Lato';
   font-size: 20px;
   display: flex;
@@ -236,4 +235,5 @@ body {
 }
 
 .logo-main{
+  margin-top: 4vh;
 }

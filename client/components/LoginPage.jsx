@@ -4,7 +4,7 @@ const Header = () => {
   return (
     <div className='loginpage'>
       <div className="logo-main">
-        <img src="./images/TITLE.png" width="45%"/>
+        <img src="./images/TITLE.png" width="55%"/>
       </div>
       <div className="login">
           <img className='spotifylogo' src='https://image.flaticon.com/icons/png/512/7/7709.png'/>

@@ -5,12 +5,12 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Subheader from 'material-ui/Subheader';
 import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 import DatePicker from './DatePicker'
+import Playlist from '../container/Playlist'
 
 import {fetchEvents} from '../actions/events'
 import {createPlaylist, addTrackToPlaylist} from '../api'
 import SelectedArtistsBox from './SelectedArtistsBox'
 import ArtistTile from './ArtistTile'
-import Playlist from '../container/Playlist'
 import {filterEventsbyDates} from '../utils'
 
 const styles = {
@@ -122,8 +122,11 @@ class EventsList extends React.Component {
     return (
       <div className='Events-list-page'>
         <h1 className="currentlocation">Current Location: {this.props.match.params.name}</h1>
-         <Playlist handlePlaylist={this.handlePlaylistCreation.bind(this)} show={this.state.show} user={this.state.user} loading={this.state.loadingPlaylist} playlist={this.state.playlistID}/>
-        <DatePicker />
+        { this.state.loadingPlaylist ?
+          <Playlist handlePlaylist={this.handlePlaylistCreation.bind(this)} show={this.state.show} user={this.state.user} loading={this.state.loadingPlaylist} playlist={this.state.playlistID}/> : <div>Loading yoooooo.....</div>
+        }
+        {console.log(this.state.loadingPlaylist)}
+      <DatePicker />
         <SelectedArtistsBox handlePlaylist={this.handlePlaylistCreation.bind(this)} artists={this.state.selectedArtists} deleteArtist={this.handleDeleteFromBox.bind(this)}/>
         <div style={styles.root}>
          <MuiThemeProvider>

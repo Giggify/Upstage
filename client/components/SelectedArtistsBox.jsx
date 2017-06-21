@@ -4,7 +4,7 @@ import {Chip, Avatar} from 'material-ui'
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
+import {green700} from 'material-ui/styles/colors';
 
 import Drawer from 'material-ui/Drawer';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -90,10 +90,13 @@ class SelectedArtistsBox extends React.Component{
        <div style={this.styles.wrapper}>
           {this.state.chipData.map(this.renderChip, this)}
        </div>
+       <div id='create-button'>
        <RaisedButton
                    label="Create"
                    onClick={this.handleToggle}
+                   backgroundColor={green700}
         />
+      </div>
       </Drawer>
       </div>
     </MuiThemeProvider>

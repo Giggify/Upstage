@@ -28433,6 +28433,10 @@ var _DatePicker = __webpack_require__(162);
 
 var _DatePicker2 = _interopRequireDefault(_DatePicker);
 
+var _Playlist = __webpack_require__(287);
+
+var _Playlist2 = _interopRequireDefault(_Playlist);
+
 var _events = __webpack_require__(275);
 
 var _api = __webpack_require__(79);
@@ -28444,10 +28448,6 @@ var _SelectedArtistsBox2 = _interopRequireDefault(_SelectedArtistsBox);
 var _ArtistTile = __webpack_require__(276);
 
 var _ArtistTile2 = _interopRequireDefault(_ArtistTile);
-
-var _Playlist = __webpack_require__(287);
-
-var _Playlist2 = _interopRequireDefault(_Playlist);
 
 var _utils = __webpack_require__(294);
 
@@ -28603,7 +28603,12 @@ var EventsList = function (_React$Component) {
           'Current Location: ',
           this.props.match.params.name
         ),
-        _react2.default.createElement(_Playlist2.default, { handlePlaylist: this.handlePlaylistCreation.bind(this), show: this.state.show, user: this.state.user, loading: this.state.loadingPlaylist, playlist: this.state.playlistID }),
+        this.state.loadingPlaylist ? _react2.default.createElement(_Playlist2.default, { handlePlaylist: this.handlePlaylistCreation.bind(this), show: this.state.show, user: this.state.user, loading: this.state.loadingPlaylist, playlist: this.state.playlistID }) : _react2.default.createElement(
+          'div',
+          null,
+          'Loading yoooooo.....'
+        ),
+        console.log(this.state.loadingPlaylist),
         _react2.default.createElement(_DatePicker2.default, null),
         _react2.default.createElement(_SelectedArtistsBox2.default, { handlePlaylist: this.handlePlaylistCreation.bind(this), artists: this.state.selectedArtists, deleteArtist: this.handleDeleteFromBox.bind(this) }),
         _react2.default.createElement(
@@ -29173,6 +29178,8 @@ var _MuiThemeProvider = __webpack_require__(88);
 
 var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
 
+var _colors = __webpack_require__(42);
+
 var _Drawer = __webpack_require__(200);
 
 var _Drawer2 = _interopRequireDefault(_Drawer);
@@ -29296,10 +29303,15 @@ var SelectedArtistsBox = function (_React$Component) {
               { style: this.styles.wrapper },
               this.state.chipData.map(this.renderChip, this)
             ),
-            _react2.default.createElement(_RaisedButton2.default, {
-              label: 'Create',
-              onClick: this.handleToggle
-            })
+            _react2.default.createElement(
+              'div',
+              { id: 'create-button' },
+              _react2.default.createElement(_RaisedButton2.default, {
+                label: 'Create',
+                onClick: this.handleToggle,
+                backgroundColor: _colors.green700
+              })
+            )
           )
         )
       );
@@ -29507,37 +29519,19 @@ var Playlist = function (_React$Component) {
   _createClass(Playlist, [{
     key: 'render',
     value: function render() {
-      var _this2 = this;
-
-      if (this.props.show && !this.props.loading) {
-        return _react2.default.createElement(
-          'div',
-          { className: 'Playlist' },
-          _react2.default.createElement('iframe', { src: 'https://open.spotify.com/embed/user/' + this.props.user + '/playlist/' + this.props.playlist, width: '300', height: '380', frameBorder: '0', allowTransparency: 'true' })
-        );
-      } else if (this.props.show && this.props.loading) {
-        return _react2.default.createElement(
-          'div',
-          { className: 'Playlist' },
-          _react2.default.createElement(
-            'p',
-            null,
-            'Creating Playlist: This is where we put that orange spinny wheel!'
-          )
-        );
-      } else if (!this.props.show) {
-        return _react2.default.createElement(
-          'div',
-          { className: 'Playlist' },
-          _react2.default.createElement(
-            'button',
-            { onClick: function onClick() {
-                return _this2.props.handlePlaylist();
-              } },
-            'Create Playlist'
-          )
-        );
-      }
+      return this.props.loading ? _react2.default.createElement(
+        'div',
+        { className: 'Playlist' },
+        _react2.default.createElement(
+          'p',
+          null,
+          'Creating Playlist: This is where we put that orange spinny wheel!'
+        )
+      ) : _react2.default.createElement(
+        'div',
+        { className: 'Playlist' },
+        _react2.default.createElement('iframe', { src: 'https://open.spotify.com/embed/user/' + this.props.user + '/playlist/' + this.props.playlist, width: '300', height: '380', frameBorder: '0', allowTransparency: 'true' })
+      );
     }
   }]);
 

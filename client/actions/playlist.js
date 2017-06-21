@@ -31,6 +31,7 @@ export function clearPlaylistError () {
 }
 
 export function saveSelectedTracks(tracks) {
+  console.log(tracks);
   return {
     type: 'SAVE_SELECTED_TRACKS',
     tracks
@@ -51,51 +52,65 @@ export function saveTopTracks(artistName, topTracks) {
   }
 }
 
-export function toggleArtist(artist, artistTracks, selArtists, selTracks, dispatch) {
-  if(selArtists.indexOf(artist) == -1) {
-    // console.log("start of toggleArtist");
-    // console.log(artist);
-    // console.log(artistTracks);
-    // console.log(selArtists);
-    mapTracksArray(artistTracks, selTracks, dispatch)
-    let updatedArtists = [...selArtists, artist]
-    dispatch(saveSelectedArtists(updatedArtists))
-  }
-  else {
-    let updatedTracks = removeTrackIfExists(artistTracks,selTracks)
-    let updatedArtists = selArtists.filter((name)=> name != artist)
-    dispatch(saveSelectedArtists(updatedArtists))
-    dispatch(saveSelectedTracks(updatedTracks))
+export function saveSelection(updatedArtists, updatedTracks) {
+  return {
+    type: 'SAVE_SELECTION',
+    updatedArtists, updatedTracks
   }
 }
 
+// export function toggleArtist(artist, artistTracks, selArtists, selTracks, dispatch) {
+//
+//
+//   if(selArtists.indexOf(artist) == -1) {
+//     mapTracksArray(artistTracks, selTracks, dispatch)
+//     let updatedArtists = [...selArtists, artist]
+//     dispatch(saveSelectedArtists(updatedArtists))
+//   }
+//   else {
+//     let updatedTracks = removeTrackIfExists(artistTracks,selTracks)
+//     let updatedArtists = selArtists.filter((name)=> name != artist)
+//     // dispatch(saveSelectedArtists(updatedArtists))
+//     // dispatch(saveSelectedTracks(updatedTracks))
+//     dispatch(saveSelection(updatedArtists, updatedTracks))
+//   }
+// }
+
+export function addArtist(name, tracks) {
+  console.log({name, tracks});
+  return {
+    type: 'SAVE_ARTIST',
+    artist:{name, tracks}
+  }
+}
+
+export function deleteArtist (artistName) {
+  return {
+    type: 'DELETE_ARTIST',
+    artistName
+  }
+}
 
 export function createPlaylist (tracks) {
   return (dispatch) => {
     dispatch(changeLoadState(true))
     request
-      .post(`/api/v1/spotify/users/playlist`)
-      .send({
-        "name": "Upstage Playlist",
-        "public": true,
-        "collaborative": false,
-        "description": "Top tracks from artists performing near you"
-      })
+      .post(`/api/v1/spotify/users/createplaylist`)
+      .send(format(tracks))
       .end((err, res)=>{
         if (err) {
           dispatch(changeLoadState(false))
           dispatch((playlistError(err.message)))
         } else {
           dispatch(clearPlaylistError())
+          dispatch(changeLoadState(false))
           dispatch(getPlaylistId(res.body.id))
-          dispatch(addTracksToPlaylist(tracks, res.body.id))
         }
       })
   }
 }
 
 export function addTracksToPlaylist (tracks, playlist_id) {
-  console.log('test');
     let formattedTracks = format(tracks)
     return (dispatch) => {
         request
@@ -119,9 +134,6 @@ export function format(tracks) { //I dont think this needs export? Or anything b
 }
 
 export function mapTracksArray(tracksArray, selTracks, dispatch) {
-  console.log(selTracks);
-  // console.log(tracksArray);
-  console.log("selTracks, tracksArray");
   tracksArray.forEach((track) => selTracks.push(track))
   dispatch(saveSelectedTracks(selTracks))
 }

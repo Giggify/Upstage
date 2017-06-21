@@ -7,6 +7,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import {toggleArtist, createPlaylist, addTracksToPlaylist} from '../actions/playlist'
 
+import {getTopTracks} from '../api'
+
+
 class SelectedArtistsBox extends React.Component{
 
   constructor(props){
@@ -36,6 +39,7 @@ class SelectedArtistsBox extends React.Component{
   }
 
    handleCreation = () => { //REFACTORED!!!!!!
+     console.log(this.state);
        this.create()
    }
 
@@ -52,7 +56,7 @@ class SelectedArtistsBox extends React.Component{
    }
 
    create() {
-     const tracks = this.props.selectedTracks
+     console.log(this.state.artist)
      this.props.dispatch(createPlaylist(this.props.selectedTracks))
    }
 
@@ -113,11 +117,13 @@ class SelectedArtistsBox extends React.Component{
 }
 
 const mapState2Props = (state) => {
-    // console.log(state.playlist)
+    console.log(state.artists)
   return {
+    realArtists: state.artists,
     tracks: state.playlist.tracks,
     artists: state.playlist.artists,
-    topTracks: state.playlist.topTracks
+    topTracks: state.playlist.topTracks,
+    selectedTracks: state.playlist.selectedTracks
   }
 }
 

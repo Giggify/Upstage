@@ -8,7 +8,7 @@ import Info from 'material-ui/svg-icons/action/info';
 import PlaylistAdd from 'material-ui/svg-icons/av/playlist-add';
 
 import {getArtist, getTopTracks} from '../api'
-import {toggleArtist, saveTopTracks} from '../actions/playlist'
+import {toggleArtist, saveTopTracks, addArtist, deleteArtist} from '../actions/playlist'
 
 class ArtistTile extends React.Component {
   constructor(props) {
@@ -26,34 +26,35 @@ class ArtistTile extends React.Component {
       .then((artist) => {
         if (artist) this.setState({artist})
       })
-      .then(() => {
-        let tracksArray = []
-        if(this.state.artist!=undefined){
-          getTopTracks(this.state.artist.id)
-              .then((tracks) => {
-                if(tracks.status!=400){
-                  tracks.map((track) => {
-                    tracksArray.push(track.id)
-                  })
-                }
-              })
-              .then(() => {
-                console.log("artistname",artistName)
-                this.setState({tracksArray: tracksArray})
-                this.props.dispatch(saveTopTracks(artistName,tracksArray))
-              })
-        }
-      })
+  }
+
+  filterTopTracks(artist) {
+    let topTracksList = [...this.props.topTracks]
+    return topTracksList.filter((track) => track[artist] == artist)
   }
 
   checkArtist(artist) {
-    if (this.props.selectedArtists.indexOf(artist) == -1) return "noborder"
+    this.props.selectedArtists.forEach(selArtist => {
+      if (selArtist.name == artist) return true
+    })
+    return false
     else return "orangeborder"
   }
 
   handleArtistClick(artist) {
-    this.checkArtist(artist)
-    toggleArtist(artist,this.props.topTracks, this.props.selectedArtists, this.props.selectedTracks, this.props.dispatch)
+    // this.checkArtist(artist)
+    getTopTracks(this.state.artist.id)
+      .then((tracks) => {
+        if(tracks.status != 400) {
+          return tracks.map((track) => {
+            return track.id
+          })
+        }
+      })
+      .then(tracksArray => {
+        console.log({tracksArray});
+        this.props.dispatch(addArtist(artist, tracksArray))
+      })
   }
 
   handleInfoClick=(event)=>{
@@ -80,7 +81,7 @@ class ArtistTile extends React.Component {
 const mapState2Props = (state) => {
   return {
     selectedTracks: state.playlist.tracks,
-    selectedArtists: state.playlist.artists,
+    selectedArtists: state.artists,
     topTracks: state.playlist.topTracks
   }
 }

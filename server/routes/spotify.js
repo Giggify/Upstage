@@ -90,14 +90,50 @@ router.post('/users/playlist', (req,res) => {
   .set('Accept', 'application/json')
   .end((err,result) => {
     if(err) {
-      console.log(err)
+      res.send(err)
     }
     else {
-      console.log(result.body.id)
       res.status(201).send(result.body)
     }
   })
 })
+
+router.post('/users/createplaylist', (req,res) => {
+  console.log(req.body);
+  request
+  .post(`${url}/v1/users/${req.user.id}/playlists`)
+  .send({
+    "name": "Upstage Playlist",
+    "public": true,
+    "collaborative": false,
+    "description": "Top tracks from artists performing near you"
+  })
+  .set('Authorization',  `Bearer ${req.user.accessToken}`)
+  .set('Accept', 'application/json')
+  .end((err,result) => {
+    if(err) {
+      res.send(err)
+    }
+    else {
+      request
+        .post(`${url}/v1/users/${req.user.id}/playlists/${result.body.id}/tracks`)
+        .send({
+          "uris": req.body
+        })
+        .set('Authorization', `Bearer ${req.user.accessToken}`)
+        .set('Accept', 'application/json')
+        .end((err,result) => {
+          if(err) {
+            res.send(err);
+          }
+          else {
+            res.status(201).send(req.user.id)
+          }
+        })
+    }
+  })
+})
+
 
 
 router.post('/users/playlist/:playlist_id/tracks', (req,res) => {
@@ -110,7 +146,7 @@ router.post('/users/playlist/:playlist_id/tracks', (req,res) => {
     .set('Accept', 'application/json')
     .end((err,result) => {
       if(err) {
-        console.log(err);
+        res.send(err);
       }
       else {
         res.status(201).send(req.user.id)

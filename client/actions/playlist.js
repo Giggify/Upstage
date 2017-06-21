@@ -43,6 +43,13 @@ export function saveSelectedArtists(artists) {
   }
 }
 
+export function saveTopTracks(topTracks) {
+  return {
+    type: 'SAVE_TOP_TRACKS',
+    topTracks
+  }
+}
+
 export function toggleArtist(artist, artistTracks, selArtists, selTracks, dispatch) {
   if(selArtists.indexOf(artist) == -1) {
     mapTracksArray(artistTracks, selTracks, dispatch)

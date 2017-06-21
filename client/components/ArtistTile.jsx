@@ -8,13 +8,12 @@ import Info from 'material-ui/svg-icons/action/info';
 import PlaylistAdd from 'material-ui/svg-icons/av/playlist-add';
 
 import {getArtist, getTopTracks} from '../api'
-import {toggleArtist} from '../actions/playlist'
+import {toggleArtist, saveTopTracks} from '../actions/playlist'
 
 class ArtistTile extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      tracksArray: [],
       artist: {
         images: [{url: '/images/unknownartist.png'}]
       },
@@ -22,7 +21,8 @@ class ArtistTile extends React.Component {
     }
   }
   componentWillMount(){
-    getArtist(this.props.event.artists[0])
+    let artistName = this.props.event.artists[0]
+    getArtist(artistName)
       .then((artist) => {
         if (artist) this.setState({artist})
       })
@@ -38,7 +38,8 @@ class ArtistTile extends React.Component {
                 }
               })
               .then(() => {
-                this.setState({tracksArray})
+                console.log("artistname",artistName);
+                this.props.dispatch(saveTopTracks({artistName: tracksArray}))
               })
         }
       })
@@ -78,7 +79,8 @@ class ArtistTile extends React.Component {
 const mapState2Props = (state) => {
   return {
     selectedTracks: state.playlist.tracks,
-    selectedArtists: state.playlist.artists
+    selectedArtists: state.playlist.artists,
+    topTracks: state.playlist.topTracks
   }
 }
 

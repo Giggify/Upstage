@@ -42,14 +42,14 @@ class SelectedArtistsBox extends React.Component{
       this.setState({selectedArtists: artistsInBox})
     }
 
-   handleToggle = () => { //REFACTORED!!!!!!
+   handleCreation = () => { //REFACTORED!!!!!!
        this.create()
-       this.setState({open: !this.state.open});
    }
 
    handleArtistClick(artist) {
+     console.log(props);
      this.checkArtist(artist)
-     toggleArtist(artist,this.state.tracksArray, this.props.selectedArtists, this.props.selectedTracks, this.props.dispatch)
+     toggleArtist(artist, this.props.topTracks, this.props.selectedArtists, this.props.selectedTracks, this.props.dispatch)
    }
 
    create() {
@@ -81,7 +81,6 @@ class SelectedArtistsBox extends React.Component{
   }
 
   componentWillReceiveProps(nextprops){
-      console.log(nextprops)
     let artists = nextprops.artists.map((artist,index)=>{
       return(
         {key: index, label: artist}
@@ -108,7 +107,7 @@ class SelectedArtistsBox extends React.Component{
        </div>
        <RaisedButton
                    label="Create"
-                   onClick={this.handleToggle}
+                   onClick={this.handleCreation}
         />
       </Drawer>
       </div>
@@ -118,10 +117,11 @@ class SelectedArtistsBox extends React.Component{
 }
 
 const mapState2Props = (state) => {
-    console.log(state)
+    console.log(state.playlist)
   return {
     tracks: state.playlist.tracks,
-    artists: state.playlist.artists
+    artists: state.playlist.artists,
+    topTracks: state.playlist.topTracks
   }
 }
 

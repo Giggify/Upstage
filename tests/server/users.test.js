@@ -35,14 +35,3 @@ test('does not exist', t => {
       })
     })
 })
-
-test('getbyid', t => {
-  return users.getById('test_user', t.context.connection)
-    .then((result) => {
-      return new Promise((resolve, reject) => {
-        t.is(result.userName, 'test user')
-        t.is(result.accessToken, '123')
-        resolve()
-      })
-    })
-})

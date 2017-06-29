@@ -28530,7 +28530,9 @@ var ArtistTile = function (_React$Component) {
           });
         }
       }).then(function (tracksArray) {
-        _this3.props.dispatch((0, _playlist.addArtist)(artist, tracksArray));
+        if (tracksArray) {
+          _this3.props.dispatch((0, _playlist.addArtist)(artist, tracksArray));
+        }
       });
     }
   }, {
@@ -29508,19 +29510,6 @@ var SelectedArtistsBox = function (_React$Component) {
         this.trimArtistName(artist.name)
       );
     }
-    //
-    // componentWillReceiveProps(nextprops){
-    //   let artists = nextprops.artists.map((artist,index)=>{
-    //     return(
-    //       {key: index, label: artist}
-    //     )
-    //   })
-    //   this.setState({
-    //     chipData:artists,
-    //     open: true
-    //   })
-    // }
-
   }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
@@ -29772,7 +29761,7 @@ var Playlist = function (_React$Component) {
     _this.state = {
       playlistID: props.playlistID,
       playlistLoading: props.playlistLoading,
-      isShowingModal: true
+      isShowingModal: false
     };
     return _this;
   }
@@ -29799,7 +29788,7 @@ var Playlist = function (_React$Component) {
         return _react2.default.createElement(
           'div',
           { className: 'Loading' },
-          _react2.default.createElement(_reactLoading2.default, { type: 'bars', color: '#ff6900', height: '500', width: '400' })
+          _react2.default.createElement(_reactLoading2.default, { type: 'bars', color: '#ff6900', height: '500px', width: '400px' })
         );
       } else if (!this.state.playlistLoading && this.state.playlistID) {
         return _react2.default.createElement(
@@ -29826,7 +29815,7 @@ var Playlist = function (_React$Component) {
                   } },
                 '\u2717'
               ),
-              _react2.default.createElement('iframe', { src: 'https://open.spotify.com/embed/user/' + this.props.user + '/playlist/' + this.props.playlistID, width: '380', height: '450', frameborder: '0', allowtransparency: 'false' })
+              _react2.default.createElement('iframe', { src: 'https://open.spotify.com/embed/user/' + this.props.user + '/playlist/' + this.props.playlistID, width: '380px', height: '450px', frameBorder: '0', allowTransparency: 'false' })
             )
           )
         );
@@ -30078,7 +30067,6 @@ function playlist() {
                 playlistLoading: false
             });
         case 'GET_PLAYLIST_ID':
-            console.log(action);
             return _extends({}, state, {
                 playlistID: action.playlistID
             });

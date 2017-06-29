@@ -70,7 +70,10 @@ class ArtistTile extends React.Component {
         }
       })
       .then(tracksArray => {
-        this.props.dispatch(addArtist(artist, tracksArray))
+          if(tracksArray) {
+              this.props.dispatch(addArtist(artist, tracksArray))
+
+          }
       })
   }
 

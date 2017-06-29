@@ -19,7 +19,6 @@ function playlist(state = {
                 playlistLoading: false
             }
         case 'GET_PLAYLIST_ID':
-        console.log(action)
             return {
                 ...state,
                 playlistID: action.playlistID

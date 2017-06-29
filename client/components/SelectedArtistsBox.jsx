@@ -91,18 +91,7 @@ class SelectedArtistsBox extends React.Component{
       </Chip>
     )
   }
-  //
-  // componentWillReceiveProps(nextprops){
-  //   let artists = nextprops.artists.map((artist,index)=>{
-  //     return(
-  //       {key: index, label: artist}
-  //     )
-  //   })
-  //   this.setState({
-  //     chipData:artists,
-  //     open: true
-  //   })
-  // }
+
 
   componentWillReceiveProps(nextProps) {
     let artistNames = nextProps.artists.map((artist, key) => {

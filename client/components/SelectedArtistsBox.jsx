@@ -34,33 +34,14 @@ class SelectedArtistsBox extends React.Component{
   }
 
 
-  handleRequestDelete (name) {
-    this.props.dispatch(deleteArtist(name))
-  }
-
-  // handleRequestDelete = (key) => {
-  //   this.chipData = this.props.realArtists
-  //   const chipToDelete = this.chipData.map((chip)=>chip.key).indexOf(key)
-  //   this.chipData.splice(chipToDelete,1)
-  //   this.setState({chipData: this.chipData})
-  //   this.handleArtistClick(key)
-  // }
-
-  //  handleCreation = () => { //REFACTORED!!!!!!
-  //    console.log(this.state);
-  //      this.create()
-  //  }
-
-
-   //
-  //  filterTopTracks(artist) {
-  //    let topTracksList = [...props.topTracks]
-  //    return topTracksList.filter((track) => track[artist] == artist)
-  //  }
+   handleRequestDelete (name) {
+     this.props.dispatch(deleteArtist(name))
+   }
 
    createPlaylist() {
-    //  console.log(this.state.selectedArti);
-     this.props.dispatch(createPlaylist(this.assemblePlaylist(this.state.selectedArtists)))
+     if (this.state.selectedArtists.length > 0) {
+         this.props.dispatch(createPlaylist(this.assemblePlaylist(this.state.selectedArtists)))
+     }
    }
 
    assemblePlaylist(artists) {
@@ -91,18 +72,7 @@ class SelectedArtistsBox extends React.Component{
       </Chip>
     )
   }
-  //
-  // componentWillReceiveProps(nextprops){
-  //   let artists = nextprops.artists.map((artist,index)=>{
-  //     return(
-  //       {key: index, label: artist}
-  //     )
-  //   })
-  //   this.setState({
-  //     chipData:artists,
-  //     open: true
-  //   })
-  // }
+
 
   componentWillReceiveProps(nextProps) {
     let artistNames = nextProps.artists.map((artist, key) => {

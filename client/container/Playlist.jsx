@@ -9,7 +9,7 @@ class Playlist extends React.Component {
     this.state = {
       playlistID: props.playlistID,
       playlistLoading: props.playlistLoading,
-      isShowingModal: true
+      isShowingModal: false
     }
   }
   componentWillReceiveProps({playlistLoading, playlistID}) {
@@ -21,7 +21,6 @@ class Playlist extends React.Component {
 
   closeModal = () => this.setState({isShowingModal: false})
 
-
  render() {
    if(!this.state.playlistLoading && !this.state.playlistID) {
      return (
@@ -32,7 +31,7 @@ class Playlist extends React.Component {
    } else if(this.state.playlistLoading && !this.state.playlistID) {
      return (
        <div className="Loading">
-          <Loading type='bars' color='#ff6900' height='500' width='400'/>
+          <Loading type='bars' color='#ff6900' height='500px' width='400px'/>
        </div>
      )
    } else if(!this.state.playlistLoading && this.state.playlistID) {
@@ -47,7 +46,7 @@ class Playlist extends React.Component {
                >
                <div style={{width: '100%'}} className="inner-modal">
                  <p style={{width: '100%', marginLeft: '25vh', fontSize: '25px', color:'#ff6900'}} onClick={() => this.closeModal()} >&#10007;</p>
-                 <iframe src={`https://open.spotify.com/embed/user/${this.props.user}/playlist/${this.props.playlistID}`} width="380" height="450" frameborder="0" allowtransparency="false"></iframe>
+                 <iframe src={`https://open.spotify.com/embed/user/${this.props.user}/playlist/${this.props.playlistID}`} width="380px" height="450px" frameBorder="0" allowTransparency="false"></iframe>
                </div>
              </Modal>
        </div>
@@ -57,7 +56,6 @@ class Playlist extends React.Component {
 }
 
 const mapStateToProps  = (state)  => {
-  console.log(state)
   return {
     playlistLoading: state.playlist.playlistLoading,
     error: state.error,

@@ -29444,32 +29444,12 @@ var SelectedArtistsBox = function (_React$Component) {
     value: function handleRequestDelete(name) {
       this.props.dispatch((0, _playlist.deleteArtist)(name));
     }
-
-    // handleRequestDelete = (key) => {
-    //   this.chipData = this.props.realArtists
-    //   const chipToDelete = this.chipData.map((chip)=>chip.key).indexOf(key)
-    //   this.chipData.splice(chipToDelete,1)
-    //   this.setState({chipData: this.chipData})
-    //   this.handleArtistClick(key)
-    // }
-
-    //  handleCreation = () => { //REFACTORED!!!!!!
-    //    console.log(this.state);
-    //      this.create()
-    //  }
-
-
-    //
-    //  filterTopTracks(artist) {
-    //    let topTracksList = [...props.topTracks]
-    //    return topTracksList.filter((track) => track[artist] == artist)
-    //  }
-
   }, {
     key: 'createPlaylist',
     value: function createPlaylist() {
-      //  console.log(this.state.selectedArti);
-      this.props.dispatch((0, _playlist.createPlaylist)(this.assemblePlaylist(this.state.selectedArtists)));
+      if (this.state.selectedArtists.length > 0) {
+        this.props.dispatch((0, _playlist.createPlaylist)(this.assemblePlaylist(this.state.selectedArtists)));
+      }
     }
   }, {
     key: 'assemblePlaylist',

@@ -28568,7 +28568,7 @@ var ArtistTile = function (_React$Component) {
               } })
           )
         },
-        _react2.default.createElement('img', { src: this.state.artist.images[0].url, onClick: function onClick(e) {
+        _react2.default.createElement('img', { src: this.state.artist.images[0] ? this.state.artist.images[0].url : '/images/unknownartist.png', onClick: function onClick(e) {
             return _this4.handleArtistClick(event.artists[0]);
           } })
       );
@@ -29838,7 +29838,6 @@ var Playlist = function (_React$Component) {
 }(_react2.default.Component);
 
 var mapStateToProps = function mapStateToProps(state) {
-  console.log(state);
   return {
     playlistLoading: state.playlist.playlistLoading,
     error: state.error,

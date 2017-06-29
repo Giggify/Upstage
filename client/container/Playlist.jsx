@@ -57,7 +57,6 @@ class Playlist extends React.Component {
 }
 
 const mapStateToProps  = (state)  => {
-  console.log(state)
   return {
     playlistLoading: state.playlist.playlistLoading,
     error: state.error,

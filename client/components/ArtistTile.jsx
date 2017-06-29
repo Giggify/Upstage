@@ -51,19 +51,15 @@ class ArtistTile extends React.Component {
   }
 
   handleArtistClick(artist) {
-    console.log(artist);
     let boolean = this.isArtistSelected(artist)
     if (boolean) {
-      console.log("I am to be deleted", artist);
       this.deleteArtistAndTracks(artist)
     } else {
-      console.log("I am to be added", artist);
       this.selectArtistAndTracks(artist)
     }
   }
 
   selectArtistAndTracks(artist) {
-    // this.checkArtist(artist)
     getTopTracks(this.state.artist.id)
       .then((tracks) => {
         if(tracks.status != 400) {
@@ -73,13 +69,11 @@ class ArtistTile extends React.Component {
         }
       })
       .then(tracksArray => {
-        console.log("adding artist and tracks");
         this.props.dispatch(addArtist(artist, tracksArray))
       })
   }
 
   deleteArtistAndTracks(artist) {
-    console.log("delete ", artist);
     this.props.dispatch(deleteArtist(artist))
   }
 

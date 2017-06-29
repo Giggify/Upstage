@@ -128,7 +128,6 @@ class EventsList extends React.Component {
           playlist={this.state.playlistID}
           tracks={this.state.selectedTracks}
         />
-      <DatePicker />
       <SelectedArtistsBox/>
         <div style={styles.root}>
          <MuiThemeProvider>

@@ -12,12 +12,10 @@ var spotifyApi = new SpotifyWebApi({
 // Get an access token and 'save' it using a setter
 spotifyApi.clientCredentialsGrant()
   .then(function(data) {
-    console.log('The access token is ' + data.body['access_token']);
     spotifyApi.setAccessToken(data.body['access_token']);
 
 spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE')
   .then(function(data) {
-    console.log('Artist albums', data.body);
   }, function(err) {
     console.error(err);
   });

@@ -7,10 +7,6 @@ export function getPlaylistId(playlistID){
   }
 }
 
-// export function addTracksToPlaylist(playlistID) {
-//   request
-// }
-
 export function playlistError (message) {
   return {
     type: 'THROW_ERROR',
@@ -57,8 +53,6 @@ export function saveSelection(updatedArtists, updatedTracks) {
     updatedArtists, updatedTracks
   }
 }
-
-
 
 export function addArtist(name, tracks) {
   return {

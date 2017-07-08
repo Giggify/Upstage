@@ -40,6 +40,7 @@ class EventsList extends React.Component {
       showInfo:false
     }
   }
+
   componentWillMount(){
     this.props.dispatch(fetchEvents(this.props.match.params.id))
   }

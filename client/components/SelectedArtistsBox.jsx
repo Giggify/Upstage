@@ -8,7 +8,7 @@ import {green700} from 'material-ui/styles/colors';
 
 import Drawer from 'material-ui/Drawer';
 import RaisedButton from 'material-ui/RaisedButton';
-import {toggleArtist, createPlaylist, addTracksToPlaylist, deleteArtist} from '../actions/playlist'
+import {toggleArtist, createPlaylist, addTracksToPlaylist, clearArtist, deleteArtist} from '../actions/playlist'
 import {getTopTracks} from '../api'
 import {connect} from 'react-redux'
 
@@ -42,6 +42,7 @@ class SelectedArtistsBox extends React.Component{
      if (this.state.selectedArtists.length > 0) {
          this.props.dispatch(createPlaylist(this.assemblePlaylist(this.state.selectedArtists)))
      }
+     this.props.dispatch(clearArtist())
    }
 
    assemblePlaylist(artists) {

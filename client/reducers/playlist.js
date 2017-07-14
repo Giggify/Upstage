@@ -7,6 +7,8 @@ function playlist(state = {
     selArtists: [],
     selTracks: []
 }, action) {
+    console.log(action)
+
     switch (action.type) {
         case 'TOGGLE_PLAYLIST_LOADING_ON':
             return {
@@ -33,6 +35,11 @@ function playlist(state = {
             return {
                 ...state,
                 artists: action.artists
+            }
+        case "CLEAR_SELECTED_ARTISTS":
+            return {
+                ...state,
+                artists: []
             }
         case 'SAVE_SELECTION':
           return {

@@ -82,6 +82,10 @@ class SelectedArtistsBox extends React.Component{
     this.setState({selectedArtists: nextProps.artists, artistNames, open:true})
   }
 
+  componentWillUnmount() {
+      this.props.dispatch(clearArtist())
+  }
+
   render(){
     return(
       <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>

@@ -29506,6 +29506,11 @@ var SelectedArtistsBox = function (_React$Component) {
       this.setState({ selectedArtists: nextProps.artists, artistNames: artistNames, open: true });
     }
   }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.props.dispatch((0, _playlist.clearArtist)());
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this3 = this;
@@ -30079,10 +30084,6 @@ function playlist() {
         case 'SAVE_SELECTED_ARTISTS':
             return _extends({}, state, {
                 artists: action.artists
-            });
-        case "CLEAR_SELECTED_ARTISTS":
-            return _extends({}, state, {
-                artists: []
             });
         case 'SAVE_SELECTION':
             return _extends({}, state, {

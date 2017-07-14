@@ -34,11 +34,6 @@ function playlist(state = {
                 ...state,
                 artists: action.artists
             }
-        case "CLEAR_SELECTED_ARTISTS":
-            return {
-                ...state,
-                artists: []
-            }
         case 'SAVE_SELECTION':
           return {
             ...state,

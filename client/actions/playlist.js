@@ -39,6 +39,7 @@ export function saveSelectedArtists(artists) {
   }
 }
 
+
 export function saveTopTracks(artistName, topTracks) {
   let newObj = {[artistName]: topTracks}
   return {
@@ -66,6 +67,12 @@ export function deleteArtist (artistName) {
     type: 'DELETE_ARTIST',
     artistName
   }
+}
+
+export function clearArtist () {
+    return {
+        type: 'CLEAR_ARTIST'
+    }
 }
 
 export function createPlaylist (tracks) {

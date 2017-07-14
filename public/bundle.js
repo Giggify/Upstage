@@ -16411,6 +16411,7 @@ exports.saveTopTracks = saveTopTracks;
 exports.saveSelection = saveSelection;
 exports.addArtist = addArtist;
 exports.deleteArtist = deleteArtist;
+exports.clearArtist = clearArtist;
 exports.createPlaylist = createPlaylist;
 exports.addTracksToPlaylist = addTracksToPlaylist;
 exports.format = format;
@@ -16484,6 +16485,12 @@ function deleteArtist(artistName) {
   return {
     type: 'DELETE_ARTIST',
     artistName: artistName
+  };
+}
+
+function clearArtist() {
+  return {
+    type: 'CLEAR_ARTIST'
   };
 }
 
@@ -28751,7 +28758,6 @@ var EventsList = function (_React$Component) {
 
       this.setState({ loadingPlaylist: true });
       (0, _api.createPlaylist)().then(function (result) {
-        console.log(result);
         _this2.setState({ playlistID: result.id });
         var tracklist = _this2.state.selectedTracks;
         var apiTracklist = tracklist.map(function (track) {
@@ -29450,6 +29456,7 @@ var SelectedArtistsBox = function (_React$Component) {
       if (this.state.selectedArtists.length > 0) {
         this.props.dispatch((0, _playlist.createPlaylist)(this.assemblePlaylist(this.state.selectedArtists)));
       }
+      this.props.dispatch((0, _playlist.clearArtist)());
     }
   }, {
     key: 'assemblePlaylist',
@@ -29497,6 +29504,11 @@ var SelectedArtistsBox = function (_React$Component) {
         return { key: key, name: artist.name };
       });
       this.setState({ selectedArtists: nextProps.artists, artistNames: artistNames, open: true });
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.props.dispatch((0, _playlist.clearArtist)());
     }
   }, {
     key: 'render',
@@ -29762,22 +29774,26 @@ var Playlist = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      if (!this.state.playlistLoading && !this.state.playlistID) {
-        return _react2.default.createElement('div', { className: 'Playlist' });
-      } else if (this.state.playlistLoading && !this.state.playlistID) {
-        return _react2.default.createElement(
+      var _state = this.state,
+          playlistLoading = _state.playlistLoading,
+          playlistID = _state.playlistID,
+          isShowingModal = _state.isShowingModal;
+
+      var playListContent = void 0;
+      if (playlistLoading && !playlistID) {
+        playListContent = _react2.default.createElement(
           'div',
           { className: 'Loading' },
           _react2.default.createElement(_reactLoading2.default, { type: 'bars', color: '#ff6900', height: '500px', width: '400px' })
         );
-      } else if (!this.state.playlistLoading && this.state.playlistID) {
-        return _react2.default.createElement(
+      } else if (!playlistLoading && playlistID) {
+        playListContent = _react2.default.createElement(
           'div',
           { className: 'Playlist' },
           _react2.default.createElement(
             _simpleReactModal2.default,
             {
-              show: this.state.isShowingModal,
+              show: isShowingModal,
               onClose: function onClose() {
                 return _this2.closeModal.bind(_this2);
               },
@@ -29799,7 +29815,14 @@ var Playlist = function (_React$Component) {
             )
           )
         );
+      } else {
+        playListContent = _react2.default.createElement('div', null);
       }
+      return _react2.default.createElement(
+        'div',
+        null,
+        playListContent
+      );
     }
   }]);
 
@@ -29880,6 +29903,9 @@ function artists() {
       return newState.filter(function (artist) {
         return artist.name != action.artistName;
       });
+
+    case 'CLEAR_ARTIST':
+      return newState = [];
 
     default:
       return newState;

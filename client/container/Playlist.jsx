@@ -21,24 +21,20 @@ class Playlist extends React.Component {
 
   closeModal = () => this.setState({isShowingModal: false})
 
- render() {
-   if(!this.state.playlistLoading && !this.state.playlistID) {
-     return (
-       <div className="Playlist">
 
-       </div>
-     )
-   } else if(this.state.playlistLoading && !this.state.playlistID) {
-     return (
+ render() {
+   const {playlistLoading, playlistID, isShowingModal} = this.state
+   let playListContent
+   if(playlistLoading && !playlistID) {
+       playListContent =
        <div className="Loading">
-          <Loading type='bars' color='#ff6900' height='500px' width='400px'/>
-       </div>
-     )
-   } else if(!this.state.playlistLoading && this.state.playlistID) {
-     return (
+            <Loading type='bars' color='#ff6900' height='500px' width='400px'/>
+       </div>;
+    } else if (!playlistLoading && playlistID) {
+       playListContent =
        <div className="Playlist">
              <Modal
-               show={this.state.isShowingModal}
+               show={isShowingModal}
                onClose={() => this.closeModal.bind(this)}
                style={{width: "100%"}}
                containerStyle={{background: 'none'}}
@@ -49,9 +45,17 @@ class Playlist extends React.Component {
                  <iframe src={`https://open.spotify.com/embed/user/${this.props.user}/playlist/${this.props.playlistID}`} width="380px" height="450px" frameBorder="0" allowTransparency="false"></iframe>
                </div>
              </Modal>
-       </div>
-     )
-   }
+       </div>;
+    } else {
+       playListContent = <div/>;
+    }
+    return (
+      <div>
+        {playListContent}
+      </div>
+    )
+
+
  }
 }
 

@@ -40,6 +40,7 @@ class EventsList extends React.Component {
       showInfo:false
     }
   }
+
   componentWillMount(){
     this.props.dispatch(fetchEvents(this.props.match.params.id))
   }
@@ -56,7 +57,6 @@ class EventsList extends React.Component {
     this.setState({loadingPlaylist: true})
     createPlaylist()
       .then((result) => {
-        console.log(result);
       this.setState({playlistID: result.id})
       let tracklist = this.state.selectedTracks
       let apiTracklist = tracklist.map((track) =>

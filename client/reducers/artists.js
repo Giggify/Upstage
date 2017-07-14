@@ -9,6 +9,9 @@ export default function artists(state = [], action) {
       case 'DELETE_ARTIST':
         return newState.filter(artist => artist.name != action.artistName)
 
+      case 'CLEAR_ARTIST':
+        return newState = []
+
       default:
         return newState
 

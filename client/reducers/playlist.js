@@ -7,8 +7,6 @@ function playlist(state = {
     selArtists: [],
     selTracks: []
 }, action) {
-    console.log(action)
-
     switch (action.type) {
         case 'TOGGLE_PLAYLIST_LOADING_ON':
             return {

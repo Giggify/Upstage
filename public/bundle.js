@@ -28758,7 +28758,6 @@ var EventsList = function (_React$Component) {
 
       this.setState({ loadingPlaylist: true });
       (0, _api.createPlaylist)().then(function (result) {
-        console.log(result);
         _this2.setState({ playlistID: result.id });
         var tracklist = _this2.state.selectedTracks;
         var apiTracklist = tracklist.map(function (track) {
@@ -30058,8 +30057,6 @@ function playlist() {
         selTracks: []
     };
     var action = arguments[1];
-
-    console.log(action);
 
     switch (action.type) {
         case 'TOGGLE_PLAYLIST_LOADING_ON':

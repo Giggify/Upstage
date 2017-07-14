@@ -1,4 +1,5 @@
 # Gigify
+[![Build Status](https://travis-ci.org/Giggify/Upstage.svg?branch=master)](https://travis-ci.org/Giggify/Upstage)
 
 ## Team Members
 * Alan : Git Master

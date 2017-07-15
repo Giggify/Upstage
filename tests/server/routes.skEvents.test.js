@@ -37,4 +37,13 @@ test.cb('API route /events/locationID returns a json', (t) => {
       t.true(res.body.hasOwnProperty('artists'))
       t.end()
       })
-    })
+})
+
+test.cb('API route /events/locationID redirects to auth when user is not logged in', (t) => {
+  request(app)
+  .get('/api/v1/events/31455')
+  .expect(302)
+  .then((res) => {
+    t.end()
+  })
+})

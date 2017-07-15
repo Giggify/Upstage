@@ -112,8 +112,6 @@ router.post('/users/createplaylist', (req,res) => {
   })
 })
 
-
-
 router.post('/users/playlist/:playlist_id/tracks', (req,res) => {
   request
     .post(`${url}/v1/users/${req.user.id}/playlists/${req.params.playlist_id}/tracks`)

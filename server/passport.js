@@ -22,6 +22,7 @@ module.exports = function(app) {
                         .then(function(res) {
                             user.accessToken = accessToken
                             user.refreshToken = refreshToken
+                            user.image = profile.photos[0]
                             return done(null, user)
                         })
                 } else {

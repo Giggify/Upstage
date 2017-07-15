@@ -28980,7 +28980,7 @@ var Header = function (_React$Component) {
 
       var cookie = document.cookie;
       if (cookie.length < 1) {
-        window.location.assign('http://localhost:3000/#/login');
+        window.location.assign('./#/login');
       } else {
         (0, _api.getUserInfo)(cookie).then(function (result) {
           _this2.props.dispatch((0, _users.saveUserDetails)(result.id, result.image) //spotify calls it id but it is the username so we change it to user.

@@ -29,12 +29,13 @@ function getToken (req) {
 
 function handleError (err, req, res, next) {
   if (err) {
-    return res.status(403).json({
-      message: 'Access to this resource was denied.',
-      error: err.message
-    })
+    // return res.status(403).json({
+    //   message: 'Access to this resource was denied.',
+    //   error: err.message
+    // })
+    res.redirect('/auth')
   }
-  next()
+  // next()
 }
 
 function issueJwt (req, res, next) {
